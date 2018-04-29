@@ -72,6 +72,7 @@ def load_elvis(sim):
     df = {'M_dm': mvir, 'M_star': mstar, 'x': x, 'y': y, 'z': z,
             'vx': vx, 'vy': vy, 'vz': vz}
     df = pd.DataFrame(df, index=ID)
+    df.index.name = 'ID'
 
     # main halo association just based on distance
     host1 = df.iloc[0]

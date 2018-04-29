@@ -6,7 +6,8 @@ from utils import *
 Mpc_to_km = 3.086*10**19
 km_to_kpc = 10**3/Mpc_to_km
 
-subs = pd.read_pickle('data/apostle/V1_HR_fix_subs.pkl').drop_duplicates()
+sim = 'V1_HR_fix'
+subs = load_apostle(sim)
 haloIDs = list(set(subs.hostID))
 assert len(haloIDs) == 2
 subs, halos = subs.drop(haloIDs), subs.loc[haloIDs]
