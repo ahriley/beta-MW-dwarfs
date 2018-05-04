@@ -1,8 +1,9 @@
 # Data are not public
 data/apostle
 
-# Old ideas
+# folders for working progress
 graveyard/
+figures/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

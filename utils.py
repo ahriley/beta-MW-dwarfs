@@ -98,3 +98,11 @@ def load_elvis(sim):
     df = pd.DataFrame(df, index=id)
     df.index.name = 'ID'
     return df
+
+def load_satellites(file):
+    sats = pd.read_csv(file, index_col=0)
+    sats.x, sats.y, sats.z = sats.x*Mpc2km, sats.y*Mpc2km, sats.z*Mpc2km
+    sats = compute_spherical_hostcentric_sameunits(df=sats)
+    sats.x, sats.y, sats.z = sats.x*km2kpc, sats.y*km2kpc, sats.z*km2kpc
+    sats.r = sats.r*km2kpc
+    return sats

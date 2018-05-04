@@ -34,18 +34,33 @@ for sim in u.list_of_sims(suite='elvis'):
     topvmax.append([u.beta(Andsubs.nlargest(n=num, columns='Vmax')), u.beta(MWsubs.nlargest(n=num, columns='Vmax'))])
     topvpeak.append([u.beta(Andsubs.nlargest(n=num, columns='Vpeak')), u.beta(MWsubs.nlargest(n=num, columns='Vpeak'))])
 
-all = np.array(all).flatten()
-topvmax = np.array(topvmax).flatten()
-topvpeak = np.array(topvpeak).flatten()
+all = np.array(all)
+topvmax = np.array(topvmax)
+topvpeak = np.array(topvpeak)
 
-fulldata = np.concatenate((all, topvmax, topvpeak))
+fulldata = np.concatenate((all, topvmax, topvpeak)).flatten()
 edges = np.linspace(min(fulldata), max(fulldata), 100)
 
 kwargs = {'histtype':'step', 'cumulative':True, 'bins':edges, 'lw':2.0, 'density':True}
-plt.hist(all, **kwargs, label='allsubs')
-plt.hist(topvmax, **kwargs, label='top 50 vmax')
-plt.hist(topvpeak, **kwargs, label='top 50 vpeak')
+plt.figure(figsize=(8,6))
+plt.hist(all.flatten(), **kwargs, label='all subs of main halo')
+plt.hist(topvmax.flatten(), **kwargs, label='top 50 vmax')
+plt.hist(topvpeak.flatten(), **kwargs, label='top 50 vpeak')
 plt.title("CDF of beta for subhalos in ELVIS")
 plt.xlabel('Beta')
 plt.ylabel('Fraction of main halos')
 plt.legend(loc='upper left');
+#plt.savefig('figures/cdf_beta_vmaxandvpeakcuts.png', bbox_inches='tight')
+#plt.close()
+
+plt.figure(figsize=(8,6))
+plt.hist(all[:,0], ls='-', color='C0', **kwargs)
+plt.hist(topvmax[:,0], ls='-', color='C1', **kwargs)
+plt.hist(topvpeak[:,0], ls='-', color='C2', **kwargs)
+plt.hist(all[:,1], ls=':', color='C0', **kwargs)
+plt.hist(topvmax[:,1], ls=':', color='C1', **kwargs)
+plt.hist(topvpeak[:,1], ls=':', color='C2', **kwargs)
+plt.title("CDF of beta for subhalos in ELVIS")
+plt.xlabel('Beta')
+plt.ylabel('Fraction of main halos');
+#plt.savefig('figures/cdf_beta_vmaxandvpeakcuts_sep.png', bbox_inches='tight')
