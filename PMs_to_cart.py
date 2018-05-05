@@ -4,8 +4,9 @@ import yaml
 import astropy.coordinates as coord
 import astropy.units as u
 from astropy.coordinates import SkyCoord
+import utils
 
-dwarf_file = 'data/dwarfs.yaml'
+dwarf_file = 'data/dwarfs/gaia.yaml'
 with open(dwarf_file, 'r') as f:
     dwarfs = yaml.load(f)
 
@@ -18,7 +19,7 @@ for name in dwarfs.keys():
                     distance=dsph['Distance']*u.kpc,
                     pm_ra_cosdec=dsph['mu_alpha']*u.mas/u.yr,
                     pm_dec=dsph['mu_delta']*u.mas/u.yr,
-                    radial_velocity=dsph['vel_los']*u.km/u.s, frame='icrs',)
+                    radial_velocity=dsph['vel_los']*u.km/u.s, frame='icrs')
     sc = sc.transform_to(coord.Galactocentric)
 
     names.append(name)
@@ -31,5 +32,8 @@ for name in dwarfs.keys():
 
 df = {'x': x, 'y': y, 'z': z, 'vx': vx, 'vy': vy, 'vz': vz}
 df = pd.DataFrame(df, index=names)
-# df.to_csv('data/dwarfs_cartesian.csv')
-# pd.read_csv('data/dwarfs_cartesian.csv', index_col=0)
+# df.to_csv('data/dwarfs/gaia_cart.csv')
+
+# dwarfs = utils.load_satellites('data/dwarfs/dwarfs_simon_cart.csv')
+# v_tot = np.sqrt(dwarfs.vx**2+dwarfs.vy**2+dwarfs.vz**2)
+# overall_beta = utils.beta(dwarfs)

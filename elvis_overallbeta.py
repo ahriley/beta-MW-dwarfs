@@ -64,3 +64,13 @@ plt.title("CDF of beta for subhalos in ELVIS")
 plt.xlabel('Beta')
 plt.ylabel('Fraction of main halos');
 #plt.savefig('figures/cdf_beta_vmaxandvpeakcuts_sep.png', bbox_inches='tight')
+
+plt.figure(figsize=(8,6))
+plt.plot(topvmax[:,1], topvpeak[:,1], 'o', label='MW')
+plt.plot(topvmax[:,0], topvpeak[:,0], 'o', label='And')
+plt.plot([-0.8, 0.4], [-0.8, 0.4], '-')
+plt.legend(loc='best')
+plt.xlabel('Beta (top 50 Vmax)')
+plt.ylabel('Beta (top 50 Vpeak)')
+plt.title('Overall beta for Vmax vs. Vpeak cuts');
+#plt.savefig('figures/overallbeta_vpeak_vmax.png', bbox_inches='tight')

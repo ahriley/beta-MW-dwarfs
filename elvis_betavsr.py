@@ -5,6 +5,7 @@ import utils as u
 
 num = 50
 edges = np.arange(0,10+1,1)*30
+# edges = np.arange(0,5+1,1)*60
 rvals = (edges[1:] + edges[:-1])/2
 
 beta_profiles = []
@@ -61,12 +62,12 @@ for i in range(len(beta_profiles[0])):
     upper = np.append(upper, col[ixU])
 
 # plot the things
-plt.plot(rvals, beta_sats, 'o', label='MW satellites')
+plt.plot(rvals, beta_sats, 'ko', label='MW satellites')
 plt.plot(rvals, median, lw=3.0, c='C0', label='median')
 plt.fill_between(rvals, lower, upper, alpha = 0.4, label='68% CI')
 #plt.ylim(-2,1)
 plt.legend(loc='lower right')
-plt.title("Beta vs. r (50 kpc bins)")
+plt.title("Beta vs. r (binsz=30 kpc, 50 biggest Vmax)")
 plt.xlabel("Galactocentric distance (kpc)")
 plt.ylabel("Beta");
-#plt.savefig('figures/beta_r_vpeak.png', bbox_inches='tight')
+#plt.savefig('figures/beta_r_vmax.png', bbox_inches='tight')

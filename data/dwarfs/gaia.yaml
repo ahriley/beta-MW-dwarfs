@@ -9,6 +9,7 @@ Carina1:
   mu_alpha_error: 0.015
   mu_delta: 0.143
   mu_delta_error: 0.014
+  correlation_mu_mu: -0.08
 
 Draco1:
   RA: 260.06
@@ -21,6 +22,7 @@ Draco1:
   mu_delta_error: 0.01
   vel_los: -291.0
   vel_los_error: 0.1
+  correlation_mu_mu: -0.08
 
 Fornax1:
   RA: 39.9625
@@ -33,6 +35,7 @@ Fornax1:
   mu_delta_error: 0.003
   vel_los: 55.3
   vel_los_error: 0.1
+  correlation_mu_mu: -0.09
 
 Leo1:
     RA: 152.122
@@ -45,6 +48,7 @@ Leo1:
     mu_delta_error: 0.047
     vel_los: 282.5
     vel_los_error: 0.1
+    correlation_mu_mu: -0.51
 
 Leo2:
     RA: 168.37
@@ -57,6 +61,7 @@ Leo2:
     mu_delta_error: 0.054
     vel_los: 78.0
     vel_los_error: 0.1
+    correlation_mu_mu: 0.05
 
 Sextans1:
     RA: 153.268
@@ -69,6 +74,7 @@ Sextans1:
     mu_delta_error: 0.020
     vel_los: 224.2
     vel_los_error: 0.1
+    correlation_mu_mu: -0.45
 
 Sculptor1:
     RA: 15.039166666666667
@@ -81,6 +87,7 @@ Sculptor1:
     mu_delta_error: 0.004
     vel_los: 111.4
     vel_los_error: 0.1
+    correlation_mu_mu: 0.23
 
 UrsaMinor1:
     RA: 227.2854166666667
@@ -93,6 +100,7 @@ UrsaMinor1:
     mu_delta_error: 0.008
     vel_los: -248.0
     vel_los_error: 0.1
+    correlation_mu_mu: -0.34
 
 Bootes1:
   RA: 210.015
@@ -105,7 +113,7 @@ Bootes1:
   mu_alpha_error: 0.041
   mu_delta: -1.064
   mu_delta_error: 0.029
-#ursa_minor_1	2018arXiv180409381G	-18.2	1.0	1.0	7.4	0.8	0.8	GAIA
+  correlation_mu_mu: 0.16
 #
 # Carina2:
 #   RA: 114.1066
