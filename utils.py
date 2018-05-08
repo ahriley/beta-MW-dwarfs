@@ -99,6 +99,42 @@ def load_elvis(sim):
     df.index.name = 'ID'
     return df
 
+def get_halos_at_redshift(sim, z_target):
+    sim_dir = 'data/elvis/mainbranches/'+sim+'/'
+    a = 1/(1+z_target)
+
+    # find closest scale to target
+    with open(sim_dir+'scale.txt') as f:
+        scale_list = np.array(f.readlines()[1].split()).astype(float)
+    index = np.argmin(np.abs(scale_list - a))
+    z_true = 1/scale_list[index] - 1
+
+    # get halo properties at that redshift
+    props = ['X', 'Y', 'Z', 'Vx', 'Vy', 'Vz', 'Vmax']
+    df = {}
+    for prop in props:
+        prop_list = []
+        with open(sim_dir+prop+'.txt') as f:
+            lines = f.readlines()[1:]
+            for line in lines:
+                split = np.array(line.split()).astype(float)
+                prop_list.append(split[index])
+        key = prop if prop == 'Vmax' else prop.lower()
+        df[key] = prop_list
+
+    # IDs will be for redshift 0
+    IDs = []
+    with open(sim_dir+'ID.txt') as f:
+        lines = f.readlines()[1:]
+        for line in lines:
+            split = np.array(line.split()).astype(int)
+            IDs.append(split[0])
+
+    # TODO: distances changed by scale factor?
+    df = pd.DataFrame(df, index=IDs)
+    df.index.name = 'ID'
+    return z_true, df
+
 def load_satellites(file):
     sats = pd.read_csv(file, index_col=0)
     sats.x, sats.y, sats.z = sats.x*Mpc2km, sats.y*Mpc2km, sats.z*Mpc2km

@@ -4,10 +4,14 @@ import matplotlib.pyplot as plt
 import utils as u
 
 num = 50
-all, topvmax, topvpeak = [], [], []
+z = 0.05
+
+all, topvmax, topvpeak, topvmax_z = [], [], [], []
 # sim = 'Hall&Oates'
 for sim in u.list_of_sims(suite='elvis'):
     subs = u.load_elvis(sim=sim)
+    z, subs_z = u.get_halos_at_redshift(sim=sim, z_target=z)
+    subs['Vmax_z'] = subs_z['Vmax']
 
     # identify main halos, separate from rest
     subs.sort_values('M_dm', ascending=False, inplace=True)
@@ -33,10 +37,12 @@ for sim in u.list_of_sims(suite='elvis'):
     all.append([u.beta(Andsubs), u.beta(MWsubs)])
     topvmax.append([u.beta(Andsubs.nlargest(n=num, columns='Vmax')), u.beta(MWsubs.nlargest(n=num, columns='Vmax'))])
     topvpeak.append([u.beta(Andsubs.nlargest(n=num, columns='Vpeak')), u.beta(MWsubs.nlargest(n=num, columns='Vpeak'))])
+    topvmax_z.append([u.beta(Andsubs.nlargest(n=num, columns='Vmax_z')), u.beta(MWsubs.nlargest(n=num, columns='Vmax_z'))])
 
 all = np.array(all)
 topvmax = np.array(topvmax)
 topvpeak = np.array(topvpeak)
+topvmax_z = np.array(topvmax_z)
 
 fulldata = np.concatenate((all, topvmax, topvpeak)).flatten()
 edges = np.linspace(min(fulldata), max(fulldata), 100)
@@ -66,11 +72,13 @@ plt.ylabel('Fraction of main halos');
 #plt.savefig('figures/cdf_beta_vmaxandvpeakcuts_sep.png', bbox_inches='tight')
 
 plt.figure(figsize=(8,6))
-plt.plot(topvmax[:,1], topvpeak[:,1], 'o', label='MW')
-plt.plot(topvmax[:,0], topvpeak[:,0], 'o', label='And')
+# plt.plot(topvmax[:,1], topvpeak[:,1], 'o', label='MW')
+# plt.plot(topvmax[:,0], topvpeak[:,0], 'o', label='And')
+plt.plot(topvmax[:,1], topvmax_z[:,1], 'o', label='MW')
+plt.plot(topvmax[:,0], topvmax_z[:,0], 'o', label='And')
 plt.plot([-0.8, 0.4], [-0.8, 0.4], '-')
 plt.legend(loc='best')
-plt.xlabel('Beta (top 50 Vmax)')
-plt.ylabel('Beta (top 50 Vpeak)')
-plt.title('Overall beta for Vmax vs. Vpeak cuts');
-#plt.savefig('figures/overallbeta_vpeak_vmax.png', bbox_inches='tight')
+plt.xlabel('Beta (z=0)')
+plt.ylabel('Beta (z=0.05)')
+plt.title('Overall beta for top 50 Vmax cuts, z=0 vs. z=0.05');
+plt.savefig('figures/overallbeta_vmax0p05_vmax.png', bbox_inches='tight')
