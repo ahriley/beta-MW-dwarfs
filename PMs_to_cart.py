@@ -6,7 +6,8 @@ import astropy.units as u
 from astropy.coordinates import SkyCoord
 import utils
 
-dwarf_file = 'data/dwarfs/gaia.yaml'
+study = 'fritz'
+dwarf_file = 'data/dwarfs/'+study+'.yaml'
 with open(dwarf_file, 'r') as f:
     dwarfs = yaml.load(f)
 
@@ -32,7 +33,7 @@ for name in dwarfs.keys():
 
 df = {'x': x, 'y': y, 'z': z, 'vx': vx, 'vy': vy, 'vz': vz}
 df = pd.DataFrame(df, index=names)
-# df.to_csv('data/dwarfs/gaia_cart.csv')
+# df.to_csv('data/dwarfs/'+study+'_cart.csv')
 
 # dwarfs = utils.load_satellites('data/dwarfs/dwarfs_simon_cart.csv')
 # v_tot = np.sqrt(dwarfs.vx**2+dwarfs.vy**2+dwarfs.vz**2)

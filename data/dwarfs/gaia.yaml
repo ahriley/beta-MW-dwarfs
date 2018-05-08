@@ -102,6 +102,19 @@ UrsaMinor1:
     vel_los_error: 0.1
     correlation_mu_mu: -0.34
 
+Sagittarius1:
+  RA: 283.8313
+  DEC: -30.5453
+  Distance : 26.
+  Distance_error: 2.0
+  vel_los: 140.0
+  vel_los_error: 2.0
+  mu_alpha: -2.692
+  mu_alpha_error: 0.001
+  mu_delta: -1.359
+  mu_delta_error: 0.001
+  correlation_mu_mu: 0.09
+
 Bootes1:
   RA: 210.015
   DEC: 14.51167
