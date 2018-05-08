@@ -1,6 +1,10 @@
 # Data are not public
 data/apostle
 
+# exclude evolutionary tracks (except Hall&Oates for demo)
+data/elvis/mainbranches/*
+!data/elvis/mainbranches/Hall&Oates
+
 # folders for working progress
 graveyard/
 figures/
