@@ -72,4 +72,4 @@ plt.legend(loc='best')
 plt.title("Beta profile from Fritz (9/bin)")
 plt.xlabel("Median Galactocentric distance [kpc]")
 plt.ylabel(r'$\beta$');
-plt.savefig('figures/beta_r_9perbin.png', bbox_inches='tight')
+# plt.savefig('figures/beta_r_9perbin.png', bbox_inches='tight')
