@@ -104,4 +104,4 @@ plt.title("ELVIS top 50 Vpeak")
 plt.xlabel("Galactocentric distance [kpc]")
 plt.ylim(-5, 1)
 plt.ylabel(r'$\beta$');
-plt.savefig("figures/beta_r_elvisvpeak_sats.png", bbox_inches='tight')
+# plt.savefig("figures/beta_r_elvisvpeak_sats.png", bbox_inches='tight')
