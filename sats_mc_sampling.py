@@ -8,7 +8,7 @@ from astropy.coordinates import SkyCoord
 import utils
 import pickle
 
-study = 'fritz'
+study = 'magclouds'
 plot = False
 n = 10000
 edges = np.arange(0,250+1,50)
@@ -84,7 +84,7 @@ for i in range(n):
     df.x, df.y, df.z = df.x*utils.km2kpc, df.y*utils.km2kpc, df.z*utils.km2kpc
     df.r = df.r*utils.km2kpc
     coords_converted.append(df.values)
-
+    """
 	# compute beta in different radial bins
     df = df[(df.r < 250) & (df.index != 'Cra I')]
     cut = pd.cut(df['r'], bins=edges, labels=False)
@@ -93,10 +93,11 @@ for i in range(n):
         beta_df = np.append(beta_df, utils.beta(df[cut == i]))
     beta_profile.append(beta_df)
 beta_profile = np.array(beta_profile)
+"""
 coords_converted = np.array(coords_converted)
 
 # save both the MC sampling and the computed profiles
-np.savetxt('data/mcmc/beta_profile_'+study+'.txt', beta_profile, header=head)
+# np.savetxt('data/mcmc/beta_profile_'+study+'.txt', beta_profile, header=head)
 
 # SHAPE: 39 dwarfs, 10000 samplings, 4 params
 # ORDER: mu_alpha, mu_delta, vel_los, dist
