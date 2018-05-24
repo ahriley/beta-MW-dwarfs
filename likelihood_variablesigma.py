@@ -40,7 +40,7 @@ def lnlike(theta, data, data_covs, data_dists):
     lnlike += np.sum(np.log(np.linalg.det(covs)))
     return -lnlike
 
-# Compute maximum likelihood params
+# Compute maximum likelihood params, move if conflict w/ priors
 nll = lambda *args: -lnlike(*args)
 result = op.minimize(nll, np.random.rand(12)*100, args=(vels, vel_covs, dists))
 result['x']
@@ -48,9 +48,9 @@ result['x']
 # Prior (flat)
 def lnprior(theta):
     m = theta[:3]
-    s0, r0, alpha = theta[3:6], theta[6:9], theta[9:12]
-    if ((m<500).all() and (m>-500).all() and (s0>0).all()
-        and (r0>0).all() and (alpha>0).all()):
+    s0, r0, a = theta[3:6], theta[6:9], theta[9:12]
+    if ((m<500).all() and (m>-500).all() and (s0>0).all() and (s0<1000).all()
+        and (r0>10).all() and (r0<300).all() and (a>0).all() and (a<500).all()):
         return 0.0
     return -np.inf
 
@@ -91,10 +91,10 @@ fig = corner.corner(samples, labels=[r"$v_r$", r"$v_\theta$", r"$v_\phi$",
                       quantiles=[0.16, 0.5, 0.84],
                       show_titles=True, title_kwargs={"fontsize": 12})
 
-fig.savefig('figures/likelihood_variablesigma_bad.png', bbox_inches='tight')
+fig.savefig('figures/likelihood_variablesigma_constrainedprior.png', bbox_inches='tight')
 
 # import samples generated from below
-# np.save('data/mcmc/mcmc_variablesigma', samples, allow_pickle=False)
+np.save('data/mcmc/mcmc_variablesigma_constrainedprior', samples, allow_pickle=False)
 
 """
 samples[:, 2] = np.exp(samples[:, 2])
