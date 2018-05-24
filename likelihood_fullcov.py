@@ -14,6 +14,7 @@ ignore = [names.index('Cra I'), names.index('Eri II'), names.index('Phe I')]
 
 # load MC samples, remove unwanted satellites
 MC_dwarfs = np.load('data/mcmc/sampling_converted_fritz.npy')
+dists = MC_dwarfs[:,:,6]
 MC_dwarfs = MC_dwarfs[:,:,9:12]
 MC_dwarfs = np.swapaxes(MC_dwarfs,0,1)
 MC_dwarfs = np.delete(MC_dwarfs, ignore, axis=0)
@@ -21,6 +22,10 @@ MC_dwarfs = np.delete(MC_dwarfs, ignore, axis=0)
 # data and covariances for each satellite
 vels = np.mean(MC_dwarfs, axis=1)
 vel_covs = np.array([np.cov(np.swapaxes(dwarf,0,1)) for dwarf in MC_dwarfs])
+dists = np.median(np.delete(np.swapaxes(dists,0,1), ignore, axis=0), axis=1)
+inc = dists < 100
+vels = vels[inc]
+vel_covs = vel_covs[inc]
 
 # Likelihood
 def lnlike(theta, data, data_covs):
@@ -30,11 +35,11 @@ def lnlike(theta, data, data_covs):
                     [cov_rtheta, sig_theta**2, cov_thetaphi],
                     [cov_rphi, cov_thetaphi, sig_phi**2]]
     cov_theta = np.array(cov_theta)
-    if np.linalg.det(cov_theta) <= 0:
-        return -np.inf
     covs = data_covs + cov_theta
     icovs = np.linalg.inv(covs)
     lnlike = np.sum([shift@(icov@shift) for shift,icov in zip(shifts,icovs)])
+    if np.any([np.linalg.det(covs) < 0 for cov in data_covs]):
+        return -np.inf
     lnlike += np.sum(np.log(np.linalg.det(covs)))
     return -lnlike
 
@@ -64,13 +69,15 @@ p0 = [result["x"] + 1e-4*np.random.randn(ndim) for i in range(nwalkers)]
 # Set up and run MCMC
 sampler = emcee.EnsembleSampler(nwalkers, ndim, lnprob, args=(vels, vel_covs))
 pos, prob, state = sampler.run_mcmc(p0, 500)
-sampler.reset()
-pos, prob, state = sampler.run_mcmc(pos, 500)
 
 # Look by eye at the burn-in
 stepnum = np.arange(0,500,1)+1
 stepnum = np.array([stepnum for i in range(nwalkers)])
-plt.plot(stepnum, sampler.chain[:,:,8]);
+plt.plot(stepnum, sampler.chain[:,:,0]);
+
+# if needed, reset and run chain for new sample
+sampler.reset()
+pos, prob, state = sampler.run_mcmc(pos, 500)
 
 # Flatten the chain and remove burn-in
 burnin = 0
@@ -83,5 +90,5 @@ fig = corner.corner(samples, labels=[r"$v_r$", r"$v_\theta$", r"$v_\phi$",
                       quantiles=[0.16, 0.5, 0.84],
                       show_titles=True, title_kwargs={"fontsize": 12})
 
-fig.savefig('figures/uniform_fullcov.png', bbox_inches='tight')
-np.save('data/mcmc/mcmc_uniform_fullcov', samples, allow_pickle=False)
+fig.savefig('figures/uniform_fullcov_closerthan100_2.png', bbox_inches='tight')
+np.save('data/mcmc/mcmc_uniform_fullcov_closerthan100_2', samples, allow_pickle=False)
