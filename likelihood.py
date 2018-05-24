@@ -10,29 +10,30 @@ dwarf_file = 'data/dwarfs/fritz.yaml'
 with open(dwarf_file, 'r') as f:
     dwarfs = yaml.load(f)
 names = list(dwarfs.keys())
-names.append("LMC")
-names.append("SMC")
-# ignore = [names.index('Cra I'), names.index('Eri II'), names.index('Phe I')]
+ignore = [names.index('Cra I'), names.index('Eri II'), names.index('Phe I')]
+"""
 cautun_dwarfs = ['Sgr I', 'Dra I', 'U Min I', 'Scu I', 'Car I', 'Frn I',
                     'Leo I', 'Leo II', 'LMC', 'SMC']
+names.append("LMC")
+names.append("SMC")
 inc = [names.index(dwarf) for dwarf in cautun_dwarfs]
-
+"""
 # load MC samples, remove unwanted satellites
 MC_dwarfs = np.load('data/mcmc/sampling_converted_fritz.npy')
-MC_clouds = np.load('data/mcmc/sampling_converted_magclouds.npy')
-MC_dwarfs = np.concatenate((MC_dwarfs,MC_clouds), axis=1)
+# MC_clouds = np.load('data/mcmc/sampling_converted_magclouds.npy')
+# MC_dwarfs = np.concatenate((MC_dwarfs,MC_clouds), axis=1)
 # dists = MC_dwarfs[:,:,6]
 MC_dwarfs = MC_dwarfs[:,:,9:12]
 MC_dwarfs = np.swapaxes(MC_dwarfs,0,1)
-# MC_dwarfs = np.delete(MC_dwarfs, ignore, axis=0)
+MC_dwarfs = np.delete(MC_dwarfs, ignore, axis=0)
 
 # data and covariances for each satellite
 vels = np.mean(MC_dwarfs, axis=1)
 vel_covs = np.array([np.cov(np.swapaxes(dwarf,0,1)) for dwarf in MC_dwarfs])
 # dists = np.median(np.delete(np.swapaxes(dists,0,1), ignore, axis=0), axis=1)
 # inc = dists < 100
-vels = vels[inc]
-vel_covs = vel_covs[inc]
+# vels = vels[inc]
+# vel_covs = vel_covs[inc]
 
 # Likelihood
 def lnlike(theta, data, data_covs):
