@@ -38,22 +38,18 @@ vel_covs = np.array([np.cov(np.swapaxes(dwarf,0,1)) for dwarf in MC_dwarfs])
 # Likelihood
 def lnlike(theta, data, data_covs):
     shifts = data - theta[:3]
-    cov_theta = np.diag(theta[3:]**2)
+    cov_theta = np.diag((10**theta[3:])**2)
     covs = data_covs + cov_theta
     icovs = np.linalg.inv(covs)
     lnlike = np.sum([shift@(icov@shift) for shift,icov in zip(shifts,icovs)])
     lnlike += np.sum(np.log(np.linalg.det(covs)))
     return -lnlike
 
-# Compute maximum likelihood params
-nll = lambda *args: -lnlike(*args)
-result = op.minimize(nll, np.random.rand(6)*100, args=(vels, vel_covs))
-
 # Prior (flat)
 def lnprior(theta):
     m = theta[:3]
-    s = theta[3:]
-    if (m<500).all() and (m>-500).all() and (s<500).all() and (s>0).all():
+    lns = theta[3:]
+    if (m<500).all() and (m>-500).all() and (lns<3).all() and (lns>0).all():
         return 0.0
     return -np.inf
 
@@ -66,20 +62,25 @@ def lnprob(theta, data, data_covs):
 
 # Initialize walkers in tiny ball around max-likelihood result
 ndim, nwalkers = 6, 100
-pos = [result["x"] + 1e-4*np.random.randn(ndim) for i in range(nwalkers)]
+p0 = [np.random.uniform(size=6)*np.array([1000,1000,1000,3,3,3])-np.array([500,500,500,0,0,0]) for i in range(nwalkers)]
 
 # Set up and run MCMC
 sampler = emcee.EnsembleSampler(nwalkers, ndim, lnprob, args=(vels, vel_covs))
-sampler.run_mcmc(pos, 500)
+pos, prob, state = sampler.run_mcmc(p0, 500)
 
 # Look by eye at the burn-in
 stepnum = np.arange(0,500,1)+1
 stepnum = np.array([stepnum for i in range(nwalkers)])
-plt.plot(stepnum, sampler.chain[:,:,0]);
+plt.plot(stepnum, sampler.chain[:,:,5]);
+
+# if needed, reset and run chain for new sample
+sampler.reset()
+pos, prob, state = sampler.run_mcmc(pos, 500)
 
 # Flatten the chain and remove burn-in
 burnin = 100
 samples = sampler.chain[:, burnin:, :].reshape((-1, ndim))
+samples[:,3:] = 10**samples[:,3:]
 
 # Make corner plot
 fig = corner.corner(samples, labels=[r"$v_r$", r"$v_\theta$", r"$v_\phi$",
@@ -87,8 +88,8 @@ fig = corner.corner(samples, labels=[r"$v_r$", r"$v_\theta$", r"$v_\phi$",
                       quantiles=[0.16, 0.5, 0.84],
                       show_titles=True, title_kwargs={"fontsize": 12})
 
-fig.savefig('figures/uniform_cautunsample.png', bbox_inches='tight')
-np.save('data/mcmc/mcmc_uniform_cautunsample', samples, allow_pickle=False)
+fig.savefig('figures/uniform_baseline.png', bbox_inches='tight')
+np.save('data/mcmc/mcmc_uniform_baseline', samples, allow_pickle=False)
 
 """
 samples[:, 2] = np.exp(samples[:, 2])
