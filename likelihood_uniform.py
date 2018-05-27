@@ -49,7 +49,7 @@ def lnlike(theta, data, data_covs):
 def lnprior(theta):
     m = theta[:3]
     lns = theta[3:]
-    if (m<500).all() and (m>-500).all() and (lns<3).all() and (lns>0).all():
+    if (m<500).all() and (m>-500).all() and (lns<3).all() and (lns>-3).all():
         return 0.0
     return -np.inf
 
@@ -60,9 +60,11 @@ def lnprob(theta, data, data_covs):
         return -np.inf
     return lp + lnlike(theta, data, data_covs)
 
-# Initialize walkers in tiny ball around max-likelihood result
+# Initialize walkers by randomly sampling prior
 ndim, nwalkers = 6, 100
-p0 = [np.random.uniform(size=6)*np.array([1000,1000,1000,3,3,3])-np.array([500,500,500,0,0,0]) for i in range(nwalkers)]
+p_scale = np.array([1000,1000,1000,6,6,6])
+p_shift = np.array([500,500,500,3,3,3])
+p0 = [np.random.uniform(size=6)*p_scale - p_shift for i in range(nwalkers)]
 
 # Set up and run MCMC
 sampler = emcee.EnsembleSampler(nwalkers, ndim, lnprob, args=(vels, vel_covs))
@@ -71,14 +73,14 @@ pos, prob, state = sampler.run_mcmc(p0, 500)
 # Look by eye at the burn-in
 stepnum = np.arange(0,500,1)+1
 stepnum = np.array([stepnum for i in range(nwalkers)])
-plt.plot(stepnum, sampler.chain[:,:,5]);
+plt.plot(stepnum, sampler.chain[:,:,0]);
 
 # if needed, reset and run chain for new sample
 sampler.reset()
 pos, prob, state = sampler.run_mcmc(pos, 500)
 
 # Flatten the chain and remove burn-in
-burnin = 100
+burnin = 200
 samples = sampler.chain[:, burnin:, :].reshape((-1, ndim))
 samples[:,3:] = 10**samples[:,3:]
 
