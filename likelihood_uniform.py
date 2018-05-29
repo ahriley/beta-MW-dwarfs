@@ -64,7 +64,7 @@ def lnprob(theta, data, data_covs):
 ndim, nwalkers = 6, 100
 p_scale = np.array([1000,1000,1000,6,6,6])
 p_shift = np.array([500,500,500,3,3,3])
-p0 = [np.random.uniform(size=6)*p_scale - p_shift for i in range(nwalkers)]
+p0 = [np.random.uniform(size=ndim)*p_scale - p_shift for i in range(nwalkers)]
 
 # Set up and run MCMC
 sampler = emcee.EnsembleSampler(nwalkers, ndim, lnprob, args=(vels, vel_covs))
