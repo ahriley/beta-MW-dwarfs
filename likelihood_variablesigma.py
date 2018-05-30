@@ -45,7 +45,7 @@ def lnprior(theta):
     m = theta[:3]
     lns0, r0, a = theta[3:6], theta[6:9], theta[9:12]
     if ((m<500).all() and (m>-500).all() and (lns0>-3).all() and (lns0<3).all()
-        and (r0>10).all() and (r0<300).all() and (a>0).all() and (a<10).all()):
+        and (r0>10).all() and (r0<1000).all() and (a>0).all() and (a<10).all()):
         return 0.0
     return -np.inf
 
@@ -58,7 +58,7 @@ def lnprob(theta, data, data_covs, data_dists):
 
 # Initialize walkers by randomly sampling prior
 ndim, nwalkers = 12, 100
-p_scale = np.array([1000,1000,1000,6,6,6,290,290,290,10,10,10])
+p_scale = np.array([1000,1000,1000,6,6,6,990,990,290,10,10,10])
 p_shift = np.array([500,500,500,3,3,3,-10,-10,-10,0,0,0])
 p0 = [np.random.uniform(size=ndim)*p_scale - p_shift for i in range(nwalkers)]
 
@@ -93,10 +93,3 @@ fig = corner.corner(samples, labels=[r"$v_r$", r"$v_\theta$", r"$v_\phi$",
 
 fig.savefig('figures/likelihood_variablesigma_constrainedprior.png', bbox_inches='tight')
 np.save('data/mcmc/mcmc_variablesigma_constrainedprior', samples, allow_pickle=False)
-
-"""
-samples[:, 2] = np.exp(samples[:, 2])
-vr_mcmc, vtheta_mcmc, vphi_mcmc, sigr_mcmc, sigtheta_mcmc, sigphi_mcmc = map(lambda v: (v[1], v[2]-v[1], v[1]-v[0]),
-                             zip(*np.percentile(samples, [16, 50, 84],
-                                                axis=0)))
-"""

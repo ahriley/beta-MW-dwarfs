@@ -92,10 +92,3 @@ fig = corner.corner(samples, labels=[r"$v_r$", r"$v_\theta$", r"$v_\phi$",
 
 fig.savefig('figures/uniform_baseline.png', bbox_inches='tight')
 np.save('data/mcmc/mcmc_uniform_baseline', samples, allow_pickle=False)
-
-"""
-samples[:, 2] = np.exp(samples[:, 2])
-vr_mcmc, vtheta_mcmc, vphi_mcmc, sigr_mcmc, sigtheta_mcmc, sigphi_mcmc = map(lambda v: (v[1], v[2]-v[1], v[1]-v[0]),
-                             zip(*np.percentile(samples, [16, 50, 84],
-                                                axis=0)))
-"""
