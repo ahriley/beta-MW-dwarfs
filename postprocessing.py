@@ -79,9 +79,9 @@ plt.fill_between(rvals, lower, upper, alpha = 0.4)
 plt.axhline(y=0, ls='--', c='k')
 plt.xlabel(r'$r$ [kpc]')
 plt.ylabel(r'$\beta$')
-plt.ylim(-3,2)
+# plt.ylim(-3,1)
 plt.title(r"Posterior for $\beta(r)$");
-plt.savefig('figures/beta_posterior_variablesigmas_r0min10.png', bbox_inches='tight');
+plt.savefig('figures/beta_posterior_variablesigma_constrainedprior.png', bbox_inches='tight');
 # """
 
 """

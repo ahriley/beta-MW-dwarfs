@@ -62,7 +62,6 @@ ndim, nwalkers = 9, 100
 p_scale = np.array([1000,1000,1000,6,6,6,2,2,2])
 p_shift = np.array([500,500,500,3,3,3,1,1,1])
 p0 = [np.random.uniform(size=ndim)*p_scale - p_shift for i in range(nwalkers)]
-p0 = np.array(p0)
 
 # Set up and run MCMC
 sampler = emcee.EnsembleSampler(nwalkers, ndim, lnprob, args=(vels, vel_covs))

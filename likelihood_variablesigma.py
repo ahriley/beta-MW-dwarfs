@@ -31,7 +31,7 @@ def sigma(r, sigma0, r0, alpha):
 # Likelihood
 def lnlike(theta, data, data_covs, data_dists):
     shifts = data - theta[:3]
-    s0s, r0s, alphas = theta[3:6], theta[6:9], theta[9:12]
+    s0s, r0s, alphas = 10**theta[3:6], theta[6:9], theta[9:12]
     sigmas = np.array([sigma(r,s0s,r0s,alphas) for r in data_dists])
     cov_theta = np.array([np.diag(sig**2) for sig in sigmas])
     covs = data_covs + cov_theta
@@ -40,17 +40,12 @@ def lnlike(theta, data, data_covs, data_dists):
     lnlike += np.sum(np.log(np.linalg.det(covs)))
     return -lnlike
 
-# Compute maximum likelihood params, move if conflict w/ priors
-nll = lambda *args: -lnlike(*args)
-result = op.minimize(nll, np.random.rand(12)*100, args=(vels, vel_covs, dists))
-result['x']
-
 # Prior (flat)
 def lnprior(theta):
     m = theta[:3]
-    s0, r0, a = theta[3:6], theta[6:9], theta[9:12]
-    if ((m<500).all() and (m>-500).all() and (s0>0).all() and (s0<1000).all()
-        and (r0>10).all() and (r0<300).all() and (a>0).all() and (a<500).all()):
+    lns0, r0, a = theta[3:6], theta[6:9], theta[9:12]
+    if ((m<500).all() and (m>-500).all() and (lns0>-3).all() and (lns0<3).all()
+        and (r0>10).all() and (r0<300).all() and (a>0).all() and (a<10).all()):
         return 0.0
     return -np.inf
 
@@ -61,27 +56,32 @@ def lnprob(theta, data, data_covs, data_dists):
         return -np.inf
     return lp + lnlike(theta, data, data_covs, data_dists)
 
-# Initialize walkers in tiny ball around max-likelihood result
-ndim, nwalkers = 12, 400
-p0 = [result["x"] + 1e-4*np.random.randn(ndim) for i in range(nwalkers)]
+# Initialize walkers by randomly sampling prior
+ndim, nwalkers = 12, 100
+p_scale = np.array([1000,1000,1000,6,6,6,290,290,290,10,10,10])
+p_shift = np.array([500,500,500,3,3,3,-10,-10,-10,0,0,0])
+p0 = [np.random.uniform(size=ndim)*p_scale - p_shift for i in range(nwalkers)]
 
 # Set up and run MCMC
 sampler = emcee.EnsembleSampler(nwalkers, ndim, lnprob, args=(vels, vel_covs, dists))
 pos, prob, state = sampler.run_mcmc(p0, 500)
-sampler.reset()
-pos, prob, state = sampler.run_mcmc(pos, 1000)
+
+# Look by eye at the burn-in
+stepnum = np.arange(0,500,1)+1
+stepnum = np.array([stepnum for i in range(nwalkers)])
+plt.plot(stepnum, sampler.chain[:,:,0]);
 
 print("Mean acceptance fraction: {0:.3f}"
                 .format(np.mean(sampler.acceptance_fraction)))
 
-# Look by eye at the burn-in
-stepnum = np.arange(0,1000,1)+1
-stepnum = np.array([stepnum for i in range(nwalkers)])
-plt.plot(stepnum, sampler.chain[:,:,0]);
+# if needed, reset and run chain for new sample
+sampler.reset()
+pos, prob, state = sampler.run_mcmc(pos, 500)
 
 # Flatten the chain and remove burn-in
 burnin = 0
 samples = sampler.chain[:, burnin:, :].reshape((-1, ndim))
+samples[:,3:6] = 10**samples[:,3:6]
 
 # Make corner plot
 fig = corner.corner(samples, labels=[r"$v_r$", r"$v_\theta$", r"$v_\phi$",
@@ -92,8 +92,6 @@ fig = corner.corner(samples, labels=[r"$v_r$", r"$v_\theta$", r"$v_\phi$",
                       show_titles=True, title_kwargs={"fontsize": 12})
 
 fig.savefig('figures/likelihood_variablesigma_constrainedprior.png', bbox_inches='tight')
-
-# import samples generated from below
 np.save('data/mcmc/mcmc_variablesigma_constrainedprior', samples, allow_pickle=False)
 
 """
