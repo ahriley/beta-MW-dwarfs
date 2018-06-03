@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.optimize as op
 import corner
-
+import utils as u
 """
 # compute velocity ellipsoids
 # vr vtheta vphi sigma_r sigma_theta sigma_phi cov_rtheta cov_rphi cov_thetaphi
@@ -82,6 +82,50 @@ plt.ylabel(r'$\beta$')
 # plt.ylim(-3,1)
 plt.title(r"Posterior for $\beta(r)$");
 plt.savefig('figures/beta_posterior_variablesigma_constrainedprior.png', bbox_inches='tight');
+# """
+
+"""
+# plot of beta posterior with variable sigmas for multiple sims
+
+# variable dispersions with distance
+def sigma(r, sigma0, r0, alpha):
+    return sigma0*(1+(r/r0))**-alpha
+
+list = u.list_of_sims('elvis')
+# list.append('satellites')
+
+for sim in list:
+    if sim == 'satellites':
+        samples = np.load('data/mcmc/mcmc_variablesigma_constrainedprior.npy')
+    else:
+        samples = np.load('data/mcmc/elvis_variablesigma/'+sim+'.npy')
+
+    rvals = np.arange(0,300,5)
+    sigmas = [sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) for r in rvals]
+    sigmas = np.array(sigmas)
+    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/(2*sigmas[i,:,0]**2) for i in range(len(rvals))]
+    betas = np.array(betas)
+    beta_median = np.median(betas, axis=1)
+
+    # confidence intervals
+    betas_inv = np.swapaxes(betas,0,1)
+    lower, upper = [np.empty(0) for i in range(2)]
+    for i in range(len(betas_inv[0])):
+        col = betas_inv[:,i]
+        col = np.sort(col)
+        ixL = np.floor(np.size(col)*.159).astype(int)
+        ixU = np.floor(np.size(col)*.841).astype(int)
+        lower = np.append(lower, col[ixL])
+        upper = np.append(upper, col[ixU])
+
+    plt.plot(rvals, beta_median, '-', lw=2.0)
+    plt.fill_between(rvals, lower, upper, alpha = 0.4)
+plt.axhline(y=0, ls='--', c='k')
+plt.xlabel(r'$r$ [kpc]')
+plt.ylabel(r'$\beta$')
+# plt.ylim(-3,1)
+plt.title(r"Posterior for $\beta(r)$");
+plt.savefig('figures/elvis_variablesigma/beta_posteriors.png', bbox_inches='tight');
 # """
 
 """
