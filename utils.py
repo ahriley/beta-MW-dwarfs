@@ -5,7 +5,7 @@ import glob
 Mpc2km = 3.086*10**19
 km2kpc = 10**3/Mpc2km
 
-h = 0.71    # ELVIS
+ELVIS_DIR = '/Users/alexanderriley/Desktop/elvis/'
 
 def beta(df):
     return 1-(np.var(df.v_theta)+np.var(df.v_phi))/(2*np.var(df.v_r))
@@ -47,19 +47,18 @@ def compute_spherical_hostcentric_sameunits(df):
 
     return df2
 
-def list_of_sims(suite):
-    if suite == 'elvis':
-        files = glob.glob('data/elvis/*.txt')
-        files.remove('data/elvis/README.txt')
-        return [f[11:-4] for f in files]
-    elif suite == 'apostle':
-        files = glob.glob('data/apostle/*.pkl')
-        return [f[13:-9] for f in files]
-    else:
-        raise ValueError("suite must be 'elvis' or 'apostle'")
+def list_of_sims(sim):
+    if sim != 'elvis':
+        raise NotImplementedErorr("Simulation should be 'elvis' for now")
+    files_all = glob.glob(ELVIS_DIR+'*.txt')
+    files = []
+    for file in files_all:
+        if '&' in file:
+            files.append(file)
+    return [f[len(ELVIS_DIR):-4] for f in files]
 
 def load_elvis(sim):
-    filename = 'data/elvis/'+sim+'.txt'
+    filename = ELVIS_DIR+sim+'.txt'
 
     # read in the data
     with open(filename) as f:
@@ -100,7 +99,7 @@ def load_elvis(sim):
     return df
 
 def get_halos_at_redshift(sim, z_target):
-    sim_dir = 'data/elvis/mainbranches/'+sim+'/'
+    sim_dir = ELVIS_DIR+'tracks/'+sim+'/'
     a = 1/(1+z_target)
 
     # find closest scale to target
