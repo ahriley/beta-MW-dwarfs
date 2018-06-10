@@ -92,13 +92,13 @@ def sigma(r, sigma0, r0, alpha):
     return sigma0*(1+(r/r0))**-alpha
 
 list = u.list_of_sims('elvis')
-# list.append('satellites')
+list.append('satellites')
 
 for sim in list:
     if sim == 'satellites':
         samples = np.load('data/mcmc/mcmc_variablesigma_constrainedprior.npy')
     else:
-        samples = np.load('data/mcmc/elvis_variablesigma/'+sim+'.npy')
+        samples = np.load('data/mcmc/elvis_variablesigma_vpeak/'+sim+'.npy')
 
     rvals = np.arange(0,300,5)
     sigmas = [sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) for r in rvals]
@@ -119,13 +119,70 @@ for sim in list:
         upper = np.append(upper, col[ixU])
 
     plt.plot(rvals, beta_median, '-', lw=2.0)
-    plt.fill_between(rvals, lower, upper, alpha = 0.4)
+    if sim == 'satellites':
+        plt.fill_between(rvals, lower, upper, alpha = 0.4)
+    else:
+        plt.fill_between(rvals, lower, upper, alpha = 0.2)
 plt.axhline(y=0, ls='--', c='k')
 plt.xlabel(r'$r$ [kpc]')
 plt.ylabel(r'$\beta$')
 # plt.ylim(-3,1)
-plt.title(r"Posterior for $\beta(r)$");
-plt.savefig('figures/elvis_variablesigma/beta_posteriors.png', bbox_inches='tight');
+plt.title(r"Posterior for $\beta(r)$, top 40 Vpeak");
+plt.savefig('figures/elvis_variablesigma_vpeak/beta_posteriors.png', bbox_inches='tight');
+# """
+
+# """
+# plot of beta posterior with variable sigmas for multiple sims
+
+# variable dispersions with distance
+def sigma(r, sigma0, r0, alpha):
+    return sigma0*(1+(r/r0))**-alpha
+
+list = u.list_of_sims('elvis')
+cuts = ['sats', '', '_vmax', '_vpeak', '_vmax7']
+labels = [None, 'vmax', 'vpeak', 'vmax7']
+rvals = np.arange(0,300,5)
+
+# satellite data
+samples = np.load('data/mcmc/mcmc_variablesigma_constrainedprior.npy')
+
+sigmas = [sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) for r in rvals]
+sigmas = np.array(sigmas)
+betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/(2*sigmas[i,:,0]**2) for i in range(len(rvals))]
+betas = np.array(betas)
+data = np.median(betas, axis=1)
+
+for sim in list:
+    for cut, label in zip(cuts, labels):
+        if cut == 'sats':
+            samples = np.load('data/mcmc/mcmc_variablesigma_constrainedprior.npy')
+        else:
+            samples = np.load('data/mcmc/elvis_variablesigma'+cut+'/'+sim+'.npy')
+        sigmas = [sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) for r in rvals]
+        sigmas = np.array(sigmas)
+        betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/(2*sigmas[i,:,0]**2) for i in range(len(rvals))]
+        betas = np.array(betas)
+        beta_median = np.median(betas, axis=1)
+
+        # confidence intervals
+        betas_inv = np.swapaxes(betas,0,1)
+        lower, upper = [np.empty(0) for i in range(2)]
+        for i in range(len(betas_inv[0])):
+            col = betas_inv[:,i]
+            col = np.sort(col)
+            ixL = np.floor(np.size(col)*.159).astype(int)
+            ixU = np.floor(np.size(col)*.841).astype(int)
+            lower = np.append(lower, col[ixL])
+            upper = np.append(upper, col[ixU])
+
+        plt.plot(rvals, beta_median-data, '-', lw=2.0, label=label)
+        plt.fill_between(rvals, lower-data, upper-data, alpha = 0.2)
+    plt.xlabel(r'$r$ [kpc]')
+    plt.ylabel(r'$\beta$')
+    plt.legend(loc='upper right')
+    plt.title(r"Posterior for $\beta(r)$, "+sim);
+    plt.savefig('figures/elvis_variablesigma_normed/'+sim+'.png', bbox_inches='tight');
+    plt.close()
 # """
 
 """
