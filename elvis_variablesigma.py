@@ -54,6 +54,9 @@ def lnprob2(theta, data, data_dists):
 for sim in u.list_of_sims('elvis'):
     print("Computing for "+sim)
     subs = u.load_elvis(sim=sim)
+    z, subs_z = u.get_halos_at_redshift(sim=sim, z_target=7.0)
+    subs['Vmax_z'] = subs_z['Vmax']
+
     subs.sort_values('M_dm', ascending=False, inplace=True)
     haloIDs = list(subs.index.values[0:2])
     subs, halos = subs.drop(haloIDs), subs.loc[haloIDs]
@@ -72,8 +75,17 @@ for sim in u.list_of_sims('elvis'):
     subs.r = subs.r*u.km2kpc
 
     vels = subs[['v_r', 'v_theta', 'v_phi']].values
-    vel_covs = np.zeros((len(vels),3,3))
     dists = subs.r.values
+
+    cut = 'Vmax_z'
+    subset1 = subs[subs['hostID'] == And_id].nlargest(n=40, columns=cut)
+    subset2 = subs[subs['hostID'] == MW_id].nlargest(n=40, columns=cut)
+    vels1 = subset1[['v_r', 'v_theta', 'v_phi']].values
+    vels2 = subset2[['v_r', 'v_theta', 'v_phi']].values
+    vels = np.concatenate((vels1,vels2))
+    dists = np.concatenate((subset1.r.values,subset2.r.values))
+
+    vel_covs = np.zeros((len(vels),3,3))
 
     # Initialize walkers by randomly sampling prior
     ndim, nwalkers = 12, 100
@@ -107,5 +119,5 @@ for sim in u.list_of_sims('elvis'):
                           quantiles=[0.16, 0.5, 0.84],
                           show_titles=True, title_kwargs={"fontsize": 12})
 
-    fig.savefig('figures/elvis_variablesigma/'+sim+'.png', bbox_inches='tight')
-    np.save('data/mcmc/elvis_variablesigma/'+sim, samples, allow_pickle=False)
+    fig.savefig('figures/elvis_variablesigma_vmax7/'+sim+'.png', bbox_inches='tight')
+    np.save('data/mcmc/elvis_variablesigma_vmax7/'+sim, samples, allow_pickle=False)
