@@ -5,7 +5,8 @@ import glob
 Mpc2km = 3.086*10**19
 km2kpc = 10**3/Mpc2km
 
-ELVIS_DIR = '/Users/alexanderriley/Desktop/elvis/'
+ELVIS_DIR = '/Users/alexanderriley/Desktop/sims/elvis/'
+APOSTLE_DIR = '/Users/alexanderriley/Desktop/sims/apostle/'
 
 def beta(df):
     return 1-(np.var(df.v_theta)+np.var(df.v_phi))/(2*np.var(df.v_r))
@@ -37,6 +38,7 @@ def compute_spherical_hostcentric_sameunits(df):
     cart = np.sqrt(vx**2 + vy**2 + vz**2)
     sphere = np.sqrt(v_r**2 + v_theta**2 + v_phi**2)
     sphere2 = np.sqrt(v_r**2 + v_t**2)
+    assert np.isclose(x, r*np.sin(theta)*np.cos(phi)).all()
     assert np.isclose(cart, sphere).all()
     assert np.isclose(cart, sphere2).all()
 
@@ -48,14 +50,26 @@ def compute_spherical_hostcentric_sameunits(df):
     return df2
 
 def list_of_sims(sim):
-    if sim != 'elvis':
-        raise NotImplementedErorr("Simulation should be 'elvis' for now")
-    files_all = glob.glob(ELVIS_DIR+'*.txt')
     files = []
-    for file in files_all:
-        if '&' in file:
-            files.append(file)
-    return [f[len(ELVIS_DIR):-4] for f in files]
+    if sim == 'elvis':
+        files_all = glob.glob(ELVIS_DIR+'*.txt')
+        for file in files_all:
+            if '&' in file:
+                files.append(file)
+        return [f[len(ELVIS_DIR):-4] for f in files]
+    elif sim == 'apostle':
+        files_all = glob.glob(APOSTLE_DIR+'*.pkl')
+        for file in files_all:
+            if file[len(APOSTLE_DIR)] == 'V':
+                files.append(file)
+        return [f[len(APOSTLE_DIR):-9] for f in files]
+    else:
+        raise NotImplementedErorr("Specify simulation suite that is available")
+
+def load_apostle(sim):
+    filename = APOSTLE_DIR+sim+'_subs.pkl'
+    df = pd.read_pickle(filename)
+    return df.drop_duplicates()
 
 def load_elvis(sim):
     filename = ELVIS_DIR+sim+'.txt'
