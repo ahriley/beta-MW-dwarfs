@@ -12,6 +12,12 @@ with open(dwarf_file, 'r') as f:
 names = list(dwarfs.keys())
 ignore = [names.index('Cra I'), names.index('Eri II'), names.index('Phe I')]
 
+"""
+# ignore probable LMC satellites
+LMC_sats = ['Hor I', 'Car II', 'Car III', 'Hyd I']
+[ignore.append(names.index(sat)) for sat in LMC_sats]
+"""
+
 # load MC samples, remove unwanted satellites
 MC_dwarfs = np.load('data/mcmc/sampling_converted_fritz.npy')
 dists = MC_dwarfs[:,:,6]
@@ -69,7 +75,7 @@ pos, prob, state = sampler.run_mcmc(p0, 500)
 # Look by eye at the burn-in
 stepnum = np.arange(0,500,1)+1
 stepnum = np.array([stepnum for i in range(nwalkers)])
-plt.plot(stepnum, sampler.chain[:,:,0]);
+plt.plot(stepnum, sampler.chain[:,:,7]);
 
 print("Mean acceptance fraction: {0:.3f}"
                 .format(np.mean(sampler.acceptance_fraction)))
@@ -91,5 +97,5 @@ fig = corner.corner(samples, labels=[r"$v_r$", r"$v_\theta$", r"$v_\phi$",
                       quantiles=[0.16, 0.5, 0.84],
                       show_titles=True, title_kwargs={"fontsize": 12})
 
-fig.savefig('figures/likelihood_variablesigma_constrainedprior.png', bbox_inches='tight')
-np.save('data/mcmc/mcmc_variablesigma_constrainedprior', samples, allow_pickle=False)
+fig.savefig('figures/likelihood_variablesigma_excludeLMCsats.png', bbox_inches='tight')
+np.save('data/mcmc/mcmc_variablesigma_excludeLMCsats', samples, allow_pickle=False)
