@@ -1,0 +1,432 @@
+Aquarius II:
+  citation: 'Torrealba2016MNRAS.463..712T'
+  dec: -9.3274
+  distance: 107.9
+  distance_error: 3.3
+  ra: 338.4813
+  vel_los: -71.1
+  vel_los_error: 2.5
+Bootes I:
+  citation: 'DallOra2006ApJ...653L.109D,Martin2008ApJ...684.1075M,Koposov2011ApJ...736..146K'
+  dec: 14.51167
+  distance: 66
+  distance_error: 3.0
+  ra: 210.015
+  vel_los: 102.2
+  vel_los_error: 0.8
+Bootes II:
+  citation: 'Walsh2008ApJ...688..245W,Koch2009ApJ...690..453K'
+  dec: 12.8586
+  distance: 42
+  distance_error: 1.6
+  ra: 209.521
+  vel_los: -117.1
+  vel_los_error: 7.6
+Canes Venatici I:
+  citation: 'Kuehn2008ApJ...674L..81K,Martin2008ApJ...684.1075M,Simon2007ApJ...670..313S'
+  dec: 33.559167
+  distance: 210
+  distance_error: 6
+  ra: 202.01625
+  vel_los: 30.9
+  vel_los_error: 0.6
+Canes Venatici II:
+  citation: 'Simon2007ApJ...670..313S,Greco2008ApJ...675L..73G,Sand2012ApJ...756...79S'
+  dec: 34.32138056
+  distance: 160
+  distance_error: 7
+  ra: 194.2915833
+  vel_los: -128.9
+  vel_los_error: 1.2
+Carina I:
+  citation: 'Karczmarek2015AJ....150...90K,McMonigal2014MNRAS.444.3139M,Walker2009AJ....137.3100W'
+  dec: -50.96611111111111
+  distance: 105.6
+  distance_error: 5.4
+  ra: 100.40708333333333
+  vel_los: 222.9
+  vel_los_error: 0.1
+Carina II:
+  citation: 'Torrealba2018MNRAS.475.5085T,Li2018ApJ...857..145L'
+  dec: -57.9991
+  distance: 37.4
+  distance_error: 0.4
+  ra: 114.1066
+  vel_los: 477.2
+  vel_los_error: 1.2
+Carina III:
+  citation: 'Torrealba2018MNRAS.475.5085T,Li2018ApJ...857..145L'
+  dec: -57.8997
+  distance: 27.8
+  distance_error: 0.6
+  ra: 114.6298
+  vel_los: 284.6
+  vel_los_error: 3.25
+Cetus II:
+  citation: ','
+  dec: 0
+  distance: 0
+  distance_error: 0
+  ra: 0
+  vel_los: 0
+  vel_los_error: 0
+Cetus III:
+  citation: ','
+  dec: 0
+  distance: 0
+  distance_error: 0
+  ra: 0
+  vel_los: 0
+  vel_los_error: 0
+Columba I:
+  citation: ','
+  dec: 0
+  distance: 0
+  distance_error: 0
+  ra: 0
+  vel_los: 0
+  vel_los_error: 0
+Coma Berenices I:
+  citation: 'Munoz2010AJ....140..138M,Musella2009ApJ...695L..83M,Simon2007ApJ...670..313S'
+  dec: 23.907555555555554
+  distance: 42
+  distance_error: 1.5
+  ra: 186.74583333333334
+  vel_los: 98.1
+  vel_los_error: 0.9
+Crater II:
+  citation: 'Caldwell2017ApJ...839...20C,Torrealba2016MNRAS.459.2370T'
+  dec: -18.413
+  distance: 117.5
+  distance_error: 1.1
+  ra: 177.310
+  vel_los: 87.5
+  vel_los_error: 0.4
+Draco I:
+  citation: 'Walker2015MNRAS.448.2717W,Bonanos2004AJ....127..861B'
+  dec: 57.965
+  distance: 76
+  distance_error: 6
+  ra: 260.06
+  vel_los: -291.0
+  vel_los_error: 0.1
+Draco II:
+  citation: 'Laevens2015ApJ...813...44L,Martin2016MNRAS.459.2370T'
+  dec: 64.5653
+  distance: 20
+  distance_error: 3.
+  ra: 238.198
+  vel_los: -347.6
+  vel_los_error: 1.75
+Eridanus II:
+  citation: 'Li2017ApJ...838....8L,Crnojevic2016ApJ...824L..14C'
+  dec: -43.5338056
+  distance: 366
+  distance_error: 17
+  ra: 56.08375
+  vel_los: 75.6
+  vel_los_error: 1.3
+Eridanus III:
+  citation: ','
+  dec: 0
+  distance: 0
+  distance_error: 0
+  ra: 0
+  vel_los: 0
+  vel_los_error: 0
+Fornax:
+  citation: 'Walker2009AJ....137.3100W,Pietrzynski2009AJ....138..459P'
+  dec: -34.51083333333333
+  distance: 147
+  distance_error: 9
+  ra: 39.9625
+  vel_los: 55.3
+  vel_los_error: 0.1
+Grus I:
+  citation: 'Koposov2015ApJ...805..130K,Walker2016ApJ...819...53W'
+  dec: -50.1633
+  distance: 120.2
+  distance_error: 11.1
+  ra: 344.1765
+  vel_los: -140.5
+  vel_los_error: 2.0
+Grus II:
+  citation: 'Drlica-Wagner2015ApJ...813..109D'
+  dec: -46.44
+  distance: 53
+  distance_error: 5
+  ra: 331.02
+  vel_los: 0
+  vel_los_error: 0
+Hercules:
+  citation: 'Aden2009A&A...506.1147A,Musella2012ApJ...756..121M'
+  dec: 12.787225
+  distance: 132
+  distance_error: 6
+  ra: 247.763
+  vel_los: 45.20
+  vel_los_error: 1.09
+Horologium I:
+  citation: 'Koposov2015ApJ...811...62K'
+  dec: -54.1188
+  distance: 79
+  distance_error: 7
+  ra: 43.8820
+  vel_los: 112.8
+  vel_los_error: 2.55
+Horologium II:
+  citation: ','
+  dec: 0
+  distance: 0
+  distance_error: 0
+  ra: 0
+  vel_los: 0
+  vel_los_error: 0
+Hydra II:
+  citation: 'Kirby2015ApJ...810...56K,Vivas2016AJ....151..118V,Martin2015ApJ...804L...5M'
+  dec: -31.9853
+  distance: 151
+  distance_error: 8
+  ra: 185.425
+  vel_los: 303.1
+  vel_los_error: 1.4
+Hydrus I:
+  citation: 'Koposov2018arXiv180406430K'
+  dec: -79.3089
+  distance: 27.6
+  distance_error: 0.5
+  ra: 37.389
+  vel_los: 80.4
+  vel_los_error: 0.6
+Leo I:
+  citation: 'Mateo2008ApJ...675..201M,Stetson2014PASP..126..616S'
+  dec: 12.313
+  distance: 258.2
+  distance_error: 9.5
+  ra: 152.122
+  vel_los: 282.5
+  vel_los_error: 0.1
+Leo II:
+  citation: 'Spencer2017ApJ...836..202S,Bellazzini2005MNRAS.360..185B'
+  dec: 22.15167
+  distance: 233
+  distance_error: 15
+  ra: 168.37
+  vel_los: 78.5
+  vel_los_error: 0.6
+Leo IV:
+  citation: 'Simon2007ApJ...670..313S,Moretti2009ApJ...699L.125M'
+  dec: -0.5401944444
+  distance: 154
+  distance_error: 5
+  ra: 173.233333333
+  vel_los: 132.3
+  vel_los_error: 1.4
+Leo V:
+  citation: 'Collins2017MNRAS.467..573C,Medina2017ApJ...845L..10M'
+  dec: 2.222075
+  distance: 173
+  distance_error: 5
+  ra: 172.783666667
+  vel_los: 172.1
+  vel_los_error: 2.2
+LMC:
+  citation: 'McConnachie2012AJ....144....4M'
+  dec: -69.7561
+  distance: 51.
+  distance_error: 2.
+  ra: 5.3929
+  vel_los: 262.2
+  vel_los_error: 3.4
+Pegasus III:
+  citation: 'Kim2016ApJ...833...16K'
+  dec: 5.405
+  distance: 215
+  distance_error: 12
+  ra: 336.102
+  vel_los: -222.9
+  vel_los_error: 2.6
+Phoenix II:
+  citation: ','
+  dec: 0
+  distance: 0
+  distance_error: 0
+  ra: 0
+  vel_los: 0
+  vel_los_error: 0
+Pictor I:
+  citation: ','
+  dec: 0
+  distance: 0
+  distance_error: 0
+  ra: 0
+  vel_los: 0
+  vel_los_error: 0
+Pictor II:
+  citation: ','
+  dec: 0
+  distance: 0
+  distance_error: 0
+  ra: 0
+  vel_los: 0
+  vel_los_error: 0
+Pisces II:
+  citation: 'Kirby2015ApJ...810...56K,Sand2012ApJ...756...79S'
+  dec: 5.9545277778
+  distance: 183
+  distance_error: 15
+  ra: 344.634166667
+  vel_los: -226.5
+  vel_los_error: 2.7
+Reticulum II:
+  citation: 'Simon2015ApJ...808...95S,Mutlu-Pakdil2018arXiv180408627M'
+  dec: -54.0466
+  distance: 31.4
+  distance_error: 1.4
+  ra: 53.9493
+  vel_los: 64.8
+  vel_los_error: 0.5
+Reticulum III:
+  citation: 'Drlica-Wagner2015ApJ...813..109D'
+  dec: -60.45
+  distance: 92
+  distance_error: 13
+  ra: 56.36
+  vel_los: 0
+  vel_los_error: 0
+Sagittarius I:
+  citation: 'McConnachie2012AJ....144....4M'
+  dec: -30.5453
+  distance: 26
+  distance_error: 2.0
+  ra: 283.8313
+  vel_los: 140.0
+  vel_los_error: 2.0
+Sagittarius II:
+  citation: ','
+  dec: 0
+  distance: 0
+  distance_error: 0
+  ra: 0
+  vel_los: 0
+  vel_los_error: 0
+Sculptor:
+  citation: 'Walker2009AJ....137.3100W,Martinez-Vazquez2015MNRAS.454.1509M'
+  dec: -33.70916666666667
+  distance: 83.9
+  distance_error: 1.5
+  ra: 15.039166666666667
+  vel_los: 111.4
+  vel_los_error: 0.1
+Segue 1:
+  citation: 'Belokurov2007ApJ...654..897B,Simon2011ApJ...733...46S'
+  dec: 16.07361111111111
+  distance: 23
+  distance_error: 2
+  ra: 151.76333333333335
+  vel_los: 208.5
+  vel_los_error: 0.9
+Segue 2:
+  citation: 'Boettcher2013AJ....146...94B,Kirby2013ApJ...770...16K'
+  dec: 20.1753
+  distance: 36.6
+  distance_error: 2.45
+  ra: 34.8167
+  vel_los: -40.2
+  vel_los_error: 0.9
+Sextans:
+  citation: 'Walker2009AJ....137.3100W,Okamoto2017MNRAS.467..208O'
+  dec: -1.62
+  distance: 92.5
+  distance_error: 2.2
+  ra: 153.268
+  vel_los: 224.2
+  vel_los_error: 0.1
+SMC:
+  citation: 'McConnachie2012AJ....144....4M'
+  dec: -72.8286
+  distance: 64.
+  distance_error: 4.
+  ra: 0.8791
+  vel_los: 145.6
+  vel_los_error: 0.6
+Triangulum II:
+  citation: 'Kirby2017ApJ...838...83K,Carlin2017AJ....154..267C'
+  dec: 36.17191667
+  distance: 28.4
+  distance_error: 1.6
+  ra: 33.32225
+  vel_los: -381.7
+  vel_los_error: 1.1
+Tucana II:
+  citation: 'Walker2016ApJ...819...53W,Bechtol2015ApJ...807...50B'
+  dec: -58.57
+  distance: 57.5
+  distance_error: 5.3
+  ra: 343.06
+  vel_los: -129.1
+  vel_los_error: 3.5
+Tucana III:
+  citation: 'Simon2017ApJ...838...11S,Drlica-Wagner2015ApJ...813..109D'
+  dec: -59.60
+  distance: 25
+  distance_error: 2
+  ra: 359.15
+  vel_los: -102.3
+  vel_los_error: 0.4
+Tucana IV:
+  citation: ','
+  dec: 0
+  distance: 0
+  distance_error: 0
+  ra: 0
+  vel_los: 0
+  vel_los_error: 0
+Tucana V:
+  citation: ','
+  dec: 0
+  distance: 0
+  distance_error: 0
+  ra: 0
+  vel_los: 0
+  vel_los_error: 0
+Ursa Major I:
+  citation: 'Simon2007ApJ...670..313S,Garofalo2013ApJ...767...62G'
+  dec: 51.9260833333
+  distance: 97.3
+  distance_error: 5.85
+  ra: 158.685
+  vel_los: -55.3
+  vel_los_error: 1.4
+Ursa Major II:
+  citation: 'Simon2007ApJ...670..313S,DallOra2012ApJ...752...42D'
+  dec: 63.13311111
+  distance: 34.7
+  distance_error: 2.1
+  ra: 132.8744167
+  vel_los: -116.5
+  vel_los_error: 1.9
+Ursa Minor:
+  citation: 'Bellazzini2002AJ....124.3222B'
+  dec: 67.2221
+  distance: 76
+  distance_error: 4
+  ra:  227.2420
+  vel_los: -246.9
+  vel_los_error: 0.1
+Virgo I:
+  citation: ','
+  dec: 0
+  distance: 0
+  distance_error: 0
+  ra: 0
+  vel_los: 0
+  vel_los_error: 0
+Willman 1:
+  citation: 'Willman2011AJ....142..128W,Martin2008ApJ...684.1075M'
+  dec: 51.052778
+  distance: 38
+  distance_error: 7
+  ra: 162.34125
+  vel_los: -12.8
+  vel_los_error: 1.0

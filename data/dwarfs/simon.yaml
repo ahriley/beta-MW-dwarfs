@@ -1,0 +1,102 @@
+Triangulum II:
+  correlation_mu_mu: 0.0
+  mu_alpha: 0.651
+  mu_alpha_error: 0.193
+  mu_delta: 0.592
+  mu_delta_error: 0.164
+Segue 2:
+  correlation_mu_mu: 0.0
+  mu_alpha: 1.65
+  mu_alpha_error: 0.143
+  mu_delta: -0.065
+  mu_delta_error: 0.094
+Hydrus I:
+  correlation_mu_mu: 0.0
+  mu_alpha: 3.865
+  mu_alpha_error: 0.159
+  mu_delta: -1.45
+  mu_delta_error: 0.135
+Horologium I:
+  correlation_mu_mu: 0.0
+  mu_alpha: 0.901
+  mu_alpha_error: 0.07
+  mu_delta: -0.583
+  mu_delta_error: 0.067
+Reticulum II:
+  correlation_mu_mu: 0.0
+  mu_alpha: 2.393
+  mu_alpha_error: 0.04
+  mu_delta: -1.3
+  mu_delta_error: 0.048
+Carina II:
+  correlation_mu_mu: 0.0
+  mu_alpha: 1.886
+  mu_alpha_error: 0.076
+  mu_delta: 0.079
+  mu_delta_error: 0.07
+Carina III:
+  correlation_mu_mu: 0.0
+  mu_alpha: 3.035
+  mu_alpha_error: 0.12
+  mu_delta: 1.558
+  mu_delta_error: 0.136
+Ursa Major II:
+  correlation_mu_mu: 0.0
+  mu_alpha: 1.661
+  mu_alpha_error: 0.053
+  mu_delta: -1.87
+  mu_delta_error: 0.065
+Segue 1:
+  correlation_mu_mu: 0.0
+  mu_alpha: -1.867
+  mu_alpha_error: 0.11
+  mu_delta: -3.282
+  mu_delta_error: 0.102
+Ursa Major I:
+  correlation_mu_mu: 0.0
+  mu_alpha: -0.659
+  mu_alpha_error: 0.093
+  mu_delta: -0.635
+  mu_delta_error: 0.131
+Willman 1:
+  correlation_mu_mu: 0.0
+  mu_alpha: 0.382
+  mu_alpha_error: 0.119
+  mu_delta: -1.152
+  mu_delta_error: 0.216
+Coma Berenices I:
+  correlation_mu_mu: 0.0
+  mu_alpha: 0.546
+  mu_alpha_error: 0.092
+  mu_delta: -1.726
+  mu_delta_error: 0.086
+Bootes II:
+  correlation_mu_mu: 0.0
+  mu_alpha: -2.517
+  mu_alpha_error: 0.325
+  mu_delta: -0.602
+  mu_delta_error: 0.235
+Bootes I:
+  correlation_mu_mu: 0.0
+  mu_alpha: -0.472
+  mu_alpha_error: 0.046
+  mu_delta: -1.086
+  mu_delta_error: 0.034
+Draco II:
+  correlation_mu_mu: 0.0
+  mu_alpha: 1.17
+  mu_alpha_error: 0.297
+  mu_delta: 0.871
+  mu_delta_error: 0.303
+Tucana II:
+  correlation_mu_mu: 0.0
+  mu_alpha: 0.936
+  mu_alpha_error: 0.057
+  mu_delta: -1.232
+  mu_delta_error: 0.072
+Tucana III:
+  correlation_mu_mu: 0.0
+  mu_alpha: -0.014
+  mu_alpha_error: 0.038
+  mu_delta: -1.673
+  mu_delta_error: 0.04

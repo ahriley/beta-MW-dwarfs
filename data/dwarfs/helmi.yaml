@@ -1,0 +1,60 @@
+Fornax:
+  correlation_mu_mu: -0.09
+  mu_alpha: 0.376
+  mu_alpha_error: 0.003
+  mu_delta: -0.413
+  mu_delta_error: 0.003
+Draco I:
+  correlation_mu_mu: -0.08
+  mu_alpha: -0.019
+  mu_alpha_error: 0.009
+  mu_delta: -0.145
+  mu_delta_error: 0.01
+Carina I:
+  correlation_mu_mu: -0.08
+  mu_alpha: 0.495
+  mu_alpha_error: 0.015
+  mu_delta: 0.143
+  mu_delta_error: 0.014
+Ursa Minor:
+  correlation_mu_mu: -0.34
+  mu_alpha: -0.182
+  mu_alpha_error: 0.010
+  mu_delta: 0.074
+  mu_delta_error: 0.008
+Sextans:
+  correlation_mu_mu: -0.45
+  mu_alpha: -0.496
+  mu_alpha_error: 0.025
+  mu_delta: 0.077
+  mu_delta_error: 0.020
+Leo I:
+  correlation_mu_mu: -0.51
+  mu_alpha: -0.097
+  mu_alpha_error: 0.056
+  mu_delta: -0.091
+  mu_delta_error: 0.047
+Leo II:
+  correlation_mu_mu: 0.05
+  mu_alpha: -0.064
+  mu_alpha_error: 0.057
+  mu_delta: -0.210
+  mu_delta_error: 0.054
+Sagittarius I:
+  correlation_mu_mu: 0.09
+  mu_alpha: -2.692
+  mu_alpha_error: 0.001
+  mu_delta: -1.359
+  mu_delta_error: 0.001
+Sculptor:
+  correlation_mu_mu: 0.23
+  mu_alpha: 0.082
+  mu_alpha_error: 0.005
+  mu_delta: -0.131
+  mu_delta_error: 0.004
+Bootes I:
+  correlation_mu_mu: 0.16
+  mu_alpha: -0.459
+  mu_alpha_error: 0.041
+  mu_delta: -1.064
+  mu_delta_error: 0.029

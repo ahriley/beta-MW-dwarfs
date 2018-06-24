@@ -1,0 +1,78 @@
+Draco II:
+  correlation_mu_mu: 0.0
+  mu_alpha: 1.165
+  mu_alpha_error: 0.26
+  mu_delta: 0.866
+  mu_delta_error: 0.27
+Tucana III:
+  correlation_mu_mu: 0.0
+  mu_alpha: -0.117
+  mu_alpha_error: 0.036
+  mu_delta: -1.701
+  mu_delta_error: 0.036
+Hydrus I:
+  correlation_mu_mu: 0.0
+  mu_alpha: 3.761
+  mu_alpha_error: 0.029
+  mu_delta: -1.371
+  mu_delta_error: 0.027
+Carina III:
+  correlation_mu_mu: 0.0
+  mu_alpha: 3.065
+  mu_alpha_error: 0.095
+  mu_delta: 1.567
+  mu_delta_error: 0.104
+Reticulum II:
+  correlation_mu_mu: 0.0
+  mu_alpha: 2.398
+  mu_alpha_error: 0.039
+  mu_delta: -1.319
+  mu_delta_error: 0.048
+Triangulum II:
+  correlation_mu_mu: 0.0
+  mu_alpha: 0.588
+  mu_alpha_error: 0.187
+  mu_delta: 0.554
+  mu_delta_error: 0.161
+Carina II:
+  correlation_mu_mu: 0.0
+  mu_alpha: 1.802
+  mu_alpha_error: 0.038
+  mu_delta: 0.084
+  mu_delta_error: 0.038
+Tucana II:
+  correlation_mu_mu: 0.0
+  mu_alpha: 0.966
+  mu_alpha_error: 0.049
+  mu_delta: -1.38
+  mu_delta_error: 0.062
+Horologium I:
+  correlation_mu_mu: 0.0
+  mu_alpha: 0.926
+  mu_alpha_error: 0.07
+  mu_delta: -0.569
+  mu_delta_error: 0.065
+Aquarius II:
+  correlation_mu_mu: 0.0
+  mu_alpha: -0.491
+  mu_alpha_error: 0.306
+  mu_delta: -0.049
+  mu_delta_error: 0.266
+Crater II:
+  correlation_mu_mu: 0.0
+  mu_alpha: -0.246
+  mu_alpha_error: 0.052
+  mu_delta: -0.227
+  mu_delta_error: 0.026
+Grus I:
+  correlation_mu_mu: 0.0
+  mu_alpha: -0.254
+  mu_alpha_error: 0.22
+  mu_delta: -0.532
+  mu_delta_error: 0.288
+Hydra II:
+  correlation_mu_mu: 0.0
+  mu_alpha: -0.417
+  mu_alpha_error: 0.402
+  mu_delta: 0.179
+  mu_delta_error: 0.339

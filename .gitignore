@@ -1,10 +1,7 @@
-# Data are not public
-data/apostle
-
 # folders for working progress
 graveyard/
 figures/
-data/
+data/mcmc/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
