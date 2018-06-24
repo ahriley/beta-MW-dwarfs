@@ -2,11 +2,10 @@ import numpy as np
 import pandas as pd
 import glob
 
-Mpc2km = 3.086*10**19
-km2kpc = 10**3/Mpc2km
+Mpc2kpc = 1000
 
 ELVIS_DIR = '/Users/alexanderriley/Desktop/sims/elvis/'
-APOSTLE_DIR = '/Users/alexanderriley/Desktop/sims/apostle/'
+APOSTLE_DIR = '/Volumes/TINY/NOTFERMI/sims/apostle/'
 
 def beta(df):
     return 1-(np.var(df.v_theta)+np.var(df.v_phi))/(2*np.var(df.v_r))
@@ -22,7 +21,7 @@ def center_on_hosts(hosts, subs):
 
     return centered
 
-def compute_spherical_hostcentric_sameunits(df):
+def compute_spherical_hostcentric(df):
     x, y, z = df.x, df.y, df.z
     vx, vy, vz = df.vx, df.vy, df.vz
 
@@ -38,9 +37,10 @@ def compute_spherical_hostcentric_sameunits(df):
     cart = np.sqrt(vx**2 + vy**2 + vz**2)
     sphere = np.sqrt(v_r**2 + v_theta**2 + v_phi**2)
     sphere2 = np.sqrt(v_r**2 + v_t**2)
-    assert np.isclose(x, r*np.sin(theta)*np.cos(phi)).all()
-    assert np.isclose(cart, sphere).all()
-    assert np.isclose(cart, sphere2).all()
+    assert np.allclose(cart, sphere, rtol=1e-03)
+    assert np.sum(~np.isclose(cart,sphere))/len(cart) < 0.001
+    assert np.allclose(cart, sphere2, rtol=1e-03)
+    assert np.sum(~np.isclose(cart,sphere2))/len(cart) < 0.001
 
     df2 = df.copy()
     df2['r'], df2['theta'], df2['phi'] = r, theta, phi
@@ -58,10 +58,7 @@ def list_of_sims(sim):
                 files.append(file)
         return [f[len(ELVIS_DIR):-4] for f in files]
     elif sim == 'apostle':
-        files_all = glob.glob(APOSTLE_DIR+'*.pkl')
-        for file in files_all:
-            if file[len(APOSTLE_DIR)] == 'V':
-                files.append(file)
+        files = glob.glob(APOSTLE_DIR+'*.pkl')
         return [f[len(APOSTLE_DIR):-9] for f in files]
     else:
         raise NotImplementedErorr("Specify simulation suite that is available")
