@@ -52,12 +52,12 @@ Coma Berenices I:
   mu_alpha_error: 0.109
   mu_delta: -1.716
   mu_delta_error: 0.104
-Crater I:
-  correlation_mu_mu: -0.185
-  mu_alpha: -0.045
-  mu_alpha_error: 0.28
-  mu_delta: -0.165
-  mu_delta_error: 0.172
+# Crater I:
+#   correlation_mu_mu: -0.185
+#   mu_alpha: -0.045
+#   mu_alpha_error: 0.28
+#   mu_delta: -0.165
+#   mu_delta_error: 0.172
 Crater II:
   correlation_mu_mu: -0.041
   mu_alpha: -0.184
@@ -76,12 +76,12 @@ Draco II:
   mu_alpha_error: 0.276
   mu_delta: 0.845
   mu_delta_error: 0.285
-Eridanus II:
-  correlation_mu_mu: -0.257
-  mu_alpha: 0.159
-  mu_alpha_error: 0.292
-  mu_delta: 0.372
-  mu_delta_error: 0.34
+# Eridanus II:
+#   correlation_mu_mu: -0.257
+#   mu_alpha: 0.159
+#   mu_alpha_error: 0.292
+#   mu_delta: 0.372
+#   mu_delta_error: 0.34
 Fornax:
   correlation_mu_mu: -0.46
   mu_alpha: 0.375
@@ -136,12 +136,12 @@ Leo V:
   mu_alpha_error: 0.557
   mu_delta: -0.628
   mu_delta_error: 0.302
-Phoenix I:
-  correlation_mu_mu: -0.162
-  mu_alpha: 0.079
-  mu_alpha_error: 0.099
-  mu_delta: -0.049
-  mu_delta_error: 0.12
+# Phoenix I:
+#   correlation_mu_mu: -0.162
+#   mu_alpha: 0.079
+#   mu_alpha_error: 0.099
+#   mu_delta: -0.049
+#   mu_delta_error: 0.12
 Pisces II:
   correlation_mu_mu: 0.053
   mu_alpha: -0.108
