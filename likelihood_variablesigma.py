@@ -19,6 +19,7 @@ LMC_sats = ['Horologium I', 'Carina II', 'Carina III', 'Hydrus I']
 
 # load MC samples, remove unwanted satellites
 MC_dwarfs = np.load('data/sampling/fritz_converted.npy')
+MC_dwarfs = np.load('data/sampling/HMK.npy')
 dists = MC_dwarfs[:,6,:]
 MC_dwarfs = MC_dwarfs[:,9:12,:]
 
@@ -76,7 +77,7 @@ pos, prob, state = sampler.run_mcmc(p0, 500)
 # Look by eye at the burn-in
 stepnum = np.arange(0,500,1)+1
 stepnum = np.array([stepnum for i in range(nwalkers)])
-plt.plot(stepnum, sampler.chain[:,:,11]);
+plt.plot(stepnum, sampler.chain[:,:,10]);
 
 print("Mean acceptance fraction: {0:.3f}"
                 .format(np.mean(sampler.acceptance_fraction)))
@@ -98,5 +99,5 @@ fig = corner.corner(samples, labels=[r"$v_r$", r"$v_\theta$", r"$v_\phi$",
                       quantiles=[0.16, 0.5, 0.84],
                       show_titles=True, title_kwargs={"fontsize": 12})
 
-fig.savefig('figures/cornerplots/variablesigma_fritz_noLMCsats.png', bbox_inches='tight')
-np.save('data/mcmc/variablesigma_fritz_noLMCsats', samples)
+fig.savefig('figures/cornerplots/variablesigma_HMK.png', bbox_inches='tight')
+np.save('data/mcmc/variablesigma_HMK', samples)
