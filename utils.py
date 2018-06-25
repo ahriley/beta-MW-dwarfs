@@ -63,10 +63,22 @@ def list_of_sims(sim):
     else:
         raise NotImplementedErorr("Specify simulation suite that is available")
 
-def load_apostle(sim):
+def load_apostle(sim, processed=False):
     filename = APOSTLE_DIR+sim+'_subs.pkl'
-    df = pd.read_pickle(filename)
-    return df.drop_duplicates()
+    subs = pd.read_pickle(filename).drop_duplicates()
+    if processed:
+        subs.sort_values('M_dm', ascending=False, inplace=True)
+        haloIDs = list(subs.index.values[0:2])
+        subs, halos = subs.drop(haloIDs), subs.loc[haloIDs]
+        halos.sort_values('M_star', ascending=False, inplace=True)
+        And_id = halos.iloc[0].name
+        MW_id = halos.iloc[1].name
+        subs = subs[(subs['hostID'] == And_id) | (subs['hostID'] == MW_id)]
+        subs = center_on_hosts(hosts=halos, subs=subs)
+        subs.x, subs.y, subs.z = subs.x*Mpc2kpc, subs.y*Mpc2kpc, subs.z*Mpc2kpc
+        subs = compute_spherical_hostcentric(df=subs)
+        return halos, subs
+    return subs
 
 def load_elvis(sim):
     filename = ELVIS_DIR+sim+'.txt'
