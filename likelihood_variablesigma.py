@@ -9,26 +9,27 @@ import yaml
 dwarf_file = 'data/dwarfs/fritz.yaml'
 with open(dwarf_file, 'r') as f:
     dwarfs = yaml.load(f)
-names = list(dwarfs.keys())
-ignore = [names.index('Cra I'), names.index('Eri II'), names.index('Phe I')]
+ignore = []
 
 """
 # ignore probable LMC satellites
-LMC_sats = ['Hor I', 'Car II', 'Car III', 'Hyd I']
+LMC_sats = ['Horologium I', 'Carina II', 'Carina III', 'Hydrus I']
 [ignore.append(names.index(sat)) for sat in LMC_sats]
-"""
+# """
 
 # load MC samples, remove unwanted satellites
-MC_dwarfs = np.load('data/mcmc/sampling_converted_fritz.npy')
-dists = MC_dwarfs[:,:,6]
-MC_dwarfs = MC_dwarfs[:,:,9:12]
-MC_dwarfs = np.swapaxes(MC_dwarfs,0,1)
-MC_dwarfs = np.delete(MC_dwarfs, ignore, axis=0)
+MC_dwarfs = np.load('data/sampling/fritz_converted.npy')
+dists = MC_dwarfs[:,6,:]
+MC_dwarfs = MC_dwarfs[:,9:12,:]
+
+if len(ignore) > 0:
+    MC_dwarfs = np.delete(MC_dwarfs, ignore, axis=0)
+    dists = np.delete(dists, ignore, axis=0)
 
 # data and covariances for each satellite
-vels = np.mean(MC_dwarfs, axis=1)
-vel_covs = np.array([np.cov(np.swapaxes(dwarf,0,1)) for dwarf in MC_dwarfs])
-dists = np.mean(np.delete(np.swapaxes(dists,0,1), ignore, axis=0), axis=1)
+vels = np.mean(MC_dwarfs, axis=2)
+vel_covs = np.array([np.cov(dwarf) for dwarf in MC_dwarfs])
+dists = np.mean(dists, axis=1)
 
 # variable dispersions with distance
 def sigma(r, sigma0, r0, alpha):
@@ -75,7 +76,7 @@ pos, prob, state = sampler.run_mcmc(p0, 500)
 # Look by eye at the burn-in
 stepnum = np.arange(0,500,1)+1
 stepnum = np.array([stepnum for i in range(nwalkers)])
-plt.plot(stepnum, sampler.chain[:,:,7]);
+plt.plot(stepnum, sampler.chain[:,:,11]);
 
 print("Mean acceptance fraction: {0:.3f}"
                 .format(np.mean(sampler.acceptance_fraction)))
@@ -97,5 +98,5 @@ fig = corner.corner(samples, labels=[r"$v_r$", r"$v_\theta$", r"$v_\phi$",
                       quantiles=[0.16, 0.5, 0.84],
                       show_titles=True, title_kwargs={"fontsize": 12})
 
-fig.savefig('figures/likelihood_variablesigma_excludeLMCsats.png', bbox_inches='tight')
-np.save('data/mcmc/mcmc_variablesigma_excludeLMCsats', samples, allow_pickle=False)
+fig.savefig('figures/cornerplots/variablesigma_fritz_noLMCsats.png', bbox_inches='tight')
+np.save('data/mcmc/variablesigma_fritz_noLMCsats', samples)
