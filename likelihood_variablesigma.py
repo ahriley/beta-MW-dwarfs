@@ -4,7 +4,7 @@ import scipy.optimize as op
 import emcee
 import corner
 import yaml
-import bayesian.variablesigma as l
+import likelihood.variablesigma as l
 
 # get indices of unwanted satellites
 dwarf_file = 'data/dwarfs/fritz.yaml'
