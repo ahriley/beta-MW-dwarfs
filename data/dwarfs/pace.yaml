@@ -1,0 +1,36 @@
+# Eridanus II:
+#  correlation_mu_mu: -0.27
+#  mu_alpha: 0.16
+#  mu_alpha_error: 0.24
+#  mu_delta: 0.15
+#  mu_delta_error: 0.26
+Grus I:
+  correlation_mu_mu: 0.35
+  mu_alpha: -0.25
+  mu_alpha_error: 0.16
+  mu_delta: -0.47
+  mu_delta_error: 0.23
+Horologium I:
+  correlation_mu_mu: 0.29
+  mu_alpha: 0.95
+  mu_alpha_error: 0.07
+  mu_delta: -0.55
+  mu_delta_error: 0.06
+Reticulum II:
+  correlation_mu_mu: 0.18
+  mu_alpha: 2.36
+  mu_alpha_error: 0.05
+  mu_delta: -1.32
+  mu_delta_error: 0.06
+Tucana II:
+  correlation_mu_mu: -0.42
+  mu_alpha: 0.91
+  mu_alpha_error: 0.06
+  mu_delta: -1.16
+  mu_delta_error: 0.08
+Tucana III:
+  correlation_mu_mu: -0.38
+  mu_alpha: -0.03
+  mu_alpha_error: 0.04
+  mu_delta: -1.65
+  mu_delta_error: 0.04

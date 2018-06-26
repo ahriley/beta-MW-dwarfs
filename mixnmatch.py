@@ -2,7 +2,7 @@ import numpy as np
 import yaml
 import pickle
 
-studies = ['helmi', 'massari', 'kallivayalil']
+studies = ['helmi', 'pace', 'massari', 'kallivayalil', 'simon']
 names = []
 study_from = []
 MC_set = []
@@ -21,8 +21,20 @@ for study in studies:
             MC_set.append(MC_dwarfs[study_names.index(name)])
 MC_set = np.array(MC_set)
 
-np.save('data/sampling/HMK', MC_set)
+fritz_file = 'data/dwarfs/fritz.yaml'
+with open(fritz_file, 'r') as f:
+    fritz = yaml.load(f)
+fritz = list(fritz.keys())
+
+assert np.isin(names, fritz).all()
+MC_dwarfs = np.load('data/sampling/fritz_converted.npy')
+MC_set_fritz = []
+for name in names:
+    MC_set_fritz.append(MC_dwarfs[fritz.index(name)])
+
+np.save('data/sampling/HPMKS_converted', MC_set)
+np.save('data/sampling/fritz_HPMKS_converted', MC_set_fritz)
 
 map = {'name': names, 'study': study_from}
-with open('data/sampling/HMK_key.pkl', 'wb') as f:
+with open('data/sampling/HPMKS_key.pkl', 'wb') as f:
     pickle.dump(map, f, protocol=pickle.HIGHEST_PROTOCOL)

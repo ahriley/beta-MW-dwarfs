@@ -17,7 +17,7 @@ dwarf_file = 'data/dwarfs/dwarf_props.yaml'
 with open(dwarf_file, 'r') as f:
     dwarfs_c = yaml.load(f)
 
-studies = ['helmi', 'simon', 'fritz', 'kallivayalil', 'massari']
+studies = ['helmi', 'simon', 'fritz', 'kallivayalil', 'massari', 'pace']
 for study in studies:
     if plot:
         pathlib.Path('figures/sampling/'+study+'/heliocentric').mkdir(parents=True, exist_ok=True)
