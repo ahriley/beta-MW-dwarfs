@@ -63,7 +63,7 @@ def list_of_sims(sim):
     else:
         raise NotImplementedErorr("Specify simulation suite that is available")
 
-def load_apostle(sim, processed=False):
+def load_apostle(sim, processed=False, sample=None):
     filename = APOSTLE_DIR+sim+'_subs.pkl'
     subs = pd.read_pickle(filename).drop_duplicates()
     if processed:
@@ -77,6 +77,8 @@ def load_apostle(sim, processed=False):
         subs = center_on_hosts(hosts=halos, subs=subs)
         subs.x, subs.y, subs.z = subs.x*Mpc2kpc, subs.y*Mpc2kpc, subs.z*Mpc2kpc
         subs = compute_spherical_hostcentric(df=subs)
+        if sample is not None:
+            subs = subs[subs[sample]]
         return halos, subs
     return subs
 
