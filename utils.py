@@ -164,3 +164,28 @@ def load_satellites(file):
     sats.x, sats.y, sats.z = sats.x*km2kpc, sats.y*km2kpc, sats.z*km2kpc
     sats.r = sats.r*km2kpc
     return sats
+
+def match_radial_distribution_quickdirty(subs, sample, edges=None):
+    if edges is None:
+        edges = np.arange(0,301,50)
+    subs = subs.copy()
+    MC_dwarfs = np.load('data/sampling/'+sample+'_converted.npy')
+    dists = np.median(MC_dwarfs[:,6,:], axis=1)
+
+    # find weights for satellites
+    Nsats = np.histogram(dists, bins=edges)[0]
+    weights = Nsats / np.max(Nsats)
+
+    # translate to sampling weights for subhalos
+    Nsubs_orig = np.histogram(subs.r, bins=edges)[0]
+    Nsubs = (Nsubs_orig[0]*weights).astype(int)
+    sub_weights = Nsubs / Nsubs_orig
+    assert (sub_weights <= 1).all(), str(sub_weights)
+    assert (sub_weights >= 0).all()
+
+    # sample the subhalos
+    sub_odds = np.asarray(pd.cut(subs.r, bins=edges))
+    map = dict(zip(sorted(set(sub_odds)), sub_weights))
+    sub_odds = np.array([map[odd] for odd in sub_odds])
+    subs = subs[np.random.uniform(size=len(subs)) < sub_odds]
+    return subs
