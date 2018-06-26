@@ -191,3 +191,7 @@ def match_radial_distribution_quickdirty(subs, sample, edges=None):
     sub_odds = np.array([map[odd] for odd in sub_odds])
     subs = subs[np.random.uniform(size=len(subs)) < sub_odds]
     return subs
+
+# variable sigma
+def sigma(r, sigma0, r0, alpha):
+    return sigma0*(1+(r/r0))**-alpha
