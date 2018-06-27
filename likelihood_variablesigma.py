@@ -3,24 +3,26 @@ import matplotlib.pyplot as plt
 import scipy.optimize as op
 import emcee
 import corner
-import yaml
 import likelihood.variablesigma as l
 
-# get indices of unwanted satellites
-dwarf_file = 'data/dwarfs/fritz.yaml'
-with open(dwarf_file, 'r') as f:
-    dwarfs = yaml.load(f)
+sample = 'fritz'
 ignore = []
 
 """
 # ignore probable LMC satellites
+names_sample = sample.strip('fritz_') if 'fritz_' in sample else sample
+# with open('data/sampling/'+names_sample+'_key.pkl', 'rb') as f:
+#     import pickle
+#     names = pickle.load(f)['name']
+# with open('data/dwarfs/'+sample+'.yaml') as f:
+#     import yaml
+#     names = list(yaml.load(f).keys())
 LMC_sats = ['Horologium I', 'Carina II', 'Carina III', 'Hydrus I']
 [ignore.append(names.index(sat)) for sat in LMC_sats]
 # """
 
 # load MC samples, remove unwanted satellites
-MC_dwarfs = np.load('data/sampling/fritz_converted.npy')
-MC_dwarfs = np.load('data/sampling/HMK_converted.npy')
+MC_dwarfs = np.load('data/sampling/'+sample+'_converted.npy')
 dists = MC_dwarfs[:,6,:]
 MC_dwarfs = MC_dwarfs[:,9:12,:]
 
@@ -66,5 +68,5 @@ fig = corner.corner(samples, labels=[r"$v_r$", r"$v_\theta$", r"$v_\phi$",
                       quantiles=[0.16, 0.5, 0.84],
                       show_titles=True, title_kwargs={"fontsize": 12})
 
-fig.savefig('figures/cornerplots/variablesigma_HMK.png', bbox_inches='tight')
-np.save('data/mcmc/variablesigma_HMK', samples)
+fig.savefig('figures/cornerplots/variablesigma_fritz_HPMKS_noLMCsats.png', bbox_inches='tight')
+np.save('data/mcmc/variablesigma_fritz_HPMKS_noLMCsats', samples)
