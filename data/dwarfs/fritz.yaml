@@ -4,231 +4,348 @@ Aquarius II:
   mu_alpha_error: 0.527
   mu_delta: 0.011
   mu_delta_error: 0.448
+  d_peri: 103
+  d_apo: 307
+  d_now: 105
 Bootes I:
   correlation_mu_mu: 0.163
   mu_alpha: -0.554
   mu_alpha_error: 0.092
   mu_delta: -1.111
   mu_delta_error: 0.068
+  d_peri: 33
+  d_apo: 76
+  d_now: 64
 Bootes II:
   correlation_mu_mu: -0.186
   mu_alpha: -2.686
   mu_alpha_error: 0.389
   mu_delta: -0.53
   mu_delta_error: 0.287
+  d_peri: 39
+  d_apo: 203
+  d_now: 39
 Canes Venatici I:
   correlation_mu_mu: 0.105
   mu_alpha: -0.159
   mu_alpha_error: 0.094
   mu_delta: -0.067
   mu_delta_error: 0.054
+  d_peri: 75
+  d_apo: 260
+  d_now: 218
 Canes Venatici II:
   correlation_mu_mu: -0.006
   mu_alpha: -0.342
   mu_alpha_error: 0.232
   mu_delta: -0.473
   mu_delta_error: 0.169
+  d_peri: 121
+  d_apo: 281
+  d_now: 161
 Carina I:
   correlation_mu_mu: 0.084
   mu_alpha: 0.485
   mu_alpha_error: 0.018
   mu_delta: 0.132
   mu_delta_error: 0.016
+  d_peri: 65
+  d_apo: 107
+  d_now: 107
 Carina II:
   correlation_mu_mu: -0.008
   mu_alpha: 1.867
   mu_alpha_error: 0.078
   mu_delta: 0.082
   mu_delta_error: 0.072
+  d_peri: 26
+  d_apo: 121
+  d_now: 37
 Carina III:
   correlation_mu_mu: 0.066
   mu_alpha: 3.046
   mu_alpha_error: 0.12
   mu_delta: 1.565
   mu_delta_error: 0.135
+  d_peri: 29
+  d_apo: 109
+  d_now: 29
 Coma Berenices I:
   correlation_mu_mu: -0.427
   mu_alpha: 0.471
   mu_alpha_error: 0.109
   mu_delta: -1.716
   mu_delta_error: 0.104
+  d_peri: 44
+  d_apo: 71
+  d_now: 45
 # Crater I:
 #   correlation_mu_mu: -0.185
 #   mu_alpha: -0.045
 #   mu_alpha_error: 0.28
 #   mu_delta: -0.165
 #   mu_delta_error: 0.172
+#   d_peri: 31
+#   d_apo: 145
+#   d_now: 145
 Crater II:
   correlation_mu_mu: -0.041
   mu_alpha: -0.184
   mu_alpha_error: 0.061
   mu_delta: -0.106
   mu_delta_error: 0.032
+  d_peri: 20
+  d_apo: 127
+  d_now: 116
 Draco I:
   correlation_mu_mu: 0.131
   mu_alpha: -0.013
   mu_alpha_error: 0.013
   mu_delta: -0.158
   mu_delta_error: 0.015
+  d_peri: 26
+  d_apo: 86
+  d_now: 76
 Draco II:
   correlation_mu_mu: -0.591
   mu_alpha: 1.242
   mu_alpha_error: 0.276
   mu_delta: 0.845
   mu_delta_error: 0.285
+  d_peri: 22
+  d_apo: 80
+  d_now: 26
 # Eridanus II:
 #   correlation_mu_mu: -0.257
 #   mu_alpha: 0.159
 #   mu_alpha_error: 0.292
 #   mu_delta: 0.372
 #   mu_delta_error: 0.34
+#   d_peri: 381
+#   d_apo: 95413
+#   d_now: 382
 Fornax:
   correlation_mu_mu: -0.46
   mu_alpha: 0.375
   mu_alpha_error: 0.004
   mu_delta: -0.401
   mu_delta_error: 0.005
+  d_peri: 88
+  d_apo: 158
+  d_now: 149
 Grus I:
   correlation_mu_mu: 0.246
   mu_alpha: -0.256
   mu_alpha_error: 0.173
   mu_delta: -0.447
   mu_delta_error: 0.241
+  d_peri: 69
+  d_apo: 476
+  d_now: 116
 Hercules:
   correlation_mu_mu: 0.085
   mu_alpha: -0.434
   mu_alpha_error: 0.214
   mu_delta: -0.401
   mu_delta_error: 0.168
+  d_peri: 54
+  d_apo: 209
+  d_now: 126
 Horologium I:
   correlation_mu_mu: 0.294
   mu_alpha: 0.891
   mu_alpha_error: 0.088
   mu_delta: -0.55
   mu_delta_error: 0.08
+  d_peri: 61
+  d_apo: 84
+  d_now: 80
 Hydra II:
   correlation_mu_mu: -0.427
   mu_alpha: -0.416
   mu_alpha_error: 0.519
   mu_delta: 0.134
   mu_delta_error: 0.422
+  d_peri: 95
+  d_apo: 322
+  d_now: 131
 Leo I:
   correlation_mu_mu: -0.358
   mu_alpha: -0.086
   mu_alpha_error: 0.059
   mu_delta: -0.128
   mu_delta_error: 0.062
+  d_peri: 41
+  d_apo: 510
+  d_now: 257
 Leo II:
   correlation_mu_mu: -0.289
   mu_alpha: 0.02
   mu_alpha_error: 0.09
   mu_delta: -0.201
   mu_delta_error: 0.093
+  d_peri: 96
+  d_apo: 238
+  d_now: 236
 Leo IV:
   correlation_mu_mu: -0.237
   mu_alpha: -0.59
   mu_alpha_error: 0.531
   mu_delta: -0.449
   mu_delta_error: 0.358
+  d_peri: 155
+  d_apo: 16565
+  d_now: 155
 Leo V:
   correlation_mu_mu: 0.047
   mu_alpha: -0.097
   mu_alpha_error: 0.557
   mu_delta: -0.628
   mu_delta_error: 0.302
+  d_peri: 197
+  d_apo: 32429
+  d_now: 197
 # Phoenix I:
 #   correlation_mu_mu: -0.162
 #   mu_alpha: 0.079
 #   mu_alpha_error: 0.099
 #   mu_delta: -0.049
 #   mu_delta_error: 0.12
+#   d_peri: 71
+#   d_apo: 620
+#   d_now: 415
 Pisces II:
   correlation_mu_mu: 0.053
   mu_alpha: -0.108
   mu_alpha_error: 0.645
   mu_delta: -0.586
   mu_delta_error: 0.498
+  d_peri: 177
+  d_apo: 29187
+  d_now: 182
 Reticulum II:
   correlation_mu_mu: 0.166
   mu_alpha: 2.398
   mu_alpha_error: 0.04
   mu_delta: -1.319
   mu_delta_error: 0.048
+  d_peri: 20
+  d_apo: 39
+  d_now: 32
 Sagittarius I:
   correlation_mu_mu: 0.114
   mu_alpha: -2.736
   mu_alpha_error: 0.009
   mu_delta: -1.357
   mu_delta_error: 0.008
+  d_peri: 15
+  d_apo: 36
+  d_now: 19
 Sculptor:
   correlation_mu_mu: 0.157
   mu_alpha: 0.085
   mu_alpha_error: 0.006
   mu_delta: -0.133
   mu_delta_error: 0.006
+  d_peri: 51
+  d_apo: 100
+  d_now: 86
 Segue 1:
   correlation_mu_mu: -0.087
   mu_alpha: -1.698
   mu_alpha_error: 0.195
   mu_delta: -3.501
   mu_delta_error: 0.175
+  d_peri: 16
+  d_apo: 36
+  d_now: 28
 Segue 2:
   correlation_mu_mu: 0.147
   mu_alpha: 1.33
   mu_alpha_error: 0.51
   mu_delta: -0.891
   mu_delta_error: 0.39
+  d_peri: 2
+  d_apo: 34
+  d_now: 32
 Sextans:
   correlation_mu_mu: -0.238
   mu_alpha: -0.438
   mu_alpha_error: 0.028
   mu_delta: 0.055
   mu_delta_error: 0.028
+  d_peri: 72
+  d_apo: 133
+  d_now: 89
 Triangulum II:
   correlation_mu_mu: 0.032
   mu_alpha: 0.588
   mu_alpha_error: 0.187
   mu_delta: 0.554
   mu_delta_error: 0.162
+  d_peri: 17
+  d_apo: 99
+  d_now: 36
 Tucana II:
   correlation_mu_mu: -0.375
   mu_alpha: 0.916
   mu_alpha_error: 0.042
   mu_delta: -1.169
   mu_delta_error: 0.053
+  d_peri: 31
+  d_apo: 111
+  d_now: 54
 Tucana III:
   correlation_mu_mu: -0.393
   mu_alpha: -0.117
   mu_alpha_error: 0.036
   mu_delta: -1.701
   mu_delta_error: 0.036
+  d_peri: 3
+  d_apo: 37
+  d_now: 23
 Ursa Major I:
   correlation_mu_mu: -0.1
   mu_alpha: -0.683
   mu_alpha_error: 0.094
   mu_delta: -0.72
   mu_delta_error: 0.13
+  d_peri: 101
+  d_apo: 192
+  d_now: 102
 Ursa Major II:
   correlation_mu_mu: -0.115
   mu_alpha: 1.691
   mu_alpha_error: 0.053
   mu_delta: -1.903
   mu_delta_error: 0.066
+  d_peri: 33
+  d_apo: 49
+  d_now: 38
 Ursa Minor:
   correlation_mu_mu: -0.387
   mu_alpha: -0.184
   mu_alpha_error: 0.026
   mu_delta: 0.082
   mu_delta_error: 0.023
+  d_peri: 28
+  d_apo: 85
+  d_now: 78
 Willman 1:
   correlation_mu_mu: -0.154
   mu_alpha: 0.199
   mu_alpha_error: 0.187
   mu_delta: -1.342
   mu_delta_error: 0.366
+  d_peri: 13
+  d_apo: 43
+  d_now: 43
 Hydrus I:
   correlation_mu_mu: 0.22
   mu_alpha: 4.044
   mu_alpha_error: 0.312
   mu_delta: -1.755
   mu_delta_error: 0.276
+  d_peri: 26
+  d_apo: 257
+  d_now: 26
