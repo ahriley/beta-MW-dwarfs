@@ -3,6 +3,7 @@ Aquarius II:
   dec: -9.3274
   distance: 107.9
   distance_error: 3.3
+  abs_mag: -4.36
   ra: 338.4813
   vel_los: -71.1
   vel_los_error: 2.5
@@ -11,6 +12,7 @@ Bootes I:
   dec: 14.51167
   distance: 66
   distance_error: 3.0
+  abs_mag: -6.3
   ra: 210.015
   vel_los: 102.2
   vel_los_error: 0.8
@@ -19,6 +21,7 @@ Bootes II:
   dec: 12.8586
   distance: 42
   distance_error: 1.6
+  abs_mag: -2.3
   ra: 209.521
   vel_los: -117.1
   vel_los_error: 7.6
@@ -27,6 +30,7 @@ Canes Venatici I:
   dec: 33.559167
   distance: 210
   distance_error: 6
+  abs_mag: -8.6
   ra: 202.01625
   vel_los: 30.9
   vel_los_error: 0.6
@@ -35,6 +39,7 @@ Canes Venatici II:
   dec: 34.32138056
   distance: 160
   distance_error: 7
+  abs_mag: -4.6
   ra: 194.2915833
   vel_los: -128.9
   vel_los_error: 1.2
@@ -43,6 +48,7 @@ Carina I:
   dec: -50.96611111111111
   distance: 105.6
   distance_error: 5.4
+  abs_mag: -8.6
   ra: 100.40708333333333
   vel_los: 222.9
   vel_los_error: 0.1
@@ -51,6 +57,7 @@ Carina II:
   dec: -57.9991
   distance: 37.4
   distance_error: 0.4
+  abs_mag: -4.5
   ra: 114.1066
   vel_los: 477.2
   vel_los_error: 1.2
@@ -59,6 +66,7 @@ Carina III:
   dec: -57.8997
   distance: 27.8
   distance_error: 0.6
+  abs_mag: -2.4
   ra: 114.6298
   vel_los: 284.6
   vel_los_error: 3.25
@@ -67,6 +75,7 @@ Cetus II:
   dec: 0
   distance: 0
   distance_error: 0
+  abs_mag: 0
   ra: 0
   vel_los: 0
   vel_los_error: 0
@@ -75,6 +84,7 @@ Cetus III:
   dec: 0
   distance: 0
   distance_error: 0
+  abs_mag: 0
   ra: 0
   vel_los: 0
   vel_los_error: 0
@@ -83,6 +93,7 @@ Columba I:
   dec: 0
   distance: 0
   distance_error: 0
+  abs_mag: 0
   ra: 0
   vel_los: 0
   vel_los_error: 0
@@ -91,6 +102,7 @@ Coma Berenices I:
   dec: 23.907555555555554
   distance: 42
   distance_error: 1.5
+  abs_mag: -3.8
   ra: 186.74583333333334
   vel_los: 98.1
   vel_los_error: 0.9
@@ -99,6 +111,7 @@ Crater II:
   dec: -18.413
   distance: 117.5
   distance_error: 1.1
+  abs_mag: -8.2
   ra: 177.310
   vel_los: 87.5
   vel_los_error: 0.4
@@ -107,6 +120,7 @@ Draco I:
   dec: 57.965
   distance: 76
   distance_error: 6
+  abs_mag: -8.75
   ra: 260.06
   vel_los: -291.0
   vel_los_error: 0.1
@@ -115,6 +129,7 @@ Draco II:
   dec: 64.5653
   distance: 20
   distance_error: 3.
+  abs_mag: -2.9
   ra: 238.198
   vel_los: -347.6
   vel_los_error: 1.75
@@ -123,6 +138,7 @@ Eridanus II:
   dec: -43.5338056
   distance: 366
   distance_error: 17
+  abs_mag: -7.1
   ra: 56.08375
   vel_los: 75.6
   vel_los_error: 1.3
@@ -131,6 +147,7 @@ Eridanus III:
   dec: 0
   distance: 0
   distance_error: 0
+  abs_mag: 0
   ra: 0
   vel_los: 0
   vel_los_error: 0
@@ -139,6 +156,7 @@ Fornax:
   dec: -34.51083333333333
   distance: 147
   distance_error: 9
+  abs_mag: -13.4
   ra: 39.9625
   vel_los: 55.3
   vel_los_error: 0.1
@@ -147,6 +165,7 @@ Grus I:
   dec: -50.1633
   distance: 120.2
   distance_error: 11.1
+  abs_mag: -3.4
   ra: 344.1765
   vel_los: -140.5
   vel_los_error: 2.0
@@ -155,6 +174,7 @@ Grus II:
   dec: -46.44
   distance: 53
   distance_error: 5
+  abs_mag: -3.9
   ra: 331.02
   vel_los: 0
   vel_los_error: 0
@@ -163,6 +183,7 @@ Hercules:
   dec: 12.787225
   distance: 132
   distance_error: 6
+  abs_mag: -6.6
   ra: 247.763
   vel_los: 45.20
   vel_los_error: 1.09
@@ -171,6 +192,7 @@ Horologium I:
   dec: -54.1188
   distance: 79
   distance_error: 7
+  abs_mag: -3.5
   ra: 43.8820
   vel_los: 112.8
   vel_los_error: 2.55
@@ -179,6 +201,7 @@ Horologium II:
   dec: 0
   distance: 0
   distance_error: 0
+  abs_mag: 0
   ra: 0
   vel_los: 0
   vel_los_error: 0
@@ -187,6 +210,7 @@ Hydra II:
   dec: -31.9853
   distance: 151
   distance_error: 8
+  abs_mag: -4.8
   ra: 185.425
   vel_los: 303.1
   vel_los_error: 1.4
@@ -195,6 +219,7 @@ Hydrus I:
   dec: -79.3089
   distance: 27.6
   distance_error: 0.5
+  abs_mag: -4.71
   ra: 37.389
   vel_los: 80.4
   vel_los_error: 0.6
@@ -203,6 +228,7 @@ Leo I:
   dec: 12.313
   distance: 258.2
   distance_error: 9.5
+  abs_mag: -12.03
   ra: 152.122
   vel_los: 282.5
   vel_los_error: 0.1
@@ -211,6 +237,7 @@ Leo II:
   dec: 22.15167
   distance: 233
   distance_error: 15
+  abs_mag: -9.6
   ra: 168.37
   vel_los: 78.5
   vel_los_error: 0.6
@@ -219,6 +246,7 @@ Leo IV:
   dec: -0.5401944444
   distance: 154
   distance_error: 5
+  abs_mag: -4.97
   ra: 173.233333333
   vel_los: 132.3
   vel_los_error: 1.4
@@ -227,6 +255,7 @@ Leo V:
   dec: 2.222075
   distance: 173
   distance_error: 5
+  abs_mag: -4.4
   ra: 172.783666667
   vel_los: 172.1
   vel_los_error: 2.2
@@ -235,6 +264,7 @@ LMC:
   dec: -69.7561
   distance: 51.
   distance_error: 2.
+  abs_mag: -18.1
   ra: 5.3929
   vel_los: 262.2
   vel_los_error: 3.4
@@ -243,6 +273,7 @@ Pegasus III:
   dec: 5.405
   distance: 215
   distance_error: 12
+  abs_mag: -3.4
   ra: 336.102
   vel_los: -222.9
   vel_los_error: 2.6
@@ -251,6 +282,7 @@ Phoenix II:
   dec: 0
   distance: 0
   distance_error: 0
+  abs_mag: 0
   ra: 0
   vel_los: 0
   vel_los_error: 0
@@ -259,6 +291,7 @@ Pictor I:
   dec: 0
   distance: 0
   distance_error: 0
+  abs_mag: 0
   ra: 0
   vel_los: 0
   vel_los_error: 0
@@ -267,6 +300,7 @@ Pictor II:
   dec: 0
   distance: 0
   distance_error: 0
+  abs_mag: 0
   ra: 0
   vel_los: 0
   vel_los_error: 0
@@ -275,6 +309,7 @@ Pisces II:
   dec: 5.9545277778
   distance: 183
   distance_error: 15
+  abs_mag: -4.1
   ra: 344.634166667
   vel_los: -226.5
   vel_los_error: 2.7
@@ -283,6 +318,7 @@ Reticulum II:
   dec: -54.0466
   distance: 31.4
   distance_error: 1.4
+  abs_mag: -3.6
   ra: 53.9493
   vel_los: 64.8
   vel_los_error: 0.5
@@ -291,6 +327,7 @@ Reticulum III:
   dec: -60.45
   distance: 92
   distance_error: 13
+  abs_mag: -3.3
   ra: 56.36
   vel_los: 0
   vel_los_error: 0
@@ -299,6 +336,7 @@ Sagittarius I:
   dec: -30.5453
   distance: 26
   distance_error: 2.0
+  abs_mag: -13.5
   ra: 283.8313
   vel_los: 140.0
   vel_los_error: 2.0
@@ -307,6 +345,7 @@ Sagittarius II:
   dec: 0
   distance: 0
   distance_error: 0
+  abs_mag: 0
   ra: 0
   vel_los: 0
   vel_los_error: 0
@@ -315,6 +354,7 @@ Sculptor:
   dec: -33.70916666666667
   distance: 83.9
   distance_error: 1.5
+  abs_mag: -10.7
   ra: 15.039166666666667
   vel_los: 111.4
   vel_los_error: 0.1
@@ -323,6 +363,7 @@ Segue 1:
   dec: 16.07361111111111
   distance: 23
   distance_error: 2
+  abs_mag: -1.5
   ra: 151.76333333333335
   vel_los: 208.5
   vel_los_error: 0.9
@@ -331,6 +372,7 @@ Segue 2:
   dec: 20.1753
   distance: 36.6
   distance_error: 2.45
+  abs_mag: -2.5
   ra: 34.8167
   vel_los: -40.2
   vel_los_error: 0.9
@@ -339,6 +381,7 @@ Sextans:
   dec: -1.62
   distance: 92.5
   distance_error: 2.2
+  abs_mag: -9.3
   ra: 153.268
   vel_los: 224.2
   vel_los_error: 0.1
@@ -347,6 +390,7 @@ SMC:
   dec: -72.8286
   distance: 64.
   distance_error: 4.
+  abs_mag: -16.8
   ra: 0.8791
   vel_los: 145.6
   vel_los_error: 0.6
@@ -355,6 +399,7 @@ Triangulum II:
   dec: 36.17191667
   distance: 28.4
   distance_error: 1.6
+  abs_mag: -1.2
   ra: 33.32225
   vel_los: -381.7
   vel_los_error: 1.1
@@ -363,6 +408,7 @@ Tucana II:
   dec: -58.57
   distance: 57.5
   distance_error: 5.3
+  abs_mag: -3.9
   ra: 343.06
   vel_los: -129.1
   vel_los_error: 3.5
@@ -371,6 +417,7 @@ Tucana III:
   dec: -59.60
   distance: 25
   distance_error: 2
+  abs_mag: -2.4
   ra: 359.15
   vel_los: -102.3
   vel_los_error: 0.4
@@ -379,6 +426,7 @@ Tucana IV:
   dec: 0
   distance: 0
   distance_error: 0
+  abs_mag: 0
   ra: 0
   vel_los: 0
   vel_los_error: 0
@@ -387,6 +435,7 @@ Tucana V:
   dec: 0
   distance: 0
   distance_error: 0
+  abs_mag: 0
   ra: 0
   vel_los: 0
   vel_los_error: 0
@@ -395,6 +444,7 @@ Ursa Major I:
   dec: 51.9260833333
   distance: 97.3
   distance_error: 5.85
+  abs_mag: -6.75
   ra: 158.685
   vel_los: -55.3
   vel_los_error: 1.4
@@ -403,6 +453,7 @@ Ursa Major II:
   dec: 63.13311111
   distance: 34.7
   distance_error: 2.1
+  abs_mag: -3.9
   ra: 132.8744167
   vel_los: -116.5
   vel_los_error: 1.9
@@ -411,7 +462,8 @@ Ursa Minor:
   dec: 67.2221
   distance: 76
   distance_error: 4
-  ra:  227.2420
+  abs_mag: -8.4
+  ra: 227.2420
   vel_los: -246.9
   vel_los_error: 0.1
 Virgo I:
@@ -419,6 +471,7 @@ Virgo I:
   dec: 0
   distance: 0
   distance_error: 0
+  abs_mag: 0
   ra: 0
   vel_los: 0
   vel_los_error: 0
@@ -427,6 +480,7 @@ Willman 1:
   dec: 51.052778
   distance: 38
   distance_error: 7
+  abs_mag: -2.7
   ra: 162.34125
   vel_los: -12.8
   vel_los_error: 1.0
