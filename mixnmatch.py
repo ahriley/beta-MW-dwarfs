@@ -38,3 +38,17 @@ np.save('data/sampling/fritz_HPMKS_converted', MC_set_fritz)
 map = {'name': names, 'study': study_from}
 with open('data/sampling/HPMKS_key.pkl', 'wb') as f:
     pickle.dump(map, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+"""
+# for printing Table 1
+dwarf_file = 'data/dwarfs/dwarf_props.yaml'
+with open(dwarf_file, 'r') as f:
+    dwarfs = yaml.load(f)
+
+for name in dwarfs:
+    dwarf = dwarfs[name]
+    print(name+' & '+str(dwarf['ra'])+' & '+str(dwarf['dec'])+' & '+\
+            str(dwarf['abs_mag'])+' & $'+str(dwarf['distance'])+' \pm '+\
+            str(dwarf['distance_error'])+'$ & $'+str(dwarf['vel_los'])+' \pm '+\
+            str(dwarf['vel_los_error'])+'$ \\\\')
+"""
