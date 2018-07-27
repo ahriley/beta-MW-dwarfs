@@ -58,3 +58,15 @@ Bootes I:
   mu_alpha_error: 0.041
   mu_delta: -1.064
   mu_delta_error: 0.029
+LMC:
+  correlation_mu_mu: 0.
+  mu_alpha: 1.85
+  mu_alpha_error: 0.03
+  mu_delta: 0.24
+  mu_delta_error: 0.03
+SMC:
+  correlation_mu_mu: 0.
+  mu_alpha: 0.797
+  mu_alpha_error: 0.03
+  mu_delta: -1.22
+  mu_delta_error: 0.03
