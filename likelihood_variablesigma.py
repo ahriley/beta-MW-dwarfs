@@ -26,7 +26,7 @@ else:
 # ignore possible satellites of LMC
 LMC_sats = ['Horologium I', 'Carina II', 'Carina III', 'Hydrus I']
 ignore = [names.index(sat) for sat in LMC_sats]
-MC_dwarfs = ignore
+MC_dwarfs = np.delete(MC_dwarfs, ignore, axis=0)
 # """
 
 """
@@ -48,15 +48,15 @@ for name, mass in zip(names, Mstar):
 # load MC samples, remove unwanted satellites
 MC_dwarfs = np.load('data/sampling/'+sample+'_converted.npy')
 dists = MC_dwarfs[:,6,:]
-MC_dwarfs = MC_dwarfs[:,9:12,:]
+MC_vels = MC_dwarfs[:,9:12,:]
 
 # if len(ignore) > 0:
 #     MC_dwarfs = np.delete(MC_dwarfs, ignore, axis=0)
 #     dists = np.delete(dists, ignore, axis=0)
 
 # data and covariances for each satellite
-vels = np.mean(MC_dwarfs, axis=2)
-vel_covs = np.array([np.cov(dwarf) for dwarf in MC_dwarfs])
+vels = np.median(MC_vels, axis=2)
+vel_covs = np.array([np.cov(dwarf) for dwarf in MC_vels])
 dists = np.mean(dists, axis=1)
 
 # Initialize walkers by randomly sampling prior
@@ -64,8 +64,8 @@ ndim, nwalkers = 12, 100
 p0 = l.sample_prior_lp(ndim=ndim, nwalkers=nwalkers)
 
 # Set up and run MCMC
-sampler = emcee.EnsembleSampler(nwalkers, ndim, l.lnprob_lp, args=(vels, vel_covs, dists))
-# sampler = emcee.EnsembleSampler(nwalkers, ndim, l.lnprior)
+sampler = emcee.EnsembleSampler(nwalkers, ndim, l.lnprob_lp, \
+                                args=(vels, vel_covs, dists))
 pos, prob, state = sampler.run_mcmc(p0, 500)
 
 # Look by eye at the burn-in
@@ -93,5 +93,6 @@ fig = corner.corner(samples, labels=[r"$v_r$", r"$v_\theta$", r"$v_\phi$",
                       quantiles=[0.16, 0.5, 0.84],
                       show_titles=True, title_kwargs={"fontsize": 12})
 
-fig.savefig('figures/cornerplots/variablesigma_fritz_gold.png', bbox_inches='tight')
-np.save('data/mcmc/variablesigma_fritz_gold', samples)
+tag = 'variablesigma_fritz_gold_noLMCsats'
+fig.savefig('figures/cornerplots/'+tag+'.png', bbox_inches='tight')
+np.save('data/mcmc/'+tag, samples)
