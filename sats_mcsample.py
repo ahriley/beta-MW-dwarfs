@@ -18,7 +18,8 @@ with open(dwarf_file, 'r') as f:
     dwarfs_c = yaml.load(f)
 
 studies = ['helmi', 'simon', 'fritz', 'kallivayalil', 'massari', 'pace']
-for study in studies[:1]:
+for study in studies:
+    print(study)
     if plot:
         pltpth = 'figures/sampling/'+study
         kwargs = {'parents': True, 'exist_ok': True}
@@ -91,7 +92,7 @@ for study in studies[:1]:
 
     # convert cartesian to spherical, make corner plots
     sphcoords = np.zeros((len(names), 13, n))
-    for n, i in zip(names, range(len(names))):
+    for s, i in zip(names, range(len(names))):
         df = {'x': cartcoords[i,0,:], 'y': cartcoords[i,1,:],
                 'z': cartcoords[i,2,:], 'vx': cartcoords[i,3,:],
                 'vy': cartcoords[i,4,:], 'vz': cartcoords[i,5,:]}
@@ -105,13 +106,13 @@ for study in studies[:1]:
             labels = [r"$\mu_{\alpha^*}$", r"$\mu_\delta$", r"$v_\odot$",
                         r"$d_\odot$"]
             fig = corner.corner(positions[i][:4].T, labels=labels, **kwargs)
-            fig.savefig(pltpth+'/heliocentric/'+n+'.png',bbox_inches='tight')
+            fig.savefig(pltpth+'/heliocentric/'+s+'.png',bbox_inches='tight')
             plt.close()
 
             labels = [r"$r$", r"$\theta$", r"$\phi$", r"$v_r$", r"$v_\theta$",
                         r"$v_\phi$"]
             fig = corner.corner(sphcoords[i][6:12].T, labels=labels, **kwargs)
-            fig.savefig(pltpth+'/galactocentric/'+n+'.png',bbox_inches='tight')
+            fig.savefig(pltpth+'/galactocentric/'+s+'.png',bbox_inches='tight')
             plt.close()
 
     assert positions.shape == (len(names), 6, n)
