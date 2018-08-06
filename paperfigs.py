@@ -6,9 +6,9 @@ import yaml
 
 pltpth = 'figures/paperfigs/'
 
-################################################
+# # ## ### ##### ######## ############# #####################
 ### Figure 1: Tangential velocity excess
-################################################
+# # ## ### ##### ######## ############# #####################
 
 edges = np.arange(0,301,1)
 rhist = {'cumulative': True, 'histtype': 'step', 'lw': 2, 'bins': edges,
@@ -62,9 +62,9 @@ plt.xlabel('Galactocentric dist. [kpc]')
 plt.ylabel(r'$V_{r}^2 / V_{tot}^2$');
 plt.savefig(pltpth+'vtan_excess.png', bbox_inches='tight');
 
-################################################
+# # ## ### ##### ######## ############# #####################
 ### Figure 2: uniform and variable results for data
-################################################
+# # ## ### ##### ######## ############# #####################
 
 plt.figure(figsize=(16,6))
 plt.subplot(121)
