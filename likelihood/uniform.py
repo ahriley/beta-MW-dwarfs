@@ -22,8 +22,9 @@ def lnprob(theta, data, data_covs):
         return -np.inf
     return lp + lnlike(theta, data, data_covs)
 
-def sample_prior(ndim, nwalkers):
+def sample_prior(nwalkers):
     scale = np.array([1000,1000,1000,300,300,300])
     shift = np.array([500,500,500,0,0,0])
+    ndim = len(scale)
     p0 = [np.random.uniform(size=ndim)*scale - shift for i in range(nwalkers)]
     return p0

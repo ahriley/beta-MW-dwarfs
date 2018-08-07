@@ -60,8 +60,8 @@ vel_covs = np.array([np.cov(dwarf) for dwarf in MC_vels])
 dists = np.mean(dists, axis=1)
 
 # Initialize walkers by randomly sampling prior
-ndim, nwalkers = 12, 100
-p0 = l.sample_prior_lp(ndim=ndim, nwalkers=nwalkers)
+nwalkers = 100
+p0 = l.sample_prior_lp(nwalkers=nwalkers)
 
 # Set up and run MCMC
 sampler = emcee.EnsembleSampler(nwalkers, ndim, l.lnprob_lp, \
