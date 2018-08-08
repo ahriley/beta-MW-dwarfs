@@ -27,81 +27,101 @@ fig.savefig('figures/velocityellipsoid_corner.png', bbox_inches='tight')
 
 """
 # posterior for beta from uniform gaussian model
-samples = np.load('data/mcmc/mcmc_uniform_fullcov.npy')
-betas = 1 - (samples[:,4]**2 + samples[:,5]**2) / (2*samples[:,3]**2)
-plt.hist(betas, bins=50, density=True, label='fullcov', histtype='step', lw=2)
-samples = np.load('data/mcmc/mcmc_uniform_baseline.npy')
-betas = 1 - (samples[:,4]**2 + samples[:,5]**2) / (2*samples[:,3]**2)
-plt.hist(betas, bins=50, density=True, label='orig (diagonal)', histtype='step', lw=2)
+bins = np.linspace(-3, 1, 100)
+kwargs = {'bins': bins, 'density': True, 'histtype': 'step', 'lw': 2}
+files = ['fritzplusMCs', 'fritzplusMCs_lt100', 'fritzplusMCs_gt100', 'cautun_sample']
+labels = ['all', '< 100', '> 100', 'cautun']
+for file, label in zip(files, labels):
+    if file == 'cautun_sample':
+        samples = np.load('data/mcmc/'+file+'.npy')
+    else:
+        samples = np.load('data/mcmc/uniform_'+file+'.npy')
+    betas = 1 - (samples[:,4]**2 + samples[:,5]**2) / (2*samples[:,3]**2)
+    plt.hist(betas, label=label, **kwargs)
 plt.xlabel(r'$\beta$')
-plt.legend(loc='upper left')
-plt.title(r"Posterior for $\beta$");
-plt.savefig('figures/beta_posterior_diagonalvsfullcov.png', bbox_inches='tight');
+plt.legend(loc='upper left');
+# plt.savefig('figures/uniform_fritz.png', bbox_inches='tight');
 
-col = np.sort(betas)
+col = betas
+col = np.sort(col)
 ixL = np.floor(np.size(col)*.159).astype(int)
 ixU = np.floor(np.size(col)*.841).astype(int)
-lower_mc = col[ixL]
-upper_mc = col[ixU]
-
-med = np.median(col)
-print(med, lower_mc-med, upper_mc - med)
+lower = col[ixL]
+upper = col[ixU]
+mean = np.mean(betas)
+print(str(mean) + " +" + str(upper - mean) + " " + str(lower-mean))
 # """
 
 """
 # plot of beta posterior with variable sigmas
-samples = np.load('data/mcmc/mcmc_variablesigma_constrainedprior.npy')
+samples = np.load('data/mcmc/variablesigma_fritz.npy')
 
 # variable dispersions with distance
 def sigma(r, sigma0, r0, alpha):
     return sigma0*(1+(r/r0))**-alpha
 
-rvals = np.arange(0,300,5)
+rvals = np.arange(18,300,5)
 sigmas = [sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) for r in rvals]
 sigmas = np.array(sigmas)
 betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/(2*sigmas[i,:,0]**2) for i in range(len(rvals))]
 betas = np.array(betas)
 beta_median = np.median(betas, axis=1)
 
-# confidence intervals
-betas_inv = np.swapaxes(betas,0,1)
-lower, upper = [np.empty(0) for i in range(2)]
-for i in range(len(betas_inv[0])):
-    col = betas_inv[:,i]
-    col = np.sort(col)
-    ixL = np.floor(np.size(col)*.159).astype(int)
-    ixU = np.floor(np.size(col)*.841).astype(int)
-    lower = np.append(lower, col[ixL])
-    upper = np.append(upper, col[ixU])
+labels = [r'$\sigma_r$', r'$\sigma_\theta$', r'$\sigma_\phi$']
+for j in range(3):
+    betas = sigmas[:,:,j]
+    beta_median = np.median(betas, axis=1)
 
-plt.plot(rvals, beta_median, '-', lw=2.0)
-plt.fill_between(rvals, lower, upper, alpha = 0.4)
-plt.axhline(y=0, ls='--', c='k')
+    # confidence intervals
+    betas_inv = np.swapaxes(betas,0,1)
+    lower, upper = [np.empty(0) for i in range(2)]
+    for i in range(len(betas_inv[0])):
+        col = betas_inv[:,i]
+        col = np.sort(col)
+        ixL = np.floor(np.size(col)*.159).astype(int)
+        ixU = np.floor(np.size(col)*.841).astype(int)
+        lower = np.append(lower, col[ixL])
+        upper = np.append(upper, col[ixU])
+
+    plt.plot(rvals, beta_median, '-', lw=2.0, label=labels[j])
+    plt.fill_between(rvals, lower, upper, alpha = 0.4)
+# plt.axhline(y=0, ls='--', c='k')
 plt.xlabel(r'$r$ [kpc]')
-plt.ylabel(r'$\beta$')
+plt.ylabel(r'$\sigma_i$ [km/s]')
+plt.xscale('log')
 # plt.ylim(-3,1)
-plt.title(r"Posterior for $\beta(r)$");
-plt.savefig('figures/beta_posterior_variablesigma_constrainedprior.png', bbox_inches='tight');
+plt.legend(loc='best')
+plt.title(r"Posterior for $\sigma_i(r)$");
+plt.savefig('figures/sigmas_r_fritz.png', bbox_inches='tight');
 # """
 
 """
 # plot of beta posterior with variable sigmas for multiple sims
 
-# variable dispersions with distance
-def sigma(r, sigma0, r0, alpha):
-    return sigma0*(1+(r/r0))**-alpha
+list = u.list_of_sims('apostle')
+list.append('satellites (fritz)')
 
-list = u.list_of_sims('elvis')
-list.append('satellites')
-
-for sim in list:
-    if sim == 'satellites':
-        samples = np.load('data/mcmc/mcmc_variablesigma_constrainedprior.npy')
+# list = ['fritz_noLMCsats', 'HPMKS_noLMCsats', 'fritz_HPMKS_noLMCsats']
+# list = ['fritz', 'fritz_linearpriors']
+# sample = 'fritz_mdm_innerperi_rdist'
+list = ['V1_HR_fix_bright', 'V1_HR_fix_classical', 'V1_HR_fix_ultrafaint']
+labels = ['bright', 'classical', 'ultrafaint', 'MW sats']
+for sim, label in zip(list, labels):
+    if sim == 'sats':
+        samples = np.load('data/mcmc/variablesigma_fritzplusMCs.npy')
     else:
-        samples = np.load('data/mcmc/elvis_variablesigma_vpeak/'+sim+'.npy')
-
-    rvals = np.arange(0,300,5)
-    sigmas = [sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) for r in rvals]
+        # if 'WDM' not in sim:
+        #     continue
+        # try:
+        #     halos, subs = u.load_apostle(sim=sim, processed=True, sample=sample)
+        # except:
+        #     continue
+        samples = np.load('data/mcmc/apostle/variablesigma_'+sim+'.npy')
+        # samples = np.load('data/mcmc/variablesigma_fritz_noLMCsats.npy')
+        # samples = np.load('data/mcmc/variablesigma_HMSK.npy')
+    # samples = np.load('data/mcmc/variablesigma_'+sim+'.npy')
+    rvals = np.arange(15,265,5)
+    sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) for r in rvals]
     sigmas = np.array(sigmas)
     betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/(2*sigmas[i,:,0]**2) for i in range(len(rvals))]
     betas = np.array(betas)
@@ -118,20 +138,22 @@ for sim in list:
         lower = np.append(lower, col[ixL])
         upper = np.append(upper, col[ixU])
 
-    plt.plot(rvals, beta_median, '-', lw=2.0)
+    plt.plot(rvals, beta_median, '-', lw=2.0, label=label)
     if sim == 'satellites':
-        plt.fill_between(rvals, lower, upper, alpha = 0.4)
+        plt.fill_between(rvals, lower, upper, alpha = 0.2)
     else:
         plt.fill_between(rvals, lower, upper, alpha = 0.2)
 plt.axhline(y=0, ls='--', c='k')
 plt.xlabel(r'$r$ [kpc]')
 plt.ylabel(r'$\beta$')
-# plt.ylim(-3,1)
-plt.title(r"Posterior for $\beta(r)$, top 40 Vpeak");
-plt.savefig('figures/elvis_variablesigma_vpeak/beta_posteriors.png', bbox_inches='tight');
+plt.legend(loc='lower right')
+plt.xscale('log')
+# plt.ylim(-3.4, 1.0)
+plt.title(r"Vpeak bins, V1_HR_fix");
+plt.savefig('figures/differentpriors.png', bbox_inches='tight');
 # """
 
-# """
+"""
 # plot of beta posterior with variable sigmas for multiple sims
 
 # variable dispersions with distance
@@ -215,34 +237,4 @@ plt.ylabel(r"$N$")
 plt.legend(loc='lower right')
 # plt.xlim(0,200)
 plt.savefig('figures/cdf_galactocentric_errors2.png', bbox_inches='tight');
-"""
-
-"""
-# specifics of coordinate transformation
-import yaml
-import astropy.coordinates as coord
-import astropy.units as u
-from astropy.coordinates import SkyCoord
-dwarf_file = 'data/dwarfs/fritz.yaml'
-with open(dwarf_file, 'r') as f:
-    dwarfs = yaml.load(f)
-names = list(dwarfs.keys())
-
-dsph = dwarfs[names[0]]
-sc = SkyCoord(ra=dsph['RA']*u.degree, dec=dsph['DEC']*u.degree,
-                distance=dsph['Distance']*u.kpc,
-                pm_ra_cosdec=dsph['mu_alpha']*u.mas/u.yr,
-                pm_dec=dsph['mu_delta']*u.mas/u.yr,
-                radial_velocity=dsph['vel_los']*u.km/u.s, frame='icrs')
-sc = sc.transform_to(coord.Galactocentric)
-"""
-
-"""
-# me being terrified I have coordinates wrong
-import utils as u
-sats = u.load_satellites('data/dwarfs/fritz_cart.csv')
-assert np.isclose(sats.x**2+sats.y**2+sats.z**2, sats.r**2).all()
-assert np.isclose(sats.z, sats.r*np.cos(sats.theta)).all()
-assert np.isclose(sats.x, sats.r*np.sin(sats.theta)*np.cos(sats.phi)).all()
-assert np.isclose(sats.y, sats.r*np.sin(sats.theta)*np.sin(sats.phi)).all()
 """
