@@ -70,7 +70,7 @@ def load_apostle(sim, processed=False, sample=None):
         subs.sort_values('M_dm', ascending=False, inplace=True)
         haloIDs = list(subs.index.values[0:2])
         subs, halos = subs.drop(haloIDs), subs.loc[haloIDs]
-        halos.sort_values('M_star', ascending=False, inplace=True)
+        halos.sort_values('Mstar', ascending=False, inplace=True)
         And_id = halos.iloc[0].name
         MW_id = halos.iloc[1].name
         subs = subs[(subs['hostID'] == And_id) | (subs['hostID'] == MW_id)]
@@ -116,7 +116,7 @@ def load_elvis(sim):
 
     # convert to pandas format
     df = {'PID': pid, 'hostID': upid, 'npart': npart, 'apeak': apeak,
-            'M_dm': mvir, 'M_star': mstar, 'Mpeak': mpeak, 'Mstar_b': mstar_b,
+            'M_dm': mvir, 'Mstar': mstar, 'Mpeak': mpeak, 'Mstar_b': mstar_b,
             'Vmax': vmax, 'Vpeak': vpeak, 'Rvir': rvir, 'Rmax': rmax,
             'x': x, 'y': y, 'z': z, 'vx': vx, 'vy': vy, 'vz': vz}
     df = pd.DataFrame(df, index=id)
@@ -167,30 +167,106 @@ def load_satellites(file):
     sats.r = sats.r*km2kpc
     return sats
 
-def match_radial_distribution_quickdirty(subs, sample, edges=None):
-    if edges is None:
-        edges = np.arange(0,301,50)
-    subs = subs.copy()
+def match_rdist(df, sample, savefile=None, plotlabel=None,
+                plotpath='figures/sampling/match_radial_dists/'):
+    colname = sample+'_rdist'
+    if colname in df.keys():
+        print('Already sampled')
+        return df[df[colname]]
+
+    subs_c = df.copy()
+    subs_c = subs_c[subs_c.r < 300]
+
+    # get MW satellite distribution
     MC_dwarfs = np.load('data/sampling/'+sample+'_converted.npy')
     dists = np.median(MC_dwarfs[:,6,:], axis=1)
 
     # find weights for satellites
-    Nsats = np.histogram(dists, bins=edges)[0]
-    weights = Nsats / np.max(Nsats)
+    edges = np.arange(301, step=50)
+    weights = np.histogram(dists, bins=edges)[0] / len(dists)
+    labels = np.arange(len(weights))
 
-    # translate to sampling weights for subhalos
-    Nsubs_orig = np.histogram(subs.r, bins=edges)[0]
-    Nsubs = (Nsubs_orig[0]*weights).astype(int)
-    sub_weights = Nsubs / Nsubs_orig
-    assert (sub_weights <= 1).all(), str(sub_weights)
-    assert (sub_weights >= 0).all()
+    # select subhalos
+    # NOTE: this is stochastic, so save the results using colname
+    subs = subs_c.copy()
+    subs['bin'] = np.asarray(pd.cut(subs.r, bins=edges, labels=labels))
+    selected = []
+    while True:
+        try:
+            rlbl = np.random.choice(labels, p=weights)
+            index = np.random.choice(subs[subs.bin == rlbl].index)
+            subs.drop([index], inplace=True)
+            selected.append(index)
+        except ValueError:
+            print(len(selected))
+            break
+    survived = subs_c.loc[selected]
 
-    # sample the subhalos
-    sub_odds = np.asarray(pd.cut(subs.r, bins=edges))
-    map = dict(zip(sorted(set(sub_odds)), sub_weights))
-    sub_odds = np.array([map[odd] for odd in sub_odds])
-    subs = subs[np.random.uniform(size=len(subs)) < sub_odds]
-    return subs
+    # plot if wanted
+    if plotlabel is not None:
+        plotbins = np.arange(301, step=1)
+        k = dict(histtype='step', cumulative=True, bins=plotbins, lw=2)
+        w = np.ones_like(survived.r)/float(len(survived.r))
+        plt.hist(survived.r, weights=w, label='corrected sim', **k)
+        w = np.ones_like(dists)/float(len(dists))
+        plt.hist(dists, weights=w, label='MW sats', **k)
+        w = np.ones_like(subs_c.r)/float(len(subs_c.r))
+        plt.hist(subs_c.r, weights=w, label='original sim', **k)
+        plt.legend(loc='upper left')
+        plt.savefig(plotpath+plotlabel+'.png', bbox_inches='tight')
+        plt.close()
+
+    # save to subhalo data file
+    subs_full = pd.read_pickle(savefile).drop_duplicates()
+    subs_full[colname] = np.isin(subs_full.index, survived.index)
+    assert np.sum(subs_full[colname]) == len(survived)
+    assert savefile is not None, "Specify which file result should be saved to"
+    subs_full.to_pickle(savefile)
+    return survived
+
+# match satellite distribution & number by drawing subhalo closest
+def match_rnum(df, sample, plotlabel=None,
+                plotpath='figures/sampling/match_radial_dists/'):
+    subs_c = df.copy()
+    subs_c = subs_c[subs_c.r < 300]
+
+    # get MW satellite distribution
+    MC_dwarfs = np.load('data/sampling/'+sample+'_converted.npy')
+    dists = np.median(MC_dwarfs[:,6,:], axis=1)
+    errors = np.std(MC_dwarfs[:,6,:], axis=1)
+    p = errors.argsort()
+    errors = errors[p]
+    dists = dists[p]
+
+    # select subhalos
+    subs = subs_c.copy()
+    selected = []
+    for i in range(len(dists)):
+        dist = dists[i]
+        error = errors[i]
+        ii = np.argmin(np.abs(subs.r - dist).values)
+        diff = dist - subs.iloc[ii].r
+        index = subs.iloc[ii].name
+        subs.drop([index], inplace=True)
+        selected.append(index)
+    assert len(selected) == len(set(selected))
+    survived = subs_c.loc[selected]
+
+    # plot if wanted
+    if plotlabel is not None:
+        plotbins = np.arange(301, step=1)
+        k = dict(histtype='step', cumulative=True, bins=plotbins, lw=2)
+        w = np.ones_like(survived.r)/float(len(survived.r))
+        plt.hist(survived.r, weights=w, label='corrected sim', **k)
+        w = np.ones_like(dists)/float(len(dists))
+        plt.hist(dists, weights=w, label='MW sats', **k)
+        w = np.ones_like(subs_c.r)/float(len(subs_c.r))
+        plt.hist(subs_c.r, weights=w, label='original sim', **k)
+        plt.legend(loc='upper left')
+        plt.savefig(plotpath+plotlabel+'.png', bbox_inches='tight')
+        plt.close()
+
+    return survived
 
 # variable sigma
 def sigma(r, sigma0, r0, alpha):
