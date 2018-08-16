@@ -6,8 +6,9 @@ from scipy.stats import rv_histogram
 
 Mpc2kpc = 1000
 
-ELVIS_DIR = '/Users/alexanderriley/Desktop/sims/elvis/'
-APOSTLE_DIR = '/Volumes/TINY/NOTFERMI/sims/apostle/'
+SIM_DIR = '/Volumes/TINY/NOTFERMI/sims/'
+ELVIS_DIR = SIM_DIR+'elvis/'
+APOSTLE_DIR = SIM_DIR+'apostle/'
 
 def beta(df):
     return 1-(np.var(df.v_theta)+np.var(df.v_phi))/(2*np.var(df.v_r))
@@ -191,7 +192,6 @@ def match_rdist(df, sample, rtol=5, seed=42, pltname=None,
                 subs.drop([name], inplace=True)
                 selected.append(name)
             else:
-                print(len(selected))
                 break
     survived = df.loc[selected]
 
