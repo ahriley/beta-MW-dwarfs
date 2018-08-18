@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import scipy.optimize as op
 import utils as u
 import yaml
+import glob
 
 pltpth = 'figures/paperfigs/'
 
@@ -78,9 +79,9 @@ plt.axvspan(-1.38-0.94, -1.23+0.98, ymax=0.3, color='b', alpha=0.2)
 plt.axvline(-1.38, ymax=0.296, color='b')
 for file, label in zip(files, labels):
     try:
-        samples = np.load('data/mcmc/uniform_'+file+'.npy')
+        samples = np.load(u.SIM_DIR+'beta/mcmc_old/uniform_'+file+'.npy')
     except:
-        samples = np.load('data/mcmc/'+file+'.npy')
+        samples = np.load(u.SIM_DIR+'beta/mcmc_old/'+file+'.npy')
     betas = 1 - (samples[:,4]**2 + samples[:,5]**2) / (2*samples[:,3]**2)
     y, x = np.histogram(betas, bins=bins, density=True)
     plt.plot((x[1:] + x[:-1]) / 2,y, label=label, lw=2)
@@ -94,7 +95,7 @@ list = ['fritzplusMCs', 'gold', 'fritz_gold']
 colors = ['C0', 'C1', 'C2']
 rvals = np.arange(15,265,5)
 for sim, color in zip(list, colors):
-    samples = np.load('data/mcmc/variablesigma_'+sim+'.npy')
+    samples = np.load(u.SIM_DIR+'beta/mcmc_old/variablesigma_'+sim+'.npy')
     sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) \
                 for r in rvals]
     sigmas = np.array(sigmas)
@@ -117,18 +118,75 @@ for sim, color in zip(list, colors):
     plt.plot(rvals, beta_median, '-', lw=2.0, label=sim, c=color)
     plt.fill_between(rvals, lower, upper, alpha = 0.2)
 
-    # plot excluding LMC sats as dotted line
-    # samples = np.load('data/mcmc/variablesigma_'+sim+'_noLMCsats.npy')
-    # sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) for r in rvals]
-    # sigmas = np.array(sigmas)
-    # betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/(2*sigmas[i,:,0]**2) for i in range(len(rvals))]
-    # betas = np.array(betas)
-    # beta_median = np.median(betas, axis=1)
-    # plt.plot(rvals, beta_median, '--', lw=2.0, c=color)
-
 plt.axhline(y=0, ls='--', c='k')
 plt.xlabel(r'$r$ [kpc]')
 plt.ylabel(r'$\beta$')
 plt.legend(loc='lower right')
 plt.xscale('log');
 plt.savefig(pltpth+'uniform_and_variable.png', bbox_inches='tight');
+
+# # ## ### ##### ######## ############# #####################
+### Figure 3: Beta(r) in simulations
+# # ## ### ##### ######## ############# #####################
+fig, ax = plt.subplots(4, 3, sharex='col', sharey='row', figsize=(12,10))
+plt.subplots_adjust(wspace=0.1, hspace=0.13)
+text_dict = {'ha': 'center', 'va': 'center', 'fontsize': 18}
+fig.text(0.5, 0.07, 'r [kpc]', **text_dict)
+fig.text(0.07, 0.5, r'$\beta$', rotation='vertical', **text_dict);
+cols = ['DMO', 'apostle', 'auriga']
+rows = ['gt5e6', 'gt5e6_rdist', 'Vpeak', 'Vpeak_rnum']
+rvals = np.arange(15,265,5)
+
+# only need to calculate sats curves once
+file = u.SIM_DIR+'beta/mcmc_old/variablesigma_fritzplusMCs.npy'
+samples = np.load(file)
+sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) \
+            for r in rvals]
+sigmas = np.array(sigmas)
+betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/(2*sigmas[i,:,0]**2) \
+            for i in range(len(rvals))]
+betas = np.array(betas)
+beta_median_sats = np.median(betas, axis=1)
+betas_inv = np.swapaxes(betas,0,1)
+lower_sats, upper_sats = [np.empty(0) for i in range(2)]
+for k in range(len(betas_inv[0])):
+    col = betas_inv[:,k]
+    col = np.sort(col)
+    ixL = np.floor(np.size(col)*.159).astype(int)
+    ixU = np.floor(np.size(col)*.841).astype(int)
+    lower_sats = np.append(lower_sats, col[ixL])
+    upper_sats = np.append(upper_sats, col[ixU])
+
+for i, row in zip(range(4), rows):
+    for j, col in zip(range(3), cols):
+        cax = ax[i,j]
+        cax.set_ylim(-3, 1)
+        cax.axhline(0.0, color='k', ls='--')
+        cax.plot(rvals, beta_median_sats, '-', lw=2.0)
+        cax.fill_between(rvals, lower_sats, upper_sats, alpha = 0.2)
+        cax.set_xscale('log')
+
+        # plot curves for each simulation selection
+        simlist = glob.glob(u.SIM_DIR+'beta/mcmc/'+col+'/*'+row+'.npy')
+        for sim in simlist:
+            samples = np.load(sim)
+            sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9], \
+                        samples[:,9:12]) for r in rvals]
+            sigmas = np.array(sigmas)
+            betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/ \
+                        (2*sigmas[i,:,0]**2) for i in range(len(rvals))]
+            betas = np.array(betas)
+            beta_median = np.median(betas, axis=1)
+            betas_inv = np.swapaxes(betas,0,1)
+            lower, upper = [np.empty(0) for i in range(2)]
+            for k in range(len(betas_inv[0])):
+                col = betas_inv[:,k]
+                col = np.sort(col)
+                ixL = np.floor(np.size(col)*.159).astype(int)
+                ixU = np.floor(np.size(col)*.841).astype(int)
+                lower = np.append(lower, col[ixL])
+                upper = np.append(upper, col[ixU])
+
+            cax.plot(rvals, beta_median, '-', lw=2.0)
+            cax.fill_between(rvals, lower, upper, alpha = 0.2)
+plt.savefig(pltpth+'beta_sims.png', bbox_inches='tight')
