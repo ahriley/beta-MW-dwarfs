@@ -215,7 +215,7 @@ Hydra II:
   vel_los: 303.1
   vel_los_error: 1.4
 Hydrus I:
-  citation: 'Koposov2018arXiv180406430K'
+  citation: 'Koposov2018MNRAS.479.5343K'
   dec: -79.3089
   distance: 27.6
   distance_error: 0.5
@@ -314,7 +314,7 @@ Pisces II:
   vel_los: -226.5
   vel_los_error: 2.7
 Reticulum II:
-  citation: 'Simon2015ApJ...808...95S,Mutlu-Pakdil2018arXiv180408627M'
+  citation: 'Simon2015ApJ...808...95S,Mutlu-Pakdil2018ApJ...863...25M'
   dec: -54.0466
   distance: 31.4
   distance_error: 1.4
