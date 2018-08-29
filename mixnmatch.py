@@ -49,15 +49,62 @@ with open('data/sampling/gold_key.pkl', 'wb') as f:
     pickle.dump(map, f, protocol=pickle.HIGHEST_PROTOCOL)
 
 """
-# for printing Table 1
+# for printing dwarf props Table
 dwarf_file = 'data/dwarfs/dwarf_props.yaml'
 with open(dwarf_file, 'r') as f:
     dwarfs = yaml.load(f)
 
+name_study = dict(zip(names, study_from))
+study_number = dict(zip(studies, [1, 5, 4, 3, 2]))
+
+count = len(study_number) + 1
+tags = []
 for name in dwarfs:
     dwarf = dwarfs[name]
-    print(name+' & '+str(dwarf['ra'])+' & '+str(dwarf['dec'])+' & '+\
+    if dwarf['ra'] == 0 or dwarf['vel_los_error'] == 0:
+        continue
+    elif name=='Eridanus II' or name=='Grus II' or name=='Pegasus III':
+        continue
+
+    refnums = []
+    for cit in dwarf['citation'].split(','):
+        ii = 0
+        for char in cit:
+            if str.isdigit(char):
+                break
+            ii += 1
+        tag = cit[ii:]
+        if tag not in study_number.keys():
+            study_number[tag] = count
+            count += 1
+        refnums.append(study_number[tag])
+
+    refstring = ""
+    for num in sorted(refnums):
+        refstring += '['+str(num)+'] '
+
+    if name not in names:
+        print(name+' & '+"{0:.3f}".format(dwarf['ra'])+' & '+\
+                "{0:.3f}".format(dwarf['dec'])+' & '+\
+                str(dwarf['abs_mag'])+' & $'+str(dwarf['distance'])+' \pm '+\
+                str(dwarf['distance_error'])+'$ & $'+str(dwarf['vel_los'])+\
+                ' \pm '+str(dwarf['vel_los_error'])+'$ & -- & '+refstring+\
+                '\\\\')
+    else:
+        print(name+' & '+"{0:.3f}".format(dwarf['ra'])+' & '+\
+            "{0:.3f}".format(dwarf['dec'])+' & '+\
             str(dwarf['abs_mag'])+' & $'+str(dwarf['distance'])+' \pm '+\
-            str(dwarf['distance_error'])+'$ & $'+str(dwarf['vel_los'])+' \pm '+\
-            str(dwarf['vel_los_error'])+'$ \\\\')
-"""
+            str(dwarf['distance_error'])+'$ & $'+str(dwarf['vel_los'])+\
+            ' \pm '+str(dwarf['vel_los_error'])+'$ & ['+\
+            str(study_number[name_study[name]])+'] & '+refstring+'\\\\')
+
+number_study = {}
+for study in study_number.keys():
+    number_study[study_number[study]] = study
+
+for num in sorted(number_study.keys()):
+    print('['+str(num)+'] \citet{'+str(number_study[num])+'}; ', end='')
+
+for num in sorted(number_study.keys()):
+    print(number_study[num])
+# """
