@@ -95,7 +95,7 @@ plt.title(r"Posterior for $\sigma_i(r)$");
 plt.savefig('figures/sigmas_r_fritz.png', bbox_inches='tight');
 # """
 
-"""
+# """
 # plot of beta posterior with variable sigmas for multiple sims
 
 list = u.list_of_sims('apostle')
@@ -104,11 +104,15 @@ list.append('satellites (fritz)')
 # list = ['fritz_noLMCsats', 'HPMKS_noLMCsats', 'fritz_HPMKS_noLMCsats']
 # list = ['fritz', 'fritz_linearpriors']
 # sample = 'fritz_mdm_innerperi_rdist'
-list = ['V1_HR_fix_bright', 'V1_HR_fix_classical', 'V1_HR_fix_ultrafaint']
-labels = ['bright', 'classical', 'ultrafaint', 'MW sats']
-for sim, label in zip(list, labels):
+# list = ['V6_HR_fix_bright', 'V6_HR_fix_classical', 'V6_HR_fix_ultrafaint', 'sats']
+# labels = ['bright', 'classical', 'ultrafaint', 'MW sats']
+# list = ['sats', 'halo_6_level3', 'halo_16_level3', 'halo_21_level3', 'halo_23_level3', 'halo_24_level3', 'halo_27_level3']
+# list = ['sats', 'halo_16_level3', 'halo_21_level3', 'halo_23_level3']
+list = ['sats', 'V1_HR_fix', 'V4_HR_fix', 'V6_HR_fix', 'S4_HR_fix', 'S5_HR_fix']
+# list = ['sats', 'V1_HR_DMO', 'V4_HR_DMO', 'S5_HR_DMO']
+for sim in list:
     if sim == 'sats':
-        samples = np.load('data/mcmc/variablesigma_fritzplusMCs.npy')
+        samples = np.load(u.SIM_DIR+'beta/mcmc_old/variablesigma_fritzplusMCs.npy')
     else:
         # if 'WDM' not in sim:
         #     continue
@@ -116,7 +120,8 @@ for sim, label in zip(list, labels):
         #     halos, subs = u.load_apostle(sim=sim, processed=True, sample=sample)
         # except:
         #     continue
-        samples = np.load('data/mcmc/apostle/variablesigma_'+sim+'.npy')
+        samples = np.load(u.SIM_DIR+'beta/mcmc_old/apostle/variablesigma_'+sim+'_starforming.npy')
+        # samples = np.load('data/mcmc/auriga/variablesigma_'+sim+'_all.npy')
         # samples = np.load('data/mcmc/variablesigma_fritz_noLMCsats.npy')
         # samples = np.load('data/mcmc/variablesigma_HMSK.npy')
     # samples = np.load('data/mcmc/variablesigma_'+sim+'.npy')
@@ -138,19 +143,17 @@ for sim, label in zip(list, labels):
         lower = np.append(lower, col[ixL])
         upper = np.append(upper, col[ixU])
 
-    plt.plot(rvals, beta_median, '-', lw=2.0, label=label)
-    if sim == 'satellites':
-        plt.fill_between(rvals, lower, upper, alpha = 0.2)
+    plt.plot(rvals, beta_median, '-', lw=2.0, label=sim)
+    if sim == 'sats':
+        plt.fill_between(rvals, lower, upper, alpha = 0.4)
     else:
         plt.fill_between(rvals, lower, upper, alpha = 0.2)
 plt.axhline(y=0, ls='--', c='k')
-plt.xlabel(r'$r$ [kpc]')
-plt.ylabel(r'$\beta$')
+# plt.xlabel(r'$r$ [kpc]')
+# plt.ylabel(r'$\beta$')
 plt.legend(loc='lower right')
-plt.xscale('log')
-# plt.ylim(-3.4, 1.0)
-plt.title(r"Vpeak bins, V1_HR_fix");
-plt.savefig('figures/differentpriors.png', bbox_inches='tight');
+plt.xscale('log');
+plt.savefig('figures/apostle_sf_symposiumplot.png', bbox_inches='tight');
 # """
 
 """
