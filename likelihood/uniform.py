@@ -9,6 +9,16 @@ def lnlike(theta, data, data_covs):
     lnlike += np.sum(np.log(np.linalg.det(covs)))
     return -lnlike
 
+def lnlike_sample(theta, data):
+    ii = np.random.randint(low=0, high=data.shape[-1])
+    sample = data[:,:,ii]
+    shifts = sample - theta[:3]
+    covs = np.zeros((38,3,3)) + np.diag(theta[3:]**2)
+    icovs = np.linalg.inv(covs)
+    lnlike = np.sum([shift@(icov@shift) for shift,icov in zip(shifts,icovs)])
+    lnlike += np.sum(np.log(np.linalg.det(covs)))
+    return -lnlike
+
 def lnprior(theta):
     m = theta[:3]
     s = theta[3:]
@@ -21,6 +31,12 @@ def lnprob(theta, data, data_covs):
     if not np.isfinite(lp):
         return -np.inf
     return lp + lnlike(theta, data, data_covs)
+
+def lnprob_sample(theta, data):
+    lp = lnprior(theta)
+    if not np.isfinite(lp):
+        return -np.inf
+    return lp + lnlike_sample(theta, data)
 
 def sample_prior(nwalkers):
     scale = np.array([1000,1000,1000,300,300,300])

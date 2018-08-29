@@ -23,6 +23,18 @@ def lnlike_lp(theta, data, data_covs, data_dists):
     lnlike += np.sum(np.log(np.linalg.det(covs)))
     return -lnlike
 
+def lnlike_lp_sample(theta, data):
+    ii = np.random.randint(low=0, high=data.shape[-1])
+    sample = data[:,:,ii]
+    shifts = sample[:,:3] - theta[:3]
+    s0s, r0s, alphas = theta[3:6], theta[6:9], theta[9:12]
+    sigmas = np.array([u.sigma(r,s0s,r0s,alphas) for r in data_dists])
+    covs = np.zeros((38,3,3)) + np.diag(theta[3:]**2)
+    icovs = np.linalg.inv(covs)
+    lnlike = np.sum([shift@(icov@shift) for shift,icov in zip(shifts,icovs)])
+    lnlike += np.sum(np.log(np.linalg.det(covs)))
+    return -lnlike
+
 def lnprior(theta):
     m = theta[:3]
     lns0, r0, a = theta[3:6], theta[6:9], theta[9:12]
