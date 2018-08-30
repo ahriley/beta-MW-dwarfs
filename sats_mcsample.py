@@ -13,7 +13,7 @@ from astropy.coordinates.representation import CartesianDifferential as CD
 n = 10000
 plot = True
 
-dwarf_file = 'data/dwarfs/dwarf_props.yaml'
+dwarf_file = 'data/dwarf_props.yaml'
 with open(dwarf_file, 'r') as f:
     dwarfs_c = yaml.load(f)
 
@@ -27,14 +27,14 @@ for study in studies:
         pathlib.Path(pltpth+'/galactocentric').mkdir(**kwargs)
 
     # read in dwarfs yaml
-    dwarf_file = 'data/dwarfs/'+study+'.yaml'
+    dwarf_file = 'data/'+study+'.yaml'
     with open(dwarf_file, 'r') as f:
         dwarfs = yaml.load(f)
         names = dwarfs.keys()
 
     # get N galaxy parameters using errors
     galpars = np.zeros((n,5))
-    galpars[:,0] = np.random.normal(8.1, 0.03, n)
+    galpars[:,0] = np.random.normal(8.2, 0.1, n)
     galpars[:,1] = np.random.normal(10, 1, n)
     galpars[:,2] = np.random.normal(248, 3, n)
     galpars[:,3] = np.random.normal(7, 0.5, n)
@@ -119,7 +119,7 @@ for study in studies:
     assert sphcoords.shape == (len(names), 13, n)
 
     # ORDER: mu_alpha, mu_delta, vel_los, dist
-    np.save('data/sampling/'+study, positions[:,:4])
+    np.save('data/sampling/'+study+'_helio', positions[:,:4])
 
     # ORDER: vx vy vz x y z r theta phi v_r v_theta v_phi v_t
-    np.save('data/sampling/'+study+'_converted', sphcoords)
+    np.save('data/sampling/'+study+'_galacto', sphcoords)
