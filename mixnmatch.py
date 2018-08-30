@@ -8,12 +8,14 @@ study_from = []
 MC_set = []
 magclouds = []
 for study in studies:
-    dwarf_file = 'data/dwarfs/'+study+'.yaml'
+    # get names, samplings for each study
+    dwarf_file = 'data/'+study+'.yaml'
     with open(dwarf_file, 'r') as f:
         dwarfs = yaml.load(f)
     study_names = list(dwarfs.keys())
-    MC_dwarfs = np.load('data/sampling/'+study+'_converted.npy')
+    MC_dwarfs = np.load('data/sampling/'+study+'_galacto.npy')
 
+    # if satellite hasn't been added, add to study
     for name in study_names:
         if name not in names:
             names.append(name)
@@ -24,28 +26,38 @@ for study in studies:
                 magclouds.append(MC_dwarfs[study_names.index(name)])
 MC_set = np.array(MC_set)
 
-fritz_file = 'data/dwarfs/fritz.yaml'
+# get Fritz version of the gold satellites
+fritz_file = 'data/fritz.yaml'
 with open(fritz_file, 'r') as f:
     fritz = yaml.load(f)
 fritz = list(fritz.keys())
-
-MC_dwarfs = np.load('data/sampling/fritz_converted.npy')
+MC_dwarfs = np.load('data/sampling/fritz_galacto.npy')
 MC_set_fritz = []
+fritz_gold_names = []
 for name in names:
     try:
         MC_set_fritz.append(MC_dwarfs[fritz.index(name)])
+        fritz_gold_names.append(name)
     except:
         # Magellanic Clouds not in Fritz
         continue
 
+# handle the Magellanic Clouds
 MC_set_fritz = np.concatenate((MC_set_fritz, np.array(magclouds)))
+MC_fritzplusMCs = np.concatenate((MC_dwarfs, np.array(magclouds)))
 assert MC_set_fritz.shape == MC_set.shape
 
-np.save('data/sampling/gold_converted', MC_set)
-np.save('data/sampling/fritz_gold_converted', MC_set_fritz)
+# save all the data
+np.save('data/sampling/fritzplusMCs', MC_fritzplusMCs)
+np.save('data/sampling/gold', MC_set)
+np.save('data/sampling/fritz_gold', MC_set_fritz)
 
-map = {'name': names, 'study': study_from}
-with open('data/sampling/gold_key.pkl', 'wb') as f:
+# map study to the order of the names
+samples = ['fritzplusMCs', 'gold', 'fritz_gold']
+fritz.extend(['LMC', 'SMC'])
+fritz_gold_names.extend(['LMC', 'SMC'])
+map = dict(zip(samples, (fritz, names, fritz_gold_names)))
+with open('data/sampling/names_key.pkl', 'wb') as f:
     pickle.dump(map, f, protocol=pickle.HIGHEST_PROTOCOL)
 
 """
