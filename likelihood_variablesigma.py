@@ -4,25 +4,18 @@ import scipy.optimize as op
 import emcee
 import corner
 import likelihood.variablesigma as l
+import pickle
+import utils as u
 
 # load MC samples, get names
-sample = 'fritz_gold'
-MC_dwarfs = np.load('data/sampling/'+sample+'_converted.npy')
-if sample == 'fritz':
-    import yaml
-    with open('data/dwarfs/'+sample+'.yaml') as f:
-        names = list(yaml.load(f).keys())
-    # add Magellanic Clouds
-    MCs = np.load('data/sampling/helmi_converted.npy')[-2:]
-    MC_dwarfs = np.concatenate((MC_dwarfs, MCs))
-    names.append('LMC')
-    names.append('SMC')
-else:
-    with open('data/sampling/gold_key.pkl', 'rb') as f:
-        import pickle
-        names = pickle.load(f)['name']
+sample = 'gold'
+tag = 'gold'
+MC_dwarfs = np.load('data/sampling/'+sample+'.npy')
+with open('data/sampling/names_key.pkl', 'rb') as f:
+    names = pickle.load(f)[sample]
+assert MC_dwarfs.shape[0] == len(names)
 
-# """
+"""
 # ignore possible satellites of LMC
 LMC_sats = ['Horologium I', 'Carina II', 'Carina III', 'Hydrus I']
 ignore = [names.index(sat) for sat in LMC_sats]
@@ -46,7 +39,7 @@ for name, mass in zip(names, Mstar):
 # """
 
 # load MC samples, remove unwanted satellites
-MC_dwarfs = np.load('data/sampling/'+sample+'_converted.npy')
+MC_dwarfs = np.load('data/sampling/'+sample+'.npy')
 dists = MC_dwarfs[:,6,:]
 MC_vels = MC_dwarfs[:,9:12,:]
 
@@ -62,6 +55,7 @@ dists = np.mean(dists, axis=1)
 # Initialize walkers by randomly sampling prior
 nwalkers = 100
 p0 = l.sample_prior_lp(nwalkers=nwalkers)
+ndim = len(p0[0])
 
 # Set up and run MCMC
 sampler = emcee.EnsembleSampler(nwalkers, ndim, l.lnprob_lp, \
@@ -93,6 +87,5 @@ fig = corner.corner(samples, labels=[r"$v_r$", r"$v_\theta$", r"$v_\phi$",
                       quantiles=[0.16, 0.5, 0.84],
                       show_titles=True, title_kwargs={"fontsize": 12})
 
-tag = 'variablesigma_fritz_gold_noLMCsats'
 fig.savefig('figures/cornerplots/'+tag+'.png', bbox_inches='tight')
-np.save('data/mcmc/'+tag, samples)
+np.save(u.SIM_DIR+'beta/mcmc/data/'+tag, samples)

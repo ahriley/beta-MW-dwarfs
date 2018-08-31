@@ -101,7 +101,7 @@ samples = ['fritzplusMCs', 'gold', 'fritz_gold']
 colors = ['C0', 'C1', 'C2']
 rvals = np.arange(15,265,5)
 for sim, color in zip(samples, colors):
-    samples = np.load(u.SIM_DIR+'beta/mcmc_old/variablesigma_'+sim+'.npy')
+    samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+sim+'.npy')
     sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) \
                 for r in rvals]
     sigmas = np.array(sigmas)
