@@ -4,6 +4,7 @@ import scipy.optimize as op
 import utils as u
 import yaml
 import glob
+import pickle
 
 pltpth = 'figures/paperfigs/'
 
@@ -20,22 +21,18 @@ fhist = {'cumulative': True, 'histtype': 'step', 'lw': 2, 'bins': fracbins,
             'density': True}
 
 # get name, luminosity of satellites
-with open('data/dwarfs/fritz.yaml', 'r') as f:
-    names = list(yaml.load(f).keys())
-    names.append('LMC')
-    names.append('SMC')
+with open('data/sampling/names_key.pkl', 'rb') as f:
+    names = pickle.load(f)['fritzplusMCs']
 
 Lstar = []
-with open('data/dwarfs/dwarf_props.yaml', 'r') as f:
+with open('data/dwarf_props.yaml', 'r') as f:
     dwarfs = yaml.load(f)
     for name in names:
         Lstar.append(10**(-0.4*(dwarfs[name]['abs_mag'] - 4.83)))
 Lstar = np.array(Lstar)
 
-# add Magellanic Clouds
-MC_dwarfs = np.load('data/sampling/fritz_converted.npy')
-MCs = np.load('data/sampling/helmi_converted.npy')[-2:]
-MC_dwarfs = np.concatenate((MC_dwarfs, MCs))
+# load sampling (Fritz + Magellanic Clouds)
+MC_dwarfs = np.load('data/sampling/fritzplusMCs.npy')
 dists = MC_dwarfs[:,6,:]
 v_r = MC_dwarfs[:,9,:]
 v_t = MC_dwarfs[:,12,:]
@@ -71,25 +68,33 @@ plt.figure(figsize=(16,6))
 plt.subplot(121)
 bins = np.linspace(-3, 1, 50)
 kwargs = {'bins': bins, 'density': True, 'histtype': 'step', 'lw': 2}
-files = ['fritzplusMCs', 'fritzplusMCs_lt100', 'fritzplusMCs_gt100']
+files = ['uniform', 'uniform_lt100kpc', 'uniform_gt100kpc']
 labels = ['all', '< 100', '> 100']
+
+# compute statistics for Cautun sample
+samples = np.load(u.SIM_DIR+'beta/mcmc/data/uniform_cautun.npy')
+betas = 1 - (samples[:,4]**2 + samples[:,5]**2) / (2*samples[:,3]**2)
+col = np.sort(betas)
+ixL = np.floor(np.size(col)*.159).astype(int)
+ixU = np.floor(np.size(col)*.841).astype(int)
+lower = col[ixL]
+upper = col[ixU]
+median = np.median(betas)
+
 plt.axvspan(-2.6, -1.8, ymax=0.3, color='0.6', alpha=0.5)
 plt.axvline(-2.2, ymax=0.296, color='k')
-plt.axvspan(-1.38-0.94, -1.23+0.98, ymax=0.3, color='b', alpha=0.2)
-plt.axvline(-1.38, ymax=0.296, color='b')
+plt.axvspan(lower, upper, ymax=0.3, color='b', alpha=0.2)
+plt.axvline(median, ymax=0.296, color='b')
 for file, label in zip(files, labels):
-    try:
-        samples = np.load(u.SIM_DIR+'beta/mcmc_old/uniform_'+file+'.npy')
-    except:
-        samples = np.load(u.SIM_DIR+'beta/mcmc_old/'+file+'.npy')
+    samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+file+'.npy')
     betas = 1 - (samples[:,4]**2 + samples[:,5]**2) / (2*samples[:,3]**2)
-    y, x = np.histogram(betas, bins=bins, density=True)
-    plt.plot((x[1:] + x[:-1]) / 2,y, label=label, lw=2)
+    y, x = np.histogram(betas, bins=bins)
+    plt.plot((x[1:] + x[:-1]) / 2,y/len(betas), label=label, lw=2)
 plt.axvline(0.0, color='k', ls='--')
 plt.xlabel(r'$\beta$')
 plt.ylim(bottom=0.0)
 plt.legend(loc='upper left')
-plt.text(-2.2,0.4,'Cautun & Frenk\n(2017)',ha='center');
+plt.text(-2.2,0.03,'Cautun & Frenk\n(2017)',ha='center');
 
 plt.subplot(122)
 samples = ['fritzplusMCs', 'gold', 'fritz_gold']
