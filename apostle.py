@@ -8,19 +8,22 @@ import pandas as pd
 from os.path import isfile
 
 simlist = ['V1_HR_fix', 'V4_HR_fix', 'V6_HR_fix', 'S4_HR_fix', 'S5_HR_fix',
-            'V1_HR_DMO', 'V4_HR_DMO', 'S5_HR_DMO']
+            'V1_HR_DMO', 'V4_HR_DMO']
 
 for sim in simlist:
     halos, subs_c = u.load_apostle(sim=sim, processed=True)
-    label = 'gt5e6_rnum'
+    label = 'Vmax_rnum'
+
     # if data aren't available, continue
     try:
-        subs_c = subs_c[subs_c.M_dm > 5e6]
+        subs_c = subs_c[subs_c.Vmax > 5]
         # assert (subs_c[subs_c.Mstar > 0].Vpeak > 18).all()
-        # subs_c = subs_c[(subs_c.Vpeak > 18) | (subs_c.Mstar > 0)]
+        # subs_c = subs_c[subs_c.Vpeak > 18]
     except AttributeError:
+        print(sim+" doesn't have the property")
         continue
 
+    # treat each APOSTLE halo separately
     for ID in halos.index:
         # check if this has already been computed
         folder = 'DMO' if 'DMO' in sim else 'apostle'

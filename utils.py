@@ -170,10 +170,10 @@ def load_satellites(file):
     sats.r = sats.r*km2kpc
     return sats
 
-def match_rdist(df, sample, rtol=5, seed=42, pltname=None,
+def match_rdist(df, sample, rtol=5, seed=0, pltname=None,
                 plotpath='figures/sampling/match_radial_dists/'):
     # get MW satellite distribution
-    MC_dwarfs = np.load('data/sampling/'+sample+'_converted.npy')
+    MC_dwarfs = np.load('data/sampling/'+sample+'.npy')
     dists = np.median(MC_dwarfs[:,6,:], axis=1)
 
     # get CDF for satellites
@@ -205,7 +205,7 @@ def match_rdist(df, sample, rtol=5, seed=42, pltname=None,
 def match_rnum(df, sample, pltname=None,
                 plotpath='figures/sampling/match_radial_dists/'):
     # get MW satellite distribution
-    MC_dwarfs = np.load('data/sampling/'+sample+'_converted.npy')
+    MC_dwarfs = np.load('data/sampling/'+sample+'.npy')
     dists = np.median(MC_dwarfs[:,6,:], axis=1)
     errors = np.std(MC_dwarfs[:,6,:], axis=1)
     p = errors.argsort()
