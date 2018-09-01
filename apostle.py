@@ -12,13 +12,12 @@ simlist = ['V1_HR_fix', 'V4_HR_fix', 'V6_HR_fix', 'S4_HR_fix', 'S5_HR_fix',
 
 for sim in simlist:
     halos, subs_c = u.load_apostle(sim=sim, processed=True)
-    label = 'Vmax_rnum'
+    label = 'Vpeak'
 
     # if data aren't available, continue
     try:
-        subs_c = subs_c[subs_c.Vmax > 5]
-        # assert (subs_c[subs_c.Mstar > 0].Vpeak > 18).all()
-        # subs_c = subs_c[subs_c.Vpeak > 18]
+        # subs_c = subs_c[subs_c.Vmax > 5]
+        subs_c = subs_c[subs_c.Vpeak > 18]
     except AttributeError:
         print(sim+" doesn't have the property")
         continue
@@ -34,7 +33,7 @@ for sim in simlist:
 
         subs = subs_c[subs_c.hostID == ID]
         # subs = u.match_rdist(subs, 'fritzplusMCs', rtol=10)
-        subs = u.match_rnum(subs, 'fritzplusMCs')
+        # subs = u.match_rnum(subs, 'fritzplusMCs')
         print(sim+", "+str(ID)+": "+str(len(subs))+" subhalos")
 
         vels = subs[['v_r', 'v_theta', 'v_phi']].values
