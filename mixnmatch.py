@@ -62,7 +62,7 @@ with open('data/sampling/names_key.pkl', 'wb') as f:
 
 """
 # for printing dwarf props Table
-dwarf_file = 'data/dwarfs/dwarf_props.yaml'
+dwarf_file = 'data/dwarf_props.yaml'
 with open(dwarf_file, 'r') as f:
     dwarfs = yaml.load(f)
 
