@@ -1,17 +1,17 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy.optimize as op
 import utils as u
 import yaml
 import glob
 import pickle
+import corner
 
 pltpth = 'figures/paperfigs/'
 
 # # ## ### ##### ######## ############# #####################
 ### Figure 1: Tangential velocity excess
 # # ## ### ##### ######## ############# #####################
-
+print("Tangential velocity excess")
 edges = np.arange(0,301,1)
 rhist = {'cumulative': True, 'histtype': 'step', 'lw': 2, 'bins': edges,
             'density': True}
@@ -58,12 +58,12 @@ plt.errorbar(dist_med, frac_med, fmt='none', yerr=frac_err, xerr=dist_err, \
 plt.axhline(1/3, color='k', ls='--')
 plt.xlabel('Galactocentric dist. [kpc]')
 plt.ylabel(r'$V_{r}^2 / V_{tot}^2$');
-plt.savefig(pltpth+'vtan_excess.png', bbox_inches='tight');
+plt.savefig(pltpth+'vtan_excess.pdf', bbox_inches='tight');
 
 # # ## ### ##### ######## ############# #####################
 ### Figure 2: uniform and variable results for data
 # # ## ### ##### ######## ############# #####################
-
+print("Data results")
 plt.figure(figsize=(16,6))
 plt.subplot(121)
 bins = np.linspace(-3, 1, 50)
@@ -147,11 +147,25 @@ plt.axhline(y=0, ls='--', c='k')
 plt.xlabel(r'$r$ [kpc]')
 plt.ylabel(r'$\beta$')
 plt.xscale('log');
-plt.savefig(pltpth+'uniform_and_variable.png', bbox_inches='tight');
+plt.savefig(pltpth+'uniform_and_variable.pdf', bbox_inches='tight');
 
 # # ## ### ##### ######## ############# #####################
-### Figure 3: Beta(r) in simulations
+### Figure 3: Corner plot for uniform model
 # # ## ### ##### ######## ############# #####################
+print("Uniform model corner plot")
+samples = np.load(u.SIM_DIR+'beta/mcmc/data/uniform.npy')
+labels = [r"$v_r$", r"$v_\theta$", r"$v_\phi$", r"$\sigma_r$",
+            r"$\sigma_\theta$", r"$\sigma_\phi$"]
+
+fig = corner.corner(samples, labels=labels, quantiles=[0.16, 0.5, 0.84],
+                      show_titles=True, title_kwargs={"fontsize": 14},
+                      label_kwargs={"fontsize": 18})
+fig.savefig(pltpth+'corner_uniform.pdf', bbox_inches='tight')
+
+# # ## ### ##### ######## ############# #####################
+### Figure 4: Beta(r) in simulations
+# # ## ### ##### ######## ############# #####################
+print("Simulation results")
 fig, ax = plt.subplots(5, 3, sharex='col', sharey='row', figsize=(12,10))
 plt.subplots_adjust(wspace=0.1, hspace=0.13)
 text_dict = {'ha': 'center', 'va': 'center', 'fontsize': 18}
@@ -223,4 +237,4 @@ for i, row, rowname in zip(range(5), rows, rownames):
 
             cax.plot(rvals, beta_median, '-', lw=2.0)
             cax.fill_between(rvals, lower, upper, alpha = 0.2)
-plt.savefig(pltpth+'beta_sims.png', bbox_inches='tight')
+plt.savefig(pltpth+'beta_sims.pdf', bbox_inches='tight')
