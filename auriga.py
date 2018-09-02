@@ -1,31 +1,29 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import emcee
-import corner
 import utils as u
 import likelihood.variablesigma as l
-import pandas as pd
-import glob
 from os.path import isfile
 
-auriga_path = u.SIM_DIR+'auriga/'
-names=['x', 'y', 'z', 'vx', 'vy', 'vz', 'Mstar', 'Vmax']
-sims = glob.glob(auriga_path+'*.txt')
-label = 'gt_5e6_rnum'
+sims = ['halo_6', 'halo_16', 'halo_21', 'halo_23', 'halo_24', 'halo_27',
+        'halo_6_DMO', 'halo_16_DMO', 'halo_21_DMO', 'halo_23_DMO',
+        'halo_24_DMO', 'halo_27_DMO']
+label = 'Vmax'
 
 for sim in sims:
-    name = sim.strip(auriga_path).strip('.txt')
-    folder = 'DMO' if 'DMO' in name else 'auriga'
-
     # check this analysis hasn't been done
-    outfile = u.SIM_DIR+'beta/mcmc/'+folder+'/'+name+'_'+label
+    folder = 'DMO' if 'DMO' in sim else 'auriga'
+    outfile = u.SIM_DIR+'beta/mcmc/'+folder+'/'+sim+'_'+label
     if isfile(outfile+'.npy'):
-        print("File computed for "+sim+", haloID: "+str(ID))
+        print("File computed for "+sim)
         continue
 
-    subs = pd.read_table(sim, sep='\s+', header=None, names=names)
-    subs = u.compute_spherical_hostcentric(subs)
-    print(name+": "+str(len(subs))+" subhalos")
+    subs = u.load_auriga(sim, processed=True)
+
+    subs = subs[subs.Vmax > 5]
+    # subs = subs[subs.Vpeak > 18]
+    # subs = u.match_rdist(subs, 'fritzplusMCs', rtol=10)
+    # subs = u.match_rnum(subs, 'fritzplusMCs')
+    print(sim+": "+str(len(subs))+" subhalos")
 
     vels = subs[['v_r', 'v_theta', 'v_phi']].values
     dists = subs.r.values

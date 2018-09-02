@@ -1,18 +1,15 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import emcee
-import corner
 import utils as u
 import likelihood.variablesigma as l
-import pandas as pd
 from os.path import isfile
 
 simlist = ['V1_HR_fix', 'V4_HR_fix', 'V6_HR_fix', 'S4_HR_fix', 'S5_HR_fix',
             'V1_HR_DMO', 'V4_HR_DMO']
+label = 'Vpeak'
 
 for sim in simlist:
     halos, subs_c = u.load_apostle(sim=sim, processed=True)
-    label = 'Vpeak'
 
     # if data aren't available, continue
     try:

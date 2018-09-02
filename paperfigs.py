@@ -159,16 +159,16 @@ fig.text(0.5, 0.07, 'r [kpc]', **text_dict)
 fig.text(0.05, 0.5, r'$\beta$', rotation='vertical', **text_dict);
 cols = ['DMO', 'apostle', 'auriga']
 colnames = ['DMO', 'APOSTLE', 'Auriga']
-rows = ['gt5e6', 'gt5e6_rdist', 'gt5e6_rnum', 'Vpeak', 'Vpeak_rnum']
-rownames = [r'$N_\mathregular{part} > 100$',
-            r'$N_\mathregular{part} > 100$ (rdist)',
-            r'$N_\mathregular{part} > 100$ (rnum)',
+rows = ['Vmax', 'Vmax_rdist', 'Vmax_rnum', 'Vpeak', 'Vpeak_rnum']
+rownames = [r'$V_\mathregular{max} > 5$',
+            r'$V_\mathregular{max} > 5$ (rdist)',
+            r'$V_\mathregular{max} > 5$ (rnum)',
             r'$V_\mathregular{peak} > 18$ km s$^{-1}$',
             r'$V_\mathregular{peak} > 18$ km s$^{-1}$ (rnum)']
 rvals = np.arange(15,265,5)
 
 # only need to calculate sats curves once
-file = u.SIM_DIR+'beta/mcmc_old/variablesigma_fritzplusMCs.npy'
+file = u.SIM_DIR+'beta/mcmc/data/fritzplusMCs.npy'
 samples = np.load(file)
 sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) \
             for r in rvals]
