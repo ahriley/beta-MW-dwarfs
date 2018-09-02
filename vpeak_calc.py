@@ -11,10 +11,15 @@ simlist = ['V1_HR_fix', 'V4_HR_fix', 'V6_HR_fix', 'S5_HR_fix']
 
 for sim in simlist:
     print(sim)
-    halos = u.load_apostle(sim)
-    if 'Vpeak' in halos.keys():
-        print("Already computed for "+sim)
-    files = glob.glob(u.APOSTLE_DIR+sim+'/*.sav')
+    if 'HR' in sim:
+        # APOSTLE
+        halos = u.load_apostle(sim)
+        if 'Vpeak' in halos.keys():
+            print("Already computed for "+sim)
+        files = glob.glob(u.APOSTLE_DIR+sim+'/*.sav')
+    else:
+        # Auriga
+        raise NotImplementedError
     tracks_full = np.array([np.loadtxt(file) for file in files])
     Vmax = tracks_full[:,:,2]
 
