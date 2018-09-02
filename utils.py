@@ -9,6 +9,7 @@ Mpc2kpc = 1000
 SIM_DIR = '/Volumes/TINY/NOTFERMI/sims/'
 ELVIS_DIR = SIM_DIR+'elvis/'
 APOSTLE_DIR = SIM_DIR+'apostle/'
+AURIGA_DIR = SIM_DIR+'auriga/'
 
 def beta(df):
     return 1-(np.var(df.v_theta)+np.var(df.v_phi))/(2*np.var(df.v_r))
@@ -65,6 +66,13 @@ def list_of_sims(sim):
         return [f[len(APOSTLE_DIR):-9] for f in files]
     else:
         raise NotImplementedErorr("Specify simulation suite that is available")
+
+def load_auriga(sim, processed=False):
+    filename = AURIGA_DIR+sim+'.pkl'
+    subs = pd.read_pickle(filename)
+    if processed:
+        subs = compute_spherical_hostcentric(df=subs)
+    return subs
 
 def load_apostle(sim, processed=False):
     filename = APOSTLE_DIR+sim+'_subs.pkl'
