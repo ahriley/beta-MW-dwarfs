@@ -3,6 +3,7 @@ graveyard/
 figures/
 data/mcmc/
 data/sampling/
+postprocessing.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
