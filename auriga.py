@@ -7,9 +7,12 @@ from os.path import isfile
 sims = ['halo_6', 'halo_16', 'halo_21', 'halo_23', 'halo_24', 'halo_27',
         'halo_6_DMO', 'halo_16_DMO', 'halo_21_DMO', 'halo_23_DMO',
         'halo_24_DMO', 'halo_27_DMO']
-label = 'Vmax'
+label = 'Mstar'
 
 for sim in sims:
+    if label == 'Mstar' and 'DMO' in sim:
+        continue
+
     # check this analysis hasn't been done
     folder = 'DMO' if 'DMO' in sim else 'auriga'
     outfile = u.SIM_DIR+'beta/mcmc/'+folder+'/'+sim+'_'+label
@@ -19,8 +22,9 @@ for sim in sims:
 
     subs = u.load_auriga(sim, processed=True)
 
-    subs = subs[subs.Vmax > 5]
+    # subs = subs[subs.Vmax > 5]
     # subs = subs[subs.Vpeak > 18]
+    subs = subs[subs.Mstar > 0]
     # subs = u.match_rdist(subs, 'fritzplusMCs', rtol=10)
     # subs = u.match_rnum(subs, 'fritzplusMCs')
     print(sim+": "+str(len(subs))+" subhalos")
