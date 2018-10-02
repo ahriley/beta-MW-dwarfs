@@ -8,8 +8,8 @@ import pickle
 import utils as u
 
 # load MC samples, get names
-sample = 'gold'
-tag = 'gold'
+sample = 'fritzplusMCs'
+tag = 'fritzplusMCs_noLMCsats'
 MC_dwarfs = np.load('data/sampling/'+sample+'.npy')
 with open('data/sampling/names_key.pkl', 'rb') as f:
     names = pickle.load(f)[sample]
@@ -19,7 +19,6 @@ assert MC_dwarfs.shape[0] == len(names)
 # ignore possible satellites of LMC
 LMC_sats = ['Horologium I', 'Carina II', 'Carina III', 'Hydrus I']
 ignore = [names.index(sat) for sat in LMC_sats]
-MC_dwarfs = np.delete(MC_dwarfs, ignore, axis=0)
 # """
 
 """
@@ -38,14 +37,11 @@ for name, mass in zip(names, Mstar):
         ignore.append(names.index(name))
 # """
 
-# load MC samples, remove unwanted satellites
-MC_dwarfs = np.load('data/sampling/'+sample+'.npy')
+# remove unwanted satellites
+if len(ignore) > 0:
+    MC_dwarfs = np.delete(MC_dwarfs, ignore, axis=0)
 dists = MC_dwarfs[:,6,:]
 MC_vels = MC_dwarfs[:,9:12,:]
-
-# if len(ignore) > 0:
-#     MC_dwarfs = np.delete(MC_dwarfs, ignore, axis=0)
-#     dists = np.delete(dists, ignore, axis=0)
 
 # data and covariances for each satellite
 vels = np.median(MC_vels, axis=2)
