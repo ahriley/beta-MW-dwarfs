@@ -10,7 +10,7 @@ import utils as u
 
 # load MC samples, names of satellites
 sample = 'fritzplusMCs'
-tag = 'uniform'
+tag = 'uniform_noLMCsats'
 MC_dwarfs = np.load('data/sampling/'+sample+'.npy')
 with open('data/sampling/names_key.pkl', 'rb') as f:
     names = pickle.load(f)[sample]
@@ -30,6 +30,13 @@ cautun = ['Sagittarius I', 'LMC', 'SMC', 'Draco I', 'Ursa Minor', 'Sculptor',
             'Carina I', 'Fornax', 'Leo II', 'Leo I']
 cautun = np.array([names.index(sat) for sat in cautun])
 MC_dwarfs = MC_dwarfs[cautun]
+# """
+
+"""
+# ignore possible satellites of LMC
+LMC_sats = ['Horologium I', 'Carina II', 'Carina III', 'Hydrus I']
+ignore = [names.index(sat) for sat in LMC_sats]
+MC_dwarfs = np.delete(MC_dwarfs, ignore, axis=0)
 # """
 
 # data and covariances for each satellite
