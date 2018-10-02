@@ -51,7 +51,7 @@ def compute_spherical_hostcentric(df):
     df2['v_r'], df2['v_theta'], df2['v_phi'] = v_r, v_theta, v_phi
     df2['v_t'] = v_t
 
-    return df2
+    return df2[df2.r < 300]
 
 def list_of_sims(sim):
     files = []
@@ -81,7 +81,7 @@ def load_apostle(sim, processed=False):
         subs.sort_values('M_dm', ascending=False, inplace=True)
         haloIDs = list(subs.index.values[0:2])
         subs, halos = subs.drop(haloIDs), subs.loc[haloIDs]
-        halos.sort_values('Mstar', ascending=False, inplace=True)
+        halos.sort_values('M_dm', ascending=False, inplace=True)
         And_id = halos.iloc[0].name
         MW_id = halos.iloc[1].name
         subs = subs[(subs['hostID'] == And_id) | (subs['hostID'] == MW_id)]
