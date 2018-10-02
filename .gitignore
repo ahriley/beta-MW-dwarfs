@@ -1,8 +1,8 @@
 # folders for working progress
 graveyard/
 figures/
-data/mcmc/
 data/sampling/
+data/sims/
 postprocessing.py
 
 # Byte-compiled / optimized / DLL files

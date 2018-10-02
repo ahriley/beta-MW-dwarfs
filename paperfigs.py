@@ -83,7 +83,7 @@ if remake[0]:
 # # ## ### ##### ######## ############# #####################
 ### Radial distribution
 # # ## ### ##### ######## ############# #####################
-if remake[1]:
+if remake[2]:
     print("Radial distribution")
     fig = plt.figure(figsize=[smallwidth, smallwidth*0.75])
     bins = np.logspace(np.log10(5), np.log10(300), 10000)
@@ -147,7 +147,7 @@ if remake[1]:
 # # ## ### ##### ######## ############# #####################
 ### Uniform results for data
 # # ## ### ##### ######## ############# #####################
-if remake[2]:
+if remake[3]:
     fig = plt.figure()
     print("Uniform sigma")
     bins = np.linspace(-3, 1, 50)
@@ -185,7 +185,7 @@ if remake[2]:
 # # ## ### ##### ######## ############# #####################
 ### Corner plot for uniform model
 # # ## ### ##### ######## ############# #####################
-if remake[3]:
+if remake[4]:
     print("Uniform model corner plot")
     samples = np.load(u.SIM_DIR+'beta/mcmc/data/uniform.npy')
     labels = [r"$v_r$", r"$v_\theta$", r"$v_\phi$", r"$\sigma_r$",
@@ -200,7 +200,7 @@ if remake[3]:
 # # ## ### ##### ######## ############# #####################
 ### Variable results for data
 # # ## ### ##### ######## ############# #####################
-if remake[4]:
+if remake[5]:
     sample = 'fritzplusMCs'
     rvals = np.arange(15,265,5)
     samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+sample+'.npy')
@@ -252,7 +252,7 @@ if remake[4]:
 # # ## ### ##### ######## ############# #####################
 ### Beta(r) in simulations
 # # ## ### ##### ######## ############# #####################
-if remake[5]:
+if remake[6]:
     print("Simulation results")
     cols = ['DMO', 'apostle', 'auriga']
     colnames = ['DMO', 'APOSTLE', 'Auriga']
@@ -319,7 +319,7 @@ if remake[5]:
 # # ## ### ##### ######## ############# #####################
 ### Different tracer comparison
 # # ## ### ##### ######## ############# #####################
-if remake[6]:
+if remake[7]:
     fig = plt.figure(figsize=[smallwidth, smallwidth*0.75])
     ms = 4
     capsize = 2
