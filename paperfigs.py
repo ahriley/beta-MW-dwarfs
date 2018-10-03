@@ -8,6 +8,7 @@ import corner
 import matplotlib.gridspec as gridspec
 import pandas as pd
 from matplotlib import rc
+from halotools.empirical_models import NFWProfile
 
 pltpth = 'figures/paperfigs/'
 params = {'axes.labelsize': 8,
@@ -34,9 +35,9 @@ pt_to_in = 0.01384
 smallwidth = 242.26653 * pt_to_in
 largewidth = 513.11743 * pt_to_in
 
-# remake = [True for i in range(7)]
-remake = [False for i in range(7)]
-remake[1] = True
+# remake = [True for i in range(8)]
+remake = [False for i in range(8)]
+remake[5] = True
 
 # # ## ### ##### ######## ############# #####################
 ### Tangential velocity excess
@@ -78,6 +79,52 @@ if remake[0]:
     plt.xlabel(r'$r$ [kpc]')
     plt.ylabel(r'$V_\mathrm{rad}^2\ /\ V_\mathrm{tot}^2$')
     plt.savefig(pltpth+'vtan_excess.pdf', bbox_inches='tight')
+    plt.close()
+
+# # ## ### ##### ######## ############# #####################
+### Circular velocity profiles
+# # ## ### ##### ######## ############# #####################
+if remake[1]:
+    fig = plt.figure(figsize=[smallwidth, smallwidth*0.75])
+
+    # APOSTLE
+    files = glob.glob('data/sims/Vcirc_APOSTLE/*.txt')
+    legend = False
+    for file in files:
+        profile = np.loadtxt(file)
+        if not legend:
+            plt.plot(profile[:,0], profile[:,1], 'C0', label='APOSTLE')
+            legend = True
+        else:
+            plt.plot(profile[:,0], profile[:,1], 'C0')
+        # plt.plot(profile[:,0], profile[:,2], 'r--')
+
+    # Auriga
+    files = glob.glob('data/sims/Vcirc_auriga/*.txt')
+    legend = False
+    for file in files:
+        profile = np.loadtxt(file)
+        plt.plot(profile[:,0], profile[:,1], 'C1')
+        if not legend:
+            plt.plot(profile[:,0], profile[:,1], 'C1', label='Auriga')
+            legend = True
+        else:
+            plt.plot(profile[:,0], profile[:,1], 'C1')
+        # plt.plot(profile[:,0], profile[:,2], 'b--')
+
+    nfw = NFWProfile()
+    nfw_Vcirc = nfw.circular_velocity(profile[:,0]*10**-3, 10**12, conc=10)
+    plt.plot(profile[:,0], nfw_Vcirc, 'k--', \
+                label=r'NFW(10$^{12}$ M$_\odot$, c=10)')
+
+    plt.xlabel(r'$r$ [kpc]')
+    plt.ylabel(r'$V_{circ}$ [km s$^{-1}$]')
+    plt.xlim(0.5, 150)
+    plt.ylim(50, 300)
+    plt.legend(loc='best')
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.savefig(pltpth+'vcirc.pdf', bbox_inches='tight')
     plt.close()
 
 # # ## ### ##### ######## ############# #####################
@@ -148,12 +195,12 @@ if remake[2]:
 ### Uniform results for data
 # # ## ### ##### ######## ############# #####################
 if remake[3]:
-    fig = plt.figure()
+    fig = plt.figure(figsize=[smallwidth, smallwidth*0.75])
     print("Uniform sigma")
     bins = np.linspace(-3, 1, 50)
     kwargs = {'bins': bins, 'density': True, 'histtype': 'step', 'lw': 2}
     files = ['uniform', 'uniform_lt100kpc', 'uniform_gt100kpc']
-    labels = ['all', '< 100', '> 100']
+    labels = ['all', r'$< 100$', r'$> 100$']
 
     # compute statistics for Cautun sample
     samples = np.load(u.SIM_DIR+'beta/mcmc/data/uniform_cautun.npy')
@@ -170,15 +217,14 @@ if remake[3]:
         samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+file+'.npy')
         betas = 1 - (samples[:,4]**2 + samples[:,5]**2) / (2*samples[:,3]**2)
         y, x = np.histogram(betas, bins=bins)
-        plt.plot((x[1:] + x[:-1]) / 2,y/len(betas), label=label, lw=2)
+        plt.plot((x[1:] + x[:-1]) / 2,y/len(betas), label=label)
     plt.axvline(0.0, color='k', ls='--')
-    plt.xlabel(r'$\beta$', fontsize=16)
-    plt.ylabel('Posterior distribution', fontsize=16)
-    plt.xticks(fontsize=10)
-    plt.yticks(fontsize=10)
+    plt.xlabel(r'$\beta$')
+    plt.ylabel('Posterior distribution')
+    plt.xlim(-3,1)
     plt.ylim(bottom=0.0)
     plt.legend(loc='upper left')
-    plt.text(-2.2,0.03,'Cautun & Frenk\n(2017)',ha='center');
+    plt.text(-2.2,0.03,'Cautun \& Frenk\n(2017)',ha='center',fontsize=7);
     plt.savefig(pltpth+'uniform.pdf', bbox_inches='tight')
     plt.close()
 
@@ -187,21 +233,29 @@ if remake[3]:
 # # ## ### ##### ######## ############# #####################
 if remake[4]:
     print("Uniform model corner plot")
+    fig = plt.figure(figsize=[smallwidth, smallwidth*0.75])
     samples = np.load(u.SIM_DIR+'beta/mcmc/data/uniform.npy')
     labels = [r"$v_r$", r"$v_\theta$", r"$v_\phi$", r"$\sigma_r$",
                 r"$\sigma_\theta$", r"$\sigma_\phi$"]
-
+    params['xtick.labelsize'] = 14
+    params['ytick.labelsize'] = 14
+    plt.rcParams.update(params)
     fig = corner.corner(samples, labels=labels, quantiles=[0.16, 0.5, 0.84],
-                          show_titles=True, title_kwargs={"fontsize": 14},
-                          label_kwargs={"fontsize": 18})
+                          show_titles=True, title_kwargs={"fontsize": 20},
+                          label_kwargs={"fontsize": 20})
     fig.savefig(pltpth+'corner_uniform.pdf', bbox_inches='tight')
-    fig.close()
+    plt.close()
+    params['xtick.labelsize'] = 8
+    params['ytick.labelsize'] = 8
+    plt.rcParams.update(params)
 
 # # ## ### ##### ######## ############# #####################
 ### Variable results for data
 # # ## ### ##### ######## ############# #####################
 if remake[5]:
+    print('Variable results for MW')
     sample = 'fritzplusMCs'
+    fig = plt.figure(figsize=[smallwidth, smallwidth])
     rvals = np.arange(15,265,5)
     samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+sample+'.npy')
     sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) \
@@ -215,18 +269,16 @@ if remake[5]:
     lower = np.percentile(betas, 15.9, axis=1)
     upper = np.percentile(betas, 84.1, axis=1)
 
-    fig = plt.figure(figsize=(8, 8))
     gs = gridspec.GridSpec(2, 1, height_ratios=[1, 1])
     gs.update(hspace=0.0)
 
     ax0 = plt.subplot(gs[0])
-    ax0.plot(rvals, beta_median, '-', lw=2.0)
+    ax0.plot(rvals, beta_median, '-')
     ax0.fill_between(rvals, lower, upper, alpha=0.2)
     ax0.axhline(y=0, ls='--', c='k')
-    ax0.tick_params(labelsize=12)
     ax0.set_xlim(rvals[0], rvals[-1])
-    ax0.set_ylim(ymax=1)
-    ax0.set_ylabel(r'$\beta$', fontsize=16)
+    ax0.set_ylim(top=1)
+    ax0.set_ylabel(r'$\beta$')
     ax0.set_xscale('log')
 
     ax1 = plt.subplot(gs[1])
@@ -237,14 +289,23 @@ if remake[5]:
         lower = np.percentile(betas, 15.9, axis=1)
         upper = np.percentile(betas, 84.1, axis=1)
 
-        ax1.plot(rvals, beta_median, '-', lw=2.0, label=labels[j])
+        ax1.plot(rvals, beta_median, '-', label=labels[j])
         ax1.fill_between(rvals, lower, upper, alpha = 0.4)
-    ax1.set_xlabel(r'$r$ [kpc]', fontsize=16)
-    ax1.set_ylabel(r'$\sigma$ [km s$^{-1}$]', fontsize=16)
-    ax1.legend(loc='best', fontsize=12)
+
+    # plot satellites on graph
+    MC_dwarfs = np.load('data/sampling/fritzplusMCs.npy')
+    dists = np.median(MC_dwarfs[:,6,:], axis=1)
+    for dist in dists:
+        # ax0.axvline(dist, ls='--', lw=0.5, dashes=(10, 10))
+        # ax1.axvline(dist, ls='--', lw=0.5, dashes=(10, 10))
+        ax0.axvline(dist, lw=0.5, ymin=0, ymax=0.1)
+        ax1.axvline(dist, lw=0.5, ymin=0.9, ymax=1)
+
+    ax1.set_xlabel(r'$r$ [kpc]')
+    ax1.set_ylabel(r'$\sigma$ [km s$^{-1}$]')
+    ax1.legend(loc=(0.78,0.5))
     ax1.set_xscale('log')
-    ax1.set_yticks([50, 100, 150, 200, 250, 300])
-    ax1.tick_params(labelsize=12)
+    ax1.set_yticks([0, 100, 200, 300])
     ax1.set_xlim(rvals[0], rvals[-1]);
     plt.savefig(pltpth+'variable.pdf', bbox_inches='tight')
     plt.close()
@@ -259,8 +320,8 @@ if remake[6]:
     rows = ['Vmax', 'Vmax_rdist', 'Vmax_rnum', 'Mstar']
     rownames = [r'All',
                 r'Radial dist.',
-                r'Radial dist and $N_\mathregular{sats}$',
-                r'$M_\mathregular{star} > 0$']
+                r'Radial dist. and $N_\text{sats}$',
+                r'$M_\text{star} > 0$']
     rvals = np.arange(15,265,5)
 
     # only need to calculate sats curves once
@@ -278,6 +339,7 @@ if remake[6]:
 
     fig, ax = plt.subplots(len(rows), len(cols), sharex='col', sharey='row', \
                             figsize=(12,10))
+                            # figsize=[largewidth, largewidth])
     plt.subplots_adjust(wspace=0.1, hspace=0.13)
     text_dict = {'ha': 'center', 'va': 'center', 'fontsize': 20}
     fig.text(0.5, 0.07, 'r [kpc]', **text_dict)
@@ -294,8 +356,9 @@ if remake[6]:
             if i == 0:
                 cax.set_title(colname, fontsize=12)
 
-            cax.plot(rvals, beta_median_sats, '-', lw=2.0)
-            cax.fill_between(rvals, lower_sats, upper_sats, alpha = 0.2)
+            cax.plot(rvals, beta_median_sats, '-', zorder=100)
+            cax.fill_between(rvals, lower_sats, upper_sats, \
+                                alpha=0.3, lw=2, zorder=100)
 
             # plot curves for each simulation selection
             simlist = glob.glob(u.SIM_DIR+'beta/mcmc/'+col+'/*'+row+'.npy')
@@ -311,8 +374,8 @@ if remake[6]:
                 lower = np.percentile(betas, 15.9, axis=1)
                 upper = np.percentile(betas, 84.1, axis=1)
 
-                cax.plot(rvals, beta_median, '-', lw=2.0)
-                cax.fill_between(rvals, lower, upper, alpha = 0.2)
+                cax.plot(rvals, beta_median, '-', zorder=0)
+                cax.fill_between(rvals, lower, upper, alpha=0.2, zorder=0)
     plt.savefig(pltpth+'beta_sims.pdf', bbox_inches='tight')
     plt.close()
 
@@ -401,22 +464,3 @@ if remake[7]:
     plt.ylabel(r'$\beta$')
     plt.savefig(pltpth+'tracer_comparison.pdf', bbox_inches='tight')
     plt.close()
-
-# plot satellites on graph
-# ylim = plt.gca().get_ylim()
-# names = [x for _,x in sorted(zip(dist_med,names))]
-# dist_med = np.sort(dist_med)
-# highs = ['Tuc III', 'Car III', 'Tri II', 'Boo II', 'Com Ber I', 'Boo I',
-#             'U Min', 'Scu', 'U Maj I', 'Car I', 'Gru I', 'For', 'Can Ven II']
-# for name, dist in zip(names, dist_med):
-#     split = name.split()
-#     id = [item[:3] for item in split]
-#     if 'Ursa' in name:
-#         id[0] = id[0][0]
-#     tag = ' '.join(id)
-#     if tag == 'Sex':
-#         tag = 'Sxt'
-#     if tag in highs:
-#         plt.text(dist, ylim[1] - 0.1, tag, rotation='vertical', va='top')
-#     else:
-#         plt.text(dist, ylim[0] + 0.1, tag, rotation='vertical', va='bottom')
