@@ -37,7 +37,7 @@ largewidth = 513.11743 * pt_to_in
 
 # remake = [True for i in range(8)]
 remake = [False for i in range(8)]
-remake[5] = True
+remake[6] = True
 
 # # ## ### ##### ######## ############# #####################
 ### Tangential velocity excess
@@ -342,7 +342,7 @@ if remake[6]:
                             # figsize=[largewidth, largewidth])
     plt.subplots_adjust(wspace=0.1, hspace=0.13)
     text_dict = {'ha': 'center', 'va': 'center', 'fontsize': 20}
-    fig.text(0.5, 0.07, 'r [kpc]', **text_dict)
+    fig.text(0.5, 0.07, r'$r$ [kpc]', **text_dict)
     fig.text(0.05, 0.5, r'$\beta$', rotation='vertical', **text_dict);
     for i, row, rowname in zip(range(len(rows)), rows, rownames):
         for j, col, colname in zip(range(len(cols)), cols, colnames):

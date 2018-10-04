@@ -60,7 +60,7 @@ map = dict(zip(samples, (fritz, names, fritz_gold_names)))
 with open('data/sampling/names_key.pkl', 'wb') as f:
     pickle.dump(map, f, protocol=pickle.HIGHEST_PROTOCOL)
 
-"""
+# """
 # for printing dwarf props Table
 dwarf_file = 'data/dwarf_props.yaml'
 with open(dwarf_file, 'r') as f:
@@ -68,6 +68,10 @@ with open(dwarf_file, 'r') as f:
 
 name_study = dict(zip(names, study_from))
 study_number = dict(zip(studies, [1, 5, 4, 3, 2]))
+
+# load fritz yaml
+with open(fritz_file, 'r') as f:
+    fritz = yaml.load(f)
 
 count = len(study_number) + 1
 tags = []
@@ -97,17 +101,54 @@ for name in dwarfs:
 
     if name not in names:
         print(name+' & '+"{0:.3f}".format(dwarf['ra'])+' & '+\
-                "{0:.3f}".format(dwarf['dec'])+' & '+\
-                str(dwarf['abs_mag'])+' & $'+str(dwarf['distance'])+' \pm '+\
-                str(dwarf['distance_error'])+'$ & $'+str(dwarf['vel_los'])+\
-                ' \pm '+str(dwarf['vel_los_error'])+'$ & -- & '+refstring+\
-                '\\\\')
-    else:
+            "{0:.3f}".format(dwarf['dec'])+' & '+\
+            str(dwarf['abs_mag'])+' & $'+\
+            str(dwarf['distance'])+' \pm '+\
+            str(dwarf['distance_error'])+'$ & $'+\
+            str(dwarf['vel_los'])+' \pm '+\
+            str(dwarf['vel_los_error'])+'$ & $'+\
+            str(fritz[name]['mu_alpha'])+' \pm '+\
+            str(fritz[name]['mu_alpha_error'])+'$ & $'+\
+            str(fritz[name]['mu_delta'])+' \pm '+\
+            str(fritz[name]['mu_delta_error'])+'$ & '+\
+            '\\nodata & '+\
+            '\\nodata & '+\
+            '\\nodata & '+refstring+'\\\\')
+    elif name == 'LMC' or name == 'SMC':
+        with open('data/helmi.yaml', 'r') as f:
+            gold_study = yaml.load(f)
         print(name+' & '+"{0:.3f}".format(dwarf['ra'])+' & '+\
             "{0:.3f}".format(dwarf['dec'])+' & '+\
-            str(dwarf['abs_mag'])+' & $'+str(dwarf['distance'])+' \pm '+\
-            str(dwarf['distance_error'])+'$ & $'+str(dwarf['vel_los'])+\
-            ' \pm '+str(dwarf['vel_los_error'])+'$ & ['+\
+            str(dwarf['abs_mag'])+' & $'+\
+            str(dwarf['distance'])+' \pm '+\
+            str(dwarf['distance_error'])+'$ & $'+\
+            str(dwarf['vel_los'])+' \pm '+\
+            str(dwarf['vel_los_error'])+'$ & '+\
+            '\\nodata & '+\
+            '\\nodata & $'+\
+            str(gold_study[name]['mu_alpha'])+' \pm '+\
+            str(gold_study[name]['mu_alpha_error'])+'$ & $'+\
+            str(gold_study[name]['mu_delta'])+' \pm '+\
+            str(gold_study[name]['mu_delta_error'])+'$ & ['+\
+            str(study_number[name_study[name]])+'] & '+refstring+'\\\\')
+    else:
+        with open('data/'+name_study[name]+'.yaml', 'r') as f:
+            gold_study = yaml.load(f)
+        print(name+' & '+"{0:.3f}".format(dwarf['ra'])+' & '+\
+            "{0:.3f}".format(dwarf['dec'])+' & '+\
+            str(dwarf['abs_mag'])+' & $'+\
+            str(dwarf['distance'])+' \pm '+\
+            str(dwarf['distance_error'])+'$ & $'+\
+            str(dwarf['vel_los'])+' \pm '+\
+            str(dwarf['vel_los_error'])+'$ & $'+\
+            str(fritz[name]['mu_alpha'])+' \pm '+\
+            str(fritz[name]['mu_alpha_error'])+'$ & $'+\
+            str(fritz[name]['mu_delta'])+' \pm '+\
+            str(fritz[name]['mu_delta_error'])+'$ & $'+\
+            str(gold_study[name]['mu_alpha'])+' \pm '+\
+            str(gold_study[name]['mu_alpha_error'])+'$ & $'+\
+            str(gold_study[name]['mu_delta'])+' \pm '+\
+            str(gold_study[name]['mu_delta_error'])+'$ & ['+\
             str(study_number[name_study[name]])+'] & '+refstring+'\\\\')
 
 number_study = {}
