@@ -176,7 +176,7 @@ def load_satellites(file):
     sats.r = sats.r*km2kpc
     return sats
 
-def match_rdist(df, sample, rtol=5, seed=0, pltname=None,
+def match_rdist(df, sample, rtol=5, seed=0, pltname=None, random=False,
                 plotpath='figures/sampling/match_radial_dists/'):
     # get MW satellite distribution
     MC_dwarfs = np.load('data/sampling/'+sample+'.npy')
@@ -184,7 +184,11 @@ def match_rdist(df, sample, rtol=5, seed=0, pltname=None,
 
     # get CDF for satellites
     edges = np.arange(301, step=0.1)
-    hist = rv_histogram(np.histogram(dists, bins=edges), seed=seed)
+    if random:
+        hist = rv_histogram(np.histogram(dists, bins=edges))
+    else:
+        hist = rv_histogram(np.histogram(dists, bins=edges), seed=seed)
+
 
     # use inverse tranform method with r +- rtol to select subhalos
     subs = df.copy()
