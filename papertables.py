@@ -1,6 +1,11 @@
 import numpy as np
 import utils as u
 import pandas as pd
+import pickle
+
+# # ## ### ##### ######## ############# #####################
+### Simulation properties
+# # ## ### ##### ######## ############# #####################
 
 colnames = ['sim', 'haloID', 'Mvir', 'Rvir', 'Mstar', 'Rstar', 'Vcirc']
 haloprops = pd.read_csv('data/APOSTLE_mainHalos.txt', sep='\s+', \
@@ -53,3 +58,34 @@ for sim, name in zip(simlist, namelist):
                     str(np.sum(subs.Mstar > 0))
     start = name+' & '
     print(start+propstring+' \\\\')
+
+# # ## ### ##### ######## ############# #####################
+### Velocity parameters
+# # ## ### ##### ######## ############# #####################
+sample = 'fritzplusMCs'
+MC_dwarfs = np.load('data/sampling/'+sample+'.npy')
+MC_pars = MC_dwarfs[:,6:13,:]
+with open('data/sampling/names_key.pkl', 'rb') as f:
+    names = pickle.load(f)[sample]
+
+MC_pars[:,1,:] *= 180/np.pi
+MC_pars[:,2,:] *= 180/np.pi
+
+med = np.percentile(MC_pars, 50, axis=2)
+lower = np.percentile(MC_pars, 16, axis=2)
+upper = np.percentile(MC_pars, 84, axis=2)
+
+for name in sorted(names):
+    sat = names.index(name)
+    print(name+' & ', end='')
+    for i in range(med.shape[1]):
+        if i == 6:
+            print("${:0.1f}".format(med[sat][i])+\
+                    '_{-'+"{:0.1f}".format(med[sat][i]-lower[sat][i])+'}'\
+                    '^{+'+"{:0.1f}".format(upper[sat][i]-med[sat][i])+'}$'+\
+                    ' \\\\')
+        else:
+            print("${:0.1f}".format(med[sat][i])+\
+                    '_{-'+"{:0.1f}".format(med[sat][i]-lower[sat][i])+'}'\
+                    '^{+'+"{:0.1f}".format(upper[sat][i]-med[sat][i])+'}$ & ',\
+                    end='')
