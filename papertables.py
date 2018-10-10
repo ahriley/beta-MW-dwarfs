@@ -64,7 +64,7 @@ for sim, name in zip(simlist, namelist):
 # # ## ### ##### ######## ############# #####################
 sample = 'fritzplusMCs'
 MC_dwarfs = np.load('data/sampling/'+sample+'.npy')
-MC_pars = MC_dwarfs[:,6:13,:]
+MC_pars = MC_dwarfs[:,6:12,:]
 with open('data/sampling/names_key.pkl', 'rb') as f:
     names = pickle.load(f)[sample]
 
@@ -79,7 +79,7 @@ for name in sorted(names):
     sat = names.index(name)
     print(name+' & ', end='')
     for i in range(med.shape[1]):
-        if i == 6:
+        if i == med.shape[1]-1:
             print("${:0.1f}".format(med[sat][i])+\
                     '_{-'+"{:0.1f}".format(med[sat][i]-lower[sat][i])+'}'\
                     '^{+'+"{:0.1f}".format(upper[sat][i]-med[sat][i])+'}$'+\
