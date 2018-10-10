@@ -37,7 +37,7 @@ largewidth = 513.11743 * pt_to_in
 
 # remake = [True for i in range(8)]
 remake = [False for i in range(8)]
-remake[6] = True
+remake[5] = True
 
 # # ## ### ##### ######## ############# #####################
 ### Tangential velocity excess
@@ -85,6 +85,7 @@ if remake[0]:
 ### Circular velocity profiles
 # # ## ### ##### ######## ############# #####################
 if remake[1]:
+    print("Circular velocity profiles")
     fig = plt.figure(figsize=[smallwidth, smallwidth*0.75])
 
     # APOSTLE
@@ -192,15 +193,15 @@ if remake[2]:
     plt.close()
 
 # # ## ### ##### ######## ############# #####################
-### Uniform results for data
+### Uniform results for MW
 # # ## ### ##### ######## ############# #####################
 if remake[3]:
+    print("Uniform results for MW")
     fig = plt.figure(figsize=[smallwidth, smallwidth*0.75])
-    print("Uniform sigma")
     bins = np.linspace(-3, 1, 50)
     kwargs = {'bins': bins, 'density': True, 'histtype': 'step', 'lw': 2}
-    files = ['uniform', 'uniform_lt100kpc', 'uniform_gt100kpc']
-    labels = ['all', r'$< 100$', r'$> 100$']
+    files = ['uniform', 'uniform_lt100', 'uniform_gt100']
+    labels = ['all', r'$r<100$ kpc', r'$r>100$ kpc']
 
     # compute statistics for Cautun sample
     samples = np.load(u.SIM_DIR+'beta/mcmc/data/uniform_cautun.npy')
@@ -209,10 +210,10 @@ if remake[3]:
     upper = np.percentile(betas, 84.1)
     median = np.median(betas)
 
-    plt.axvspan(-2.6, -1.8, ymax=0.3, color='0.6', alpha=0.5)
-    plt.axvline(-2.2, ymax=0.296, color='k')
-    plt.axvspan(lower, upper, ymax=0.3, color='b', alpha=0.2)
-    plt.axvline(median, ymax=0.296, color='b')
+    plt.axvspan(lower, upper, ymax=0.27, color='b', alpha=0.2)
+    plt.axvline(median, ymax=0.266, color='b')
+    plt.axvspan(-2.6, -1.8, ymax=0.27, color='0.6', alpha=0.5)
+    plt.axvline(-2.2, ymax=0.266, color='k')
     for file, label in zip(files, labels):
         samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+file+'.npy')
         betas = 1 - (samples[:,4]**2 + samples[:,5]**2) / (2*samples[:,3]**2)
