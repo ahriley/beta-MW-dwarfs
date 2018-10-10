@@ -121,5 +121,5 @@ for study in studies:
     # ORDER: mu_alpha, mu_delta, vel_los, dist
     np.save('data/sampling/'+study+'_helio', positions[:,:4])
 
-    # ORDER: vx vy vz x y z r theta phi v_r v_theta v_phi v_t
+    # ORDER: x y z vx vy vz r theta phi v_r v_theta v_phi v_t
     np.save('data/sampling/'+study+'_galacto', sphcoords)
