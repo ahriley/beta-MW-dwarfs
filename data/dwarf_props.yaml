@@ -261,11 +261,11 @@ Leo V:
   vel_los_error: 2.2
 LMC:
   citation: 'McConnachie2012AJ....144....4M'
-  dec: -69.7561
+  dec: -69.7561111
   distance: 51.
   distance_error: 2.
   abs_mag: -18.1
-  ra: 5.3929
+  ra: 80.8937500
   vel_los: 262.2
   vel_los_error: 3.4
 Pegasus III:
@@ -387,11 +387,11 @@ Sextans:
   vel_los_error: 0.1
 SMC:
   citation: 'McConnachie2012AJ....144....4M'
-  dec: -72.8286
+  dec: -72.8286111
   distance: 64.
   distance_error: 4.
   abs_mag: -16.8
-  ra: 0.8791
+  ra: 13.1866667
   vel_los: 145.6
   vel_los_error: 0.6
 Triangulum II:
