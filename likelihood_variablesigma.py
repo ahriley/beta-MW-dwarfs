@@ -14,6 +14,7 @@ MC_dwarfs = np.load('data/sampling/'+sample+'.npy')
 with open('data/sampling/names_key.pkl', 'rb') as f:
     names = pickle.load(f)[sample]
 assert MC_dwarfs.shape[0] == len(names)
+ignore = []
 
 """
 # ignore possible satellites of LMC

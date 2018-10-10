@@ -37,7 +37,7 @@ largewidth = 513.11743 * pt_to_in
 
 # remake = [True for i in range(8)]
 remake = [False for i in range(8)]
-remake[5] = True
+remake[6] = True
 
 # # ## ### ##### ######## ############# #####################
 ### Tangential velocity excess
@@ -384,6 +384,7 @@ if remake[6]:
 ### Different tracer comparison
 # # ## ### ##### ######## ############# #####################
 if remake[7]:
+    print("Different tracers")
     fig = plt.figure(figsize=[smallwidth, smallwidth*0.75])
     ms = 4
     capsize = 2
