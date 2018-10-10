@@ -10,7 +10,7 @@ import pathlib
 import matplotlib.pyplot as plt
 from astropy.coordinates.representation import CartesianDifferential as CD
 
-n = 10000
+n = 2000
 plot = True
 
 dwarf_file = 'data/dwarf_props.yaml'
