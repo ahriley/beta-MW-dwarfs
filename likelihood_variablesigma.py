@@ -9,38 +9,22 @@ import utils as u
 
 # load MC samples, get names
 sample = 'fritzplusMCs'
-tag = 'fritzplusMCs_noLMCsats'
+tag = 'fritzplusMCs_noMCsystem'
 MC_dwarfs = np.load('data/sampling/'+sample+'.npy')
 with open('data/sampling/names_key.pkl', 'rb') as f:
     names = pickle.load(f)[sample]
 assert MC_dwarfs.shape[0] == len(names)
-ignore = []
 
-"""
-# ignore possible satellites of LMC
-LMC_sats = ['Horologium I', 'Carina II', 'Carina III', 'Hydrus I']
-ignore = [names.index(sat) for sat in LMC_sats]
+# """
+# ignore satellites by name
+# ignoresats = ['Horologium I', 'Carina II', 'Carina III', 'Hydrus I']
+# ignoresats = ['LMC', 'SMC']
+ignoresats = ['Horologium I', 'Carina II', 'Carina III', 'Hydrus I', 'LMC',
+                'SMC']
+ignore = [names.index(sat) for sat in ignoresats]
+MC_dwarfs = np.delete(MC_dwarfs, ignore, axis=0)
 # """
 
-"""
-# ignore satellites smaller than APOSTLE resolution
-with open('data/dwarfs/'+sample+'.yaml') as f:
-    import yaml
-    names = list(yaml.load(f).keys())
-Mstar = []
-with open('data/dwarfs/dwarf_props.yaml', 'r') as f:
-    dwarfs = yaml.load(f)
-    for name in names:
-        Mstar.append(10**(-0.4*(dwarfs[name]['abs_mag'] - 4.83)))
-Mstar = np.array(Mstar)
-for name, mass in zip(names, Mstar):
-    if mass < 10**5:
-        ignore.append(names.index(name))
-# """
-
-# remove unwanted satellites
-if len(ignore) > 0:
-    MC_dwarfs = np.delete(MC_dwarfs, ignore, axis=0)
 dists = MC_dwarfs[:,6,:]
 MC_vels = MC_dwarfs[:,9:12,:]
 

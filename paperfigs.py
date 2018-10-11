@@ -72,7 +72,7 @@ if remake[0]:
                 np.percentile(frac, 84.1, axis=1) - frac_med]
 
     plt.scatter(dist_med, frac_med, c=np.log10(Lstar), cmap='plasma_r', s=20)
-    plt.colorbar().set_label(r'$\log(L_\ast)$ [$L_\odot$]')
+    plt.colorbar().set_label(r'$\log_{10}(L_\ast/{\rm L}_\odot)$')
     plt.errorbar(dist_med, frac_med, fmt='none', yerr=frac_err, xerr=dist_err, \
                     zorder=0, lw=1)
     plt.axhline(1/3, color='k', ls='--', lw=1.0)
@@ -357,9 +357,9 @@ if remake[6]:
             if i == 0:
                 cax.set_title(colname, fontsize=12)
 
-            cax.plot(rvals, beta_median_sats, '-', zorder=100)
+            cax.plot(rvals, beta_median_sats, 'k--', zorder=100, lw=2)
             cax.fill_between(rvals, lower_sats, upper_sats, \
-                                alpha=0.3, lw=2, zorder=100)
+                                alpha=0.2, zorder=100, color='k')
 
             # plot curves for each simulation selection
             simlist = glob.glob(u.SIM_DIR+'beta/mcmc/'+col+'/*'+row+'.npy')
