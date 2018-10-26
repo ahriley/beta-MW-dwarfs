@@ -36,8 +36,8 @@ smallwidth = 242.26653 * pt_to_in
 largewidth = 513.11743 * pt_to_in
 
 # remake = [True for i in range(8)]
-remake = [False for i in range(8)]
-remake[6] = True
+remake = [False for i in range(9)]
+remake[7] = True
 
 # # ## ### ##### ######## ############# #####################
 ### Tangential velocity excess
@@ -157,18 +157,25 @@ if remake[2]:
             subs = u.match_rdist(subs, 'fritzplusMCs', rtol=10)
             corr_cdf = np.cumsum(np.histogram(subs.r,bins=bins)[0])/len(subs.r)
             corrected.append(corr_cdf)
+            # plt.plot(rvals, bary_cdf, 'C0-', lw=1.0)
+            # plt.plot(rvals, corr_cdf, 'C0--', lw=1.0)
 
     # Auriga subhalos
     sims = ['halo_6', 'halo_16', 'halo_21', 'halo_23', 'halo_24', 'halo_27']
+    baryons_a, corrected_a = [], []
     for sim in sims:
         subs = u.load_auriga(sim, processed=True)
         subs = subs[subs.Vmax > 5]
         bary_cdf = np.cumsum(np.histogram(subs.r, bins=bins)[0])/len(subs.r)
-        baryons.append(bary_cdf)
+        baryons_a.append(bary_cdf)
         subs = u.match_rdist(subs, 'fritzplusMCs', rtol=10)
         corr_cdf = np.cumsum(np.histogram(subs.r, bins=bins)[0])/len(subs.r)
         corrected.append(corr_cdf)
+        # plt.plot(rvals, bary_cdf, 'C1-', lw=1.0)
+        # plt.plot(rvals, corr_cdf, 'C1--', lw=1.0)
+
     baryons = np.array(baryons); corrected = np.array(corrected)
+    baryons_a = np.array(baryons_a); corrected_a = np.array(corrected_a)
 
     baryon_median = np.percentile(baryons, 50, axis=0)
     baryon_upper = np.percentile(baryons, 100, axis=0)
@@ -177,11 +184,19 @@ if remake[2]:
     corrected_upper = np.percentile(corrected, 100, axis=0)
     corrected_lower = np.percentile(corrected, 0, axis=0)
 
+    baryon_median_a = np.percentile(baryons_a, 50, axis=0)
+    baryon_upper_a = np.percentile(baryons_a, 100, axis=0)
+    baryon_lower_a = np.percentile(baryons_a, 0, axis=0)
+
     plt.plot(rvals, MW_dist, color='k', label='Milky Way', zorder=100)
-    plt.plot(rvals, baryon_median, label=r'Hydro')
+    plt.plot(rvals, baryon_median, label=r'APOSTLE', color='C0')
     plt.fill_between(rvals, baryon_lower, baryon_upper, alpha=0.5)
-    plt.plot(rvals, corrected_median, label='Corrected')
-    plt.fill_between(rvals, corrected_lower, corrected_upper, alpha=0.5)
+    plt.plot(rvals, baryon_median_a, label=r'Auriga', color='C1')
+    plt.fill_between(rvals, baryon_lower_a, baryon_upper_a, color='C1',\
+                        alpha=0.5)
+    plt.plot(rvals, corrected_median, color='magenta', label='Corrected')
+    plt.fill_between(rvals, corrected_lower, corrected_upper, color='violet',\
+                        alpha=0.5)
     plt.xlabel(r'$r$ [kpc]')
     plt.ylabel(r'$f(<r)$')
     plt.xlim(5, 300)
@@ -200,12 +215,14 @@ if remake[3]:
     fig = plt.figure(figsize=[smallwidth, smallwidth*0.75])
     bins = np.linspace(-3, 1, 50)
     kwargs = {'bins': bins, 'density': True, 'histtype': 'step', 'lw': 2}
-    files = ['uniform', 'uniform_lt100', 'uniform_gt100']
+    files = ['uniform_simple', 'uniform_simple_lt100', 'uniform_simple_gt100']
     labels = ['all', r'$r<100$ kpc', r'$r>100$ kpc']
+    # files = ['uniform']
+    # labels = [None]
 
     # compute statistics for Cautun sample
-    samples = np.load(u.SIM_DIR+'beta/mcmc/data/uniform_cautun.npy')
-    betas = 1 - (samples[:,4]**2 + samples[:,5]**2) / (2*samples[:,3]**2)
+    samples = np.load(u.SIM_DIR+'beta/mcmc/data/uniform_simple_cautun.npy')
+    betas = 1 - (samples[:,2]**2 + samples[:,2]**2) / (2*samples[:,1]**2)
     lower = np.percentile(betas, 15.9)
     upper = np.percentile(betas, 84.1)
     median = np.median(betas)
@@ -216,7 +233,7 @@ if remake[3]:
     plt.axvline(-2.2, ymax=0.266, color='k')
     for file, label in zip(files, labels):
         samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+file+'.npy')
-        betas = 1 - (samples[:,4]**2 + samples[:,5]**2) / (2*samples[:,3]**2)
+        betas = 1 - (samples[:,2]**2 + samples[:,2]**2) / (2*samples[:,1]**2)
         y, x = np.histogram(betas, bins=bins)
         plt.plot((x[1:] + x[:-1]) / 2,y/len(betas), label=label)
     plt.axvline(0.0, color='k', ls='--')
@@ -225,7 +242,7 @@ if remake[3]:
     plt.xlim(-3,1)
     plt.ylim(bottom=0.0)
     plt.legend(loc='upper left')
-    plt.text(-2.2,0.03,'Cautun \& Frenk\n(2017)',ha='center',fontsize=7);
+    plt.text(-2.26,0.03,'Cautun \& Frenk\n(2017)',ha='center',fontsize=7);
     plt.savefig(pltpth+'uniform.pdf', bbox_inches='tight')
     plt.close()
 
@@ -235,14 +252,14 @@ if remake[3]:
 if remake[4]:
     print("Uniform model corner plot")
     fig = plt.figure(figsize=[smallwidth, smallwidth*0.75])
-    samples = np.load(u.SIM_DIR+'beta/mcmc/data/uniform.npy')
-    labels = [r"$v_r$", r"$v_\theta$", r"$v_\phi$", r"$\sigma_r$",
-                r"$\sigma_\theta$", r"$\sigma_\phi$"]
+    samples = np.load(u.SIM_DIR+'beta/mcmc/data/uniform_simple.npy')
+    labels = [r"$v_\phi$", r"$\sigma_r$", r"$\sigma_\theta = \sigma_\phi$"]
     params['xtick.labelsize'] = 14
     params['ytick.labelsize'] = 14
     plt.rcParams.update(params)
     fig = corner.corner(samples, labels=labels, quantiles=[0.16, 0.5, 0.84],
-                          show_titles=True, title_kwargs={"fontsize": 20},
+                          show_titles=True, plot_datapoints=False,
+                          title_fmt='.0f', title_kwargs={"fontsize": 20},
                           label_kwargs={"fontsize": 20})
     fig.savefig(pltpth+'corner_uniform.pdf', bbox_inches='tight')
     plt.close()
@@ -255,14 +272,14 @@ if remake[4]:
 # # ## ### ##### ######## ############# #####################
 if remake[5]:
     print('Variable results for MW')
-    sample = 'fritzplusMCs'
+    sample = 'variable_simple'
     fig = plt.figure(figsize=[smallwidth, smallwidth])
     rvals = np.arange(15,265,5)
     samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+sample+'.npy')
-    sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) \
+    sigmas = [u.sigma(r, samples[:,1:3], samples[:,3:5], samples[:,5:]) \
                 for r in rvals]
     sigmas = np.array(sigmas)
-    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/(2*sigmas[i,:,0]**2) \
+    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,1]**2)/(2*sigmas[i,:,0]**2) \
                 for i in range(len(rvals))]
     betas = np.array(betas)
     beta_median = np.median(betas, axis=1)
@@ -283,8 +300,8 @@ if remake[5]:
     ax0.set_xscale('log')
 
     ax1 = plt.subplot(gs[1])
-    labels = [r'$\sigma_r$', r'$\sigma_\theta$', r'$\sigma_\phi$']
-    for j in range(3):
+    labels = [r'$\sigma_r$', r'$\sigma_\theta=\sigma_\phi$']
+    for j in range(2):
         betas = sigmas[:,:,j]
         beta_median = np.median(betas, axis=1)
         lower = np.percentile(betas, 15.9, axis=1)
@@ -304,10 +321,10 @@ if remake[5]:
 
     ax1.set_xlabel(r'$r$ [kpc]')
     ax1.set_ylabel(r'$\sigma$ [km s$^{-1}$]')
-    ax1.legend(loc=(0.78,0.5))
+    ax1.legend(loc=(0.67,0.6))
     ax1.set_xscale('log')
-    ax1.set_yticks([0, 100, 200, 300])
-    ax1.set_xlim(rvals[0], rvals[-1]);
+    ax1.set_yticks([0, 50, 100, 150, 200, 250])
+    ax1.set_xlim(rvals[0], rvals[-1])
     plt.savefig(pltpth+'variable.pdf', bbox_inches='tight')
     plt.close()
 
@@ -323,15 +340,17 @@ if remake[6]:
                 r'Radial dist.',
                 r'Radial dist. and $N_\text{sats}$',
                 r'$M_\text{star} > 0$']
+    # rows = ['Vmax', 'Vmax_rnum']
+    # rownames = [r'All', r'Radial dist. and $N_\text{sats}$']
     rvals = np.arange(15,265,5)
 
     # only need to calculate sats curves once
-    file = u.SIM_DIR+'beta/mcmc/data/fritzplusMCs.npy'
+    file = u.SIM_DIR+'beta/mcmc/data/variable_simple.npy'
     samples = np.load(file)
-    sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) \
+    sigmas = [u.sigma(r, samples[:,1:3], samples[:,3:5], samples[:,5:]) \
                 for r in rvals]
     sigmas = np.array(sigmas)
-    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/(2*sigmas[i,:,0]**2) \
+    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,1]**2)/(2*sigmas[i,:,0]**2) \
                 for i in range(len(rvals))]
     betas = np.array(betas)
     beta_median_sats = np.median(betas, axis=1)
@@ -390,13 +409,13 @@ if remake[7]:
     capsize = 2
 
     # plot beta(r) for the MW satelites
-    sample = 'fritzplusMCs'
+    sample = 'variable_simple'
     rvals = np.arange(15,265,5)
     samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+sample+'.npy')
-    sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) \
+    sigmas = [u.sigma(r, samples[:,1:3], samples[:,3:5], samples[:,5:]) \
                 for r in rvals]
     sigmas = np.array(sigmas)
-    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/(2*sigmas[i,:,0]**2) \
+    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,1]**2)/(2*sigmas[i,:,0]**2) \
                 for i in range(len(rvals))]
     betas = np.array(betas)
     beta_median = np.median(betas, axis=1)
@@ -409,14 +428,14 @@ if remake[7]:
     # Sohn et al. 2018 (HST GCs)
     rval = 10**((np.log10(39.5) + np.log10(10.6))/2)
     plt.errorbar([rval], [.609], yerr=np.array([[0.229], [0.13]]), \
-                    xerr=np.array([[rval-10.6], [39.5-rval]]), c='0.5', fmt='^',\
-                    ms=ms, label='Sohn+18', capsize=capsize);
+                    xerr=np.array([[rval-10.6], [39.5-rval]]), c='dimgrey', fmt='^',\
+                    ms=ms, label='Sohn+18', capsize=capsize, zorder=100);
 
     # Watkins et al. 2018 (Gaia CGs)
     rval = 10**((np.log10(21.1) + np.log10(2.0))/2)
     plt.errorbar([rval], [.48], yerr=np.array([[0.2], [0.15]]), \
-                    xerr=np.array([[rval-2.0], [21.1-rval]]), c='0.5', fmt='s',\
-                    ms=ms, label='Watkins+18', capsize=capsize)
+                    xerr=np.array([[rval-2.0], [21.1-rval]]), c='dimgrey', fmt='s',\
+                    ms=ms, label='Watkins+18', capsize=capsize, zorder=100)
 
     # load GC data from Vasiliev
     gc_file = u.SIM_DIR+'beta/othertracers/fig7.txt'
@@ -444,13 +463,13 @@ if remake[7]:
     beta_mid = np.percentile(betas, 50, axis=1)
     beta_low = np.percentile(betas, 16, axis=1)
     beta_high = np.percentile(betas, 84, axis=1)
-    plt.plot(gcs.r, beta_mid, c='0.5', label='Vasiliev18')
+    plt.plot(gcs.r, beta_mid, c='0.7', label='Vasiliev18')
     plt.fill_between(gcs.r, beta_low, beta_high, alpha=0.2, color='0.5')
 
     # Cunningham et al. (in prep) -- HALO7D
-    rvals = [15, 23, 35, 39]
-    betavals = [0.58, 0.60, 0.59, 0.49]
-    errs = [0.15, 0.1, 0.05, 0.15]
+    rvals = [15, 23, 39]
+    betavals = [0.54, 0.64, 0.70]
+    errs = [0.15, 0.15, 0.15]
     plt.errorbar(rvals, betavals, yerr=errs, fmt='o', ms=ms, capsize=capsize,\
                     c='k', label='Cunningham+18');
 
@@ -465,4 +484,65 @@ if remake[7]:
     plt.xlabel(r'$r$ [kpc]')
     plt.ylabel(r'$\beta$')
     plt.savefig(pltpth+'tracer_comparison.pdf', bbox_inches='tight')
+    plt.close()
+
+# # ## ### ##### ######## ############# #####################
+### Variable results for data
+# # ## ### ##### ######## ############# #####################
+if remake[8]:
+    print('Complex variable results for MW')
+    sample = 'fritzplusMCs'
+    fig = plt.figure(figsize=[smallwidth, smallwidth])
+    rvals = np.arange(15,265,5)
+    samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+sample+'.npy')
+    sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) \
+                for r in rvals]
+    sigmas = np.array(sigmas)
+    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/(2*sigmas[i,:,0]**2) \
+                for i in range(len(rvals))]
+    betas = np.array(betas)
+    beta_median = np.median(betas, axis=1)
+
+    lower = np.percentile(betas, 15.9, axis=1)
+    upper = np.percentile(betas, 84.1, axis=1)
+
+    gs = gridspec.GridSpec(2, 1, height_ratios=[1, 1])
+    gs.update(hspace=0.0)
+
+    ax0 = plt.subplot(gs[0])
+    ax0.plot(rvals, beta_median, '-')
+    ax0.fill_between(rvals, lower, upper, alpha=0.2)
+    ax0.axhline(y=0, ls='--', c='k')
+    ax0.set_xlim(rvals[0], rvals[-1])
+    ax0.set_ylim(top=1)
+    ax0.set_ylabel(r'$\beta$')
+    ax0.set_xscale('log')
+
+    ax1 = plt.subplot(gs[1])
+    labels = [r'$\sigma_r$', r'$\sigma_\theta$', r'$\sigma_\phi$']
+    for j in range(3):
+        betas = sigmas[:,:,j]
+        beta_median = np.median(betas, axis=1)
+        lower = np.percentile(betas, 15.9, axis=1)
+        upper = np.percentile(betas, 84.1, axis=1)
+
+        ax1.plot(rvals, beta_median, '-', label=labels[j])
+        ax1.fill_between(rvals, lower, upper, alpha = 0.4)
+
+    # plot satellites on graph
+    MC_dwarfs = np.load('data/sampling/fritzplusMCs.npy')
+    dists = np.median(MC_dwarfs[:,6,:], axis=1)
+    for dist in dists:
+        # ax0.axvline(dist, ls='--', lw=0.5, dashes=(10, 10))
+        # ax1.axvline(dist, ls='--', lw=0.5, dashes=(10, 10))
+        ax0.axvline(dist, lw=0.5, ymin=0, ymax=0.1)
+        ax1.axvline(dist, lw=0.5, ymin=0.9, ymax=1)
+
+    ax1.set_xlabel(r'$r$ [kpc]')
+    ax1.set_ylabel(r'$\sigma$ [km s$^{-1}$]')
+    ax1.legend(loc=(0.75,0.5))
+    ax1.set_xscale('log')
+    ax1.set_yticks([0, 100, 200, 300])
+    ax1.set_xlim(rvals[0], rvals[-1])
+    plt.savefig(pltpth+'variable_complex.pdf', bbox_inches='tight')
     plt.close()
