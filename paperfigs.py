@@ -37,7 +37,7 @@ largewidth = 513.11743 * pt_to_in
 
 # remake = [True for i in range(8)]
 remake = [False for i in range(9)]
-remake[7] = True
+remake[3] = True
 
 # # ## ### ##### ######## ############# #####################
 ### Tangential velocity excess
@@ -73,7 +73,7 @@ if remake[0]:
 
     plt.scatter(dist_med, frac_med, c=np.log10(Lstar), cmap='plasma_r', s=20)
     plt.colorbar().set_label(r'$\log_{10}(L_\ast/{\rm L}_\odot)$')
-    plt.errorbar(dist_med, frac_med, fmt='none', yerr=frac_err, xerr=dist_err, \
+    plt.errorbar(dist_med, frac_med, fmt='none', yerr=frac_err, xerr=dist_err,\
                     zorder=0, lw=1)
     plt.axhline(1/3, color='k', ls='--', lw=1.0)
     plt.xlabel(r'$r$ [kpc]')
@@ -216,7 +216,7 @@ if remake[3]:
     bins = np.linspace(-3, 1, 50)
     kwargs = {'bins': bins, 'density': True, 'histtype': 'step', 'lw': 2}
     files = ['uniform_simple', 'uniform_simple_lt100', 'uniform_simple_gt100']
-    labels = ['all', r'$r<100$ kpc', r'$r>100$ kpc']
+    labels = ['all (38 satellites)', r'$r<100$ kpc (23)', r'$r>100$ kpc (15)']
     # files = ['uniform']
     # labels = [None]
 
@@ -227,9 +227,11 @@ if remake[3]:
     upper = np.percentile(betas, 84.1)
     median = np.median(betas)
 
-    plt.axvspan(lower, upper, ymax=0.27, color='b', alpha=0.2)
+    plt.axvspan(lower, upper, ymax=0.27, color='b', alpha=0.2,\
+                label='This work, 10 brightest')
     plt.axvline(median, ymax=0.266, color='b')
-    plt.axvspan(-2.6, -1.8, ymax=0.27, color='0.6', alpha=0.5)
+    plt.axvspan(-2.6, -1.8, ymax=0.27, color='0.6', alpha=0.5,\
+                label='Cautun \& Frenk\n(2017)')
     plt.axvline(-2.2, ymax=0.266, color='k')
     for file, label in zip(files, labels):
         samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+file+'.npy')
@@ -241,8 +243,7 @@ if remake[3]:
     plt.ylabel('Posterior distribution')
     plt.xlim(-3,1)
     plt.ylim(bottom=0.0)
-    plt.legend(loc='upper left')
-    plt.text(-2.26,0.03,'Cautun \& Frenk\n(2017)',ha='center',fontsize=7);
+    plt.legend(loc='upper left', prop={'size': 4.9});
     plt.savefig(pltpth+'uniform.pdf', bbox_inches='tight')
     plt.close()
 
