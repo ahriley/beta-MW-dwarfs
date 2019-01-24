@@ -8,7 +8,7 @@ import pickle
 # # ## ### ##### ######## ############# #####################
 
 colnames = ['sim', 'haloID', 'Mvir', 'Rvir', 'Mstar', 'Rstar', 'Vcirc']
-haloprops = pd.read_csv('data/APOSTLE_mainHalos.txt', sep='\s+', \
+haloprops = pd.read_csv('data/sims/APOSTLE_mainHalos.txt', sep='\s+', \
                     names=colnames)
 haloprops.set_index(['sim', 'haloID'], inplace=True)
 haloprops['Mvir'] /= 10**12
@@ -36,7 +36,7 @@ for sim, name in zip(simlist, namelist):
         print(start+propstring+' \\\\')
 
 colnames = ['sim', 'Mvir', 'Rvir', 'Mstar', 'Rstar', 'z_scale', 'Vcirc']
-haloprops = pd.read_csv('data/AURIGA_mainHalos.txt', sep='\s+', \
+haloprops = pd.read_csv('data/sims/AURIGA_mainHalos.txt', sep='\s+', \
                     names=colnames)
 haloprops['Mvir'] /= 10**12
 haloprops['Mstar'] /= 10**10
