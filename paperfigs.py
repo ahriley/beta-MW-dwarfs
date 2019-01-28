@@ -37,7 +37,7 @@ largewidth = 513.11743 * pt_to_in
 
 # remake = [True for i in range(8)]
 remake = [False for i in range(9)]
-remake[3] = True
+remake[5] = True
 
 # # ## ### ##### ######## ############# #####################
 ### Tangential velocity excess
@@ -227,12 +227,12 @@ if remake[3]:
     upper = np.percentile(betas, 84.1)
     median = np.median(betas)
 
-    plt.axvspan(lower, upper, ymax=0.27, color='b', alpha=0.2,\
-                label='This work, 10 brightest')
-    plt.axvline(median, ymax=0.266, color='b')
-    plt.axvspan(-2.6, -1.8, ymax=0.27, color='0.6', alpha=0.5,\
-                label='Cautun \& Frenk\n(2017)')
-    plt.axvline(-2.2, ymax=0.266, color='k')
+    # plt.axvspan(lower, upper, ymax=0.27, color='b', alpha=0.2,\
+    #             label='This work, 10 brightest')
+    # plt.axvline(median, ymax=0.266, color='b')
+    # plt.axvspan(-2.6, -1.8, ymax=0.27, color='0.6', alpha=0.5,\
+    #             label='Cautun \& Frenk\n(2017)')
+    # plt.axvline(-2.2, ymax=0.266, color='k')
     for file, label in zip(files, labels):
         samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+file+'.npy')
         betas = 1 - (samples[:,2]**2 + samples[:,2]**2) / (2*samples[:,1]**2)
@@ -243,7 +243,7 @@ if remake[3]:
     plt.ylabel('Posterior distribution')
     plt.xlim(-3,1)
     plt.ylim(bottom=0.0)
-    plt.legend(loc='upper left', prop={'size': 4.9});
+    plt.legend(loc='upper left');
     plt.savefig(pltpth+'uniform.pdf', bbox_inches='tight')
     plt.close()
 
@@ -302,14 +302,14 @@ if remake[5]:
 
     ax1 = plt.subplot(gs[1])
     labels = [r'$\sigma_r$', r'$\sigma_\theta=\sigma_\phi$']
-    for j in range(2):
+    for j,c in zip(range(2), ['C1', 'C2']):
         betas = sigmas[:,:,j]
         beta_median = np.median(betas, axis=1)
         lower = np.percentile(betas, 15.9, axis=1)
         upper = np.percentile(betas, 84.1, axis=1)
 
-        ax1.plot(rvals, beta_median, '-', label=labels[j])
-        ax1.fill_between(rvals, lower, upper, alpha = 0.4)
+        ax1.plot(rvals, beta_median, '-', label=labels[j], color=c)
+        ax1.fill_between(rvals, lower, upper, alpha = 0.2, color=c)
 
     # plot satellites on graph
     MC_dwarfs = np.load('data/sampling/fritzplusMCs.npy')
@@ -317,8 +317,8 @@ if remake[5]:
     for dist in dists:
         # ax0.axvline(dist, ls='--', lw=0.5, dashes=(10, 10))
         # ax1.axvline(dist, ls='--', lw=0.5, dashes=(10, 10))
-        ax0.axvline(dist, lw=0.5, ymin=0, ymax=0.1)
-        ax1.axvline(dist, lw=0.5, ymin=0.9, ymax=1)
+        ax0.axvline(dist, lw=0.5, ymin=0, ymax=0.1, color='brown')
+        ax1.axvline(dist, lw=0.5, ymin=0.9, ymax=1, color='brown')
 
     ax1.set_xlabel(r'$r$ [kpc]')
     ax1.set_ylabel(r'$\sigma$ [km s$^{-1}$]')
