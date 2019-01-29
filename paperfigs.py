@@ -35,12 +35,13 @@ pt_to_in = 0.01384
 smallwidth = 242.26653 * pt_to_in
 largewidth = 513.11743 * pt_to_in
 
-# remake = [True for i in range(8)]
-remake = [False for i in range(9)]
-remake[5] = True
+nfigs = 9
+# remake = [True for i in range(nfigs)]
+remake = [False for i in range(nfigs)]
+remake[7] = True
 
 # # ## ### ##### ######## ############# #####################
-### Tangential velocity excess
+### Fig 1: Tangential velocity excess
 # # ## ### ##### ######## ############# #####################
 if remake[0]:
     print("Tangential velocity excess")
@@ -82,7 +83,7 @@ if remake[0]:
     plt.close()
 
 # # ## ### ##### ######## ############# #####################
-### Circular velocity profiles
+### Fig 2: Circular velocity profiles
 # # ## ### ##### ######## ############# #####################
 if remake[1]:
     print("Circular velocity profiles")
@@ -98,7 +99,6 @@ if remake[1]:
             legend = True
         else:
             plt.plot(profile[:,0], profile[:,1], 'C0')
-        # plt.plot(profile[:,0], profile[:,2], 'r--')
 
     # Auriga
     files = glob.glob('data/sims/Vcirc_auriga/*.txt')
@@ -111,7 +111,6 @@ if remake[1]:
             legend = True
         else:
             plt.plot(profile[:,0], profile[:,1], 'C1')
-        # plt.plot(profile[:,0], profile[:,2], 'b--')
 
     nfw = NFWProfile()
     nfw_Vcirc = nfw.circular_velocity(profile[:,0]*10**-3, 10**12, conc=10)
@@ -129,7 +128,7 @@ if remake[1]:
     plt.close()
 
 # # ## ### ##### ######## ############# #####################
-### Radial distribution
+### Fig 3: Radial distribution
 # # ## ### ##### ######## ############# #####################
 if remake[2]:
     print("Radial distribution")
@@ -157,8 +156,6 @@ if remake[2]:
             subs = u.match_rdist(subs, 'fritzplusMCs', rtol=10)
             corr_cdf = np.cumsum(np.histogram(subs.r,bins=bins)[0])/len(subs.r)
             corrected.append(corr_cdf)
-            # plt.plot(rvals, bary_cdf, 'C0-', lw=1.0)
-            # plt.plot(rvals, corr_cdf, 'C0--', lw=1.0)
 
     # Auriga subhalos
     sims = ['halo_6', 'halo_16', 'halo_21', 'halo_23', 'halo_24', 'halo_27']
@@ -171,8 +168,6 @@ if remake[2]:
         subs = u.match_rdist(subs, 'fritzplusMCs', rtol=10)
         corr_cdf = np.cumsum(np.histogram(subs.r, bins=bins)[0])/len(subs.r)
         corrected.append(corr_cdf)
-        # plt.plot(rvals, bary_cdf, 'C1-', lw=1.0)
-        # plt.plot(rvals, corr_cdf, 'C1--', lw=1.0)
 
     baryons = np.array(baryons); corrected = np.array(corrected)
     baryons_a = np.array(baryons_a); corrected_a = np.array(corrected_a)
@@ -208,49 +203,9 @@ if remake[2]:
     plt.close()
 
 # # ## ### ##### ######## ############# #####################
-### Uniform results for MW
+### Fig 4: Corner plot for uniform model
 # # ## ### ##### ######## ############# #####################
 if remake[3]:
-    print("Uniform results for MW")
-    fig = plt.figure(figsize=[smallwidth, smallwidth*0.75])
-    bins = np.linspace(-3, 1, 50)
-    kwargs = {'bins': bins, 'density': True, 'histtype': 'step', 'lw': 2}
-    files = ['uniform_simple', 'uniform_simple_lt100', 'uniform_simple_gt100']
-    labels = ['all (38 satellites)', r'$r<100$ kpc (23)', r'$r>100$ kpc (15)']
-    # files = ['uniform']
-    # labels = [None]
-
-    # compute statistics for Cautun sample
-    samples = np.load(u.SIM_DIR+'beta/mcmc/data/uniform_simple_cautun.npy')
-    betas = 1 - (samples[:,2]**2 + samples[:,2]**2) / (2*samples[:,1]**2)
-    lower = np.percentile(betas, 15.9)
-    upper = np.percentile(betas, 84.1)
-    median = np.median(betas)
-
-    # plt.axvspan(lower, upper, ymax=0.27, color='b', alpha=0.2,\
-    #             label='This work, 10 brightest')
-    # plt.axvline(median, ymax=0.266, color='b')
-    # plt.axvspan(-2.6, -1.8, ymax=0.27, color='0.6', alpha=0.5,\
-    #             label='Cautun \& Frenk\n(2017)')
-    # plt.axvline(-2.2, ymax=0.266, color='k')
-    for file, label in zip(files, labels):
-        samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+file+'.npy')
-        betas = 1 - (samples[:,2]**2 + samples[:,2]**2) / (2*samples[:,1]**2)
-        y, x = np.histogram(betas, bins=bins)
-        plt.plot((x[1:] + x[:-1]) / 2,y/len(betas), label=label)
-    plt.axvline(0.0, color='k', ls='--')
-    plt.xlabel(r'$\beta$')
-    plt.ylabel('Posterior distribution')
-    plt.xlim(-3,1)
-    plt.ylim(bottom=0.0)
-    plt.legend(loc='upper left');
-    plt.savefig(pltpth+'uniform.pdf', bbox_inches='tight')
-    plt.close()
-
-# # ## ### ##### ######## ############# #####################
-### Corner plot for uniform model
-# # ## ### ##### ######## ############# #####################
-if remake[4]:
     print("Uniform model corner plot")
     fig = plt.figure(figsize=[smallwidth, smallwidth*0.75])
     samples = np.load(u.SIM_DIR+'beta/mcmc/data/uniform_simple.npy')
@@ -269,7 +224,32 @@ if remake[4]:
     plt.rcParams.update(params)
 
 # # ## ### ##### ######## ############# #####################
-### Variable results for data
+### Fig 5: Uniform results for MW
+# # ## ### ##### ######## ############# #####################
+if remake[4]:
+    print("Uniform results for MW")
+    fig = plt.figure(figsize=[smallwidth, smallwidth*0.75])
+    bins = np.linspace(-3, 1, 50)
+    kwargs = {'bins': bins, 'density': True, 'histtype': 'step', 'lw': 2}
+    files = ['uniform_simple', 'uniform_simple_lt100', 'uniform_simple_gt100']
+    labels = ['all (38 satellites)', r'$r<100$ kpc (23)', r'$r>100$ kpc (15)']
+
+    for file, label in zip(files, labels):
+        samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+file+'.npy')
+        betas = 1 - (samples[:,2]**2 + samples[:,2]**2) / (2*samples[:,1]**2)
+        y, x = np.histogram(betas, bins=bins)
+        plt.plot((x[1:] + x[:-1]) / 2,y/len(betas), label=label)
+    plt.axvline(0.0, color='k', ls='--')
+    plt.xlabel(r'$\beta$')
+    plt.ylabel('Posterior distribution')
+    plt.xlim(-3,1)
+    plt.ylim(bottom=0.0)
+    plt.legend(loc='upper left');
+    plt.savefig(pltpth+'uniform.pdf', bbox_inches='tight')
+    plt.close()
+
+# # ## ### ##### ######## ############# #####################
+### Fig 6: Variable results for MW
 # # ## ### ##### ######## ############# #####################
 if remake[5]:
     print('Variable results for MW')
@@ -315,8 +295,6 @@ if remake[5]:
     MC_dwarfs = np.load('data/sampling/fritzplusMCs.npy')
     dists = np.median(MC_dwarfs[:,6,:], axis=1)
     for dist in dists:
-        # ax0.axvline(dist, ls='--', lw=0.5, dashes=(10, 10))
-        # ax1.axvline(dist, ls='--', lw=0.5, dashes=(10, 10))
         ax0.axvline(dist, lw=0.5, ymin=0, ymax=0.1, color='brown')
         ax1.axvline(dist, lw=0.5, ymin=0.9, ymax=1, color='brown')
 
@@ -330,19 +308,17 @@ if remake[5]:
     plt.close()
 
 # # ## ### ##### ######## ############# #####################
-### Beta(r) in simulations
+### Fig 7: Beta(r) for APOSTLE
 # # ## ### ##### ######## ############# #####################
 if remake[6]:
-    print("Simulation results")
-    cols = ['DMO', 'apostle', 'auriga']
-    colnames = ['DMO', 'APOSTLE', 'Auriga']
+    print("APOSTLE results")
+    cols = ['DMO', 'apostle']
+    colnames = ['DMO', 'APOSTLE']
     rows = ['Vmax', 'Vmax_rdist', 'Vmax_rnum', 'Mstar']
-    rownames = [r'All',
+    rownames = [r'All subhaloes',
                 r'Radial dist.',
                 r'Radial dist. and $N_\text{sats}$',
                 r'$M_\text{star} > 0$']
-    # rows = ['Vmax', 'Vmax_rnum']
-    # rownames = [r'All', r'Radial dist. and $N_\text{sats}$']
     rvals = np.arange(15,265,5)
 
     # only need to calculate sats curves once
@@ -360,8 +336,7 @@ if remake[6]:
 
     fig, ax = plt.subplots(len(rows), len(cols), sharex='col', sharey='row', \
                             figsize=(12,10))
-                            # figsize=[largewidth, largewidth])
-    plt.subplots_adjust(wspace=0.1, hspace=0.13)
+    plt.subplots_adjust(wspace=0.1, hspace=0.13, right=0.87)
     text_dict = {'ha': 'center', 'va': 'center', 'fontsize': 20}
     fig.text(0.5, 0.07, r'$r$ [kpc]', **text_dict)
     fig.text(0.05, 0.5, r'$\beta$', rotation='vertical', **text_dict);
@@ -377,14 +352,29 @@ if remake[6]:
             if i == 0:
                 cax.set_title(colname, fontsize=12)
 
-            cax.plot(rvals, beta_median_sats, 'k--', zorder=100, lw=2)
+            l = 'MW results' if (i==0 and j==1) else None
+            cax.plot(rvals, beta_median_sats, 'k--', zorder=100, lw=2, label=l)
             cax.fill_between(rvals, lower_sats, upper_sats, \
                                 alpha=0.2, zorder=100, color='k')
 
             # plot curves for each simulation selection
-            simlist = glob.glob(u.SIM_DIR+'beta/mcmc/'+col+'/*'+row+'.npy')
-            for sim in simlist:
-                samples = np.load(sim)
+            simnames = ['AP-01 (a)', 'AP-01 (b)', 'AP-04 (a)', 'AP-04 (b)',
+                        'AP-06 (a)', 'AP-06 (b)', 'AP-10 (a)', 'AP-10 (b)',
+                        'AP-11 (a)', 'AP-11 (b)']
+            sims = ['V1_HR_fix_0', 'V1_HR_fix_5282', 'V4_HR_fix_0',
+                    'V4_HR_fix_12081', 'V6_HR_fix_0', 'V6_HR_fix_1',
+                    'S4_HR_fix_0', 'S4_HR_fix_1', 'S5_HR_fix_0',
+                    'S5_HR_fix_4114']
+            colors = ['C'+str(i) for i in np.arange(len(sims))]
+            for sim, simname, c in zip(sims, simnames, colors):
+                root = sim.replace('fix', 'DMO') if col=='DMO' else sim
+                root = 'V1_HR_DMO_5534' if root=='V1_HR_DMO_5282' else root
+                root = 'V4_HR_DMO_8555' if root=='V4_HR_DMO_12081' else root
+                file = u.SIM_DIR+'beta/mcmc/'+col+'/'+root+'_'+row+'.npy'
+                try:
+                    samples = np.load(file)
+                except:
+                    continue
                 sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9], \
                             samples[:,9:12]) for r in rvals]
                 sigmas = np.array(sigmas)
@@ -395,15 +385,97 @@ if remake[6]:
                 lower = np.percentile(betas, 15.9, axis=1)
                 upper = np.percentile(betas, 84.1, axis=1)
 
-                cax.plot(rvals, beta_median, '-', zorder=0)
-                cax.fill_between(rvals, lower, upper, alpha=0.2, zorder=0)
-    plt.savefig(pltpth+'beta_sims.pdf', bbox_inches='tight')
+                lbl = simname if (col=='apostle' and row=='Vmax') else None
+                cax.plot(rvals, beta_median, '-', zorder=0, label=lbl, color=c)
+                cax.fill_between(rvals, lower, upper,
+                                    alpha=0.2, zorder=0, color=c)
+    fig.legend(loc=7, fontsize=12)
+    plt.savefig(pltpth+'beta_apostle.pdf', bbox_inches='tight')
     plt.close()
 
 # # ## ### ##### ######## ############# #####################
-### Different tracer comparison
+### Fig 8: Beta(r) for Auriga
 # # ## ### ##### ######## ############# #####################
 if remake[7]:
+    print("Auriga results")
+    cols = ['DMO', 'auriga']
+    colnames = ['DMO', 'Auriga']
+    rows = ['Vmax', 'Vmax_rdist', 'Vmax_rnum', 'Mstar']
+    rownames = [r'All subhaloes',
+                r'Radial dist.',
+                r'Radial dist. and $N_\text{sats}$',
+                r'$M_\text{star} > 0$']
+    rvals = np.arange(15,265,5)
+
+    # only need to calculate sats curves once
+    file = u.SIM_DIR+'beta/mcmc/data/variable_simple.npy'
+    samples = np.load(file)
+    sigmas = [u.sigma(r, samples[:,1:3], samples[:,3:5], samples[:,5:]) \
+                for r in rvals]
+    sigmas = np.array(sigmas)
+    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,1]**2)/(2*sigmas[i,:,0]**2) \
+                for i in range(len(rvals))]
+    betas = np.array(betas)
+    beta_median_sats = np.median(betas, axis=1)
+    lower_sats = np.percentile(betas, 15.9, axis=1)
+    upper_sats = np.percentile(betas, 84.1, axis=1)
+
+    fig, ax = plt.subplots(len(rows), len(cols), sharex='col', sharey='row', \
+                            figsize=(12,10))
+    plt.subplots_adjust(wspace=0.1, hspace=0.13, right=0.87)
+    text_dict = {'ha': 'center', 'va': 'center', 'fontsize': 20}
+    fig.text(0.5, 0.07, r'$r$ [kpc]', **text_dict)
+    fig.text(0.05, 0.5, r'$\beta$', rotation='vertical', **text_dict);
+    for i, row, rowname in zip(range(len(rows)), rows, rownames):
+        for j, col, colname in zip(range(len(cols)), cols, colnames):
+            cax = ax[i,j]
+            cax.set_ylim(-3, 1)
+            cax.axhline(0.0, color='k', ls='--')
+            cax.tick_params(axis='both', which='major', labelsize=14)
+            cax.set_xscale('log')
+            if j == 0:
+                cax.set_ylabel(rowname, fontsize=12)
+            if i == 0:
+                cax.set_title(colname, fontsize=12)
+
+            l = 'MW results' if (i==0 and j==1) else None
+            cax.plot(rvals, beta_median_sats, 'k--', zorder=100, lw=2, label=l)
+            cax.fill_between(rvals, lower_sats, upper_sats, \
+                                alpha=0.2, zorder=100, color='k')
+
+            # plot curves for each simulation selection
+            simnames = ['Au6', 'Au16', 'Au21', 'Au23', 'Au24', 'Au27']
+            sims = ['halo_6', 'halo_16', 'halo_21', 'halo_23', 'halo_27',
+                    'halo_27']
+            colors = ['C'+str(i) for i in np.arange(len(sims))]
+            for sim, simname, c in zip(sims, simnames, colors):
+                root = sim+'_DMO' if col=='DMO' else sim
+                file = u.SIM_DIR+'beta/mcmc/'+col+'/'+root+'_'+row+'.npy'
+                if col == 'DMO' and row == 'Mstar':
+                    continue
+                samples = np.load(file)
+                sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9], \
+                            samples[:,9:12]) for r in rvals]
+                sigmas = np.array(sigmas)
+                betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/ \
+                            (2*sigmas[i,:,0]**2) for i in range(len(rvals))]
+                betas = np.array(betas)
+                beta_median = np.median(betas, axis=1)
+                lower = np.percentile(betas, 15.9, axis=1)
+                upper = np.percentile(betas, 84.1, axis=1)
+
+                lbl = simname if (col=='auriga' and row=='Vmax') else None
+                cax.plot(rvals, beta_median, '-', zorder=0, label=lbl, color=c)
+                cax.fill_between(rvals, lower, upper,
+                                    alpha=0.2, zorder=0, color=c)
+    fig.legend(loc=7, fontsize=12)
+    plt.savefig(pltpth+'beta_auriga.pdf', bbox_inches='tight')
+    plt.close()
+
+# # ## ### ##### ######## ############# #####################
+### Fig 9: Different tracer comparison
+# # ## ### ##### ######## ############# #####################
+if remake[8]:
     print("Different tracers")
     fig = plt.figure(figsize=[smallwidth, smallwidth*0.75])
     ms = 4
@@ -485,65 +557,4 @@ if remake[7]:
     plt.xlabel(r'$r$ [kpc]')
     plt.ylabel(r'$\beta$')
     plt.savefig(pltpth+'tracer_comparison.pdf', bbox_inches='tight')
-    plt.close()
-
-# # ## ### ##### ######## ############# #####################
-### Variable results for data
-# # ## ### ##### ######## ############# #####################
-if remake[8]:
-    print('Complex variable results for MW')
-    sample = 'fritzplusMCs'
-    fig = plt.figure(figsize=[smallwidth, smallwidth])
-    rvals = np.arange(15,265,5)
-    samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+sample+'.npy')
-    sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9], samples[:,9:12]) \
-                for r in rvals]
-    sigmas = np.array(sigmas)
-    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/(2*sigmas[i,:,0]**2) \
-                for i in range(len(rvals))]
-    betas = np.array(betas)
-    beta_median = np.median(betas, axis=1)
-
-    lower = np.percentile(betas, 15.9, axis=1)
-    upper = np.percentile(betas, 84.1, axis=1)
-
-    gs = gridspec.GridSpec(2, 1, height_ratios=[1, 1])
-    gs.update(hspace=0.0)
-
-    ax0 = plt.subplot(gs[0])
-    ax0.plot(rvals, beta_median, '-')
-    ax0.fill_between(rvals, lower, upper, alpha=0.2)
-    ax0.axhline(y=0, ls='--', c='k')
-    ax0.set_xlim(rvals[0], rvals[-1])
-    ax0.set_ylim(top=1)
-    ax0.set_ylabel(r'$\beta$')
-    ax0.set_xscale('log')
-
-    ax1 = plt.subplot(gs[1])
-    labels = [r'$\sigma_r$', r'$\sigma_\theta$', r'$\sigma_\phi$']
-    for j in range(3):
-        betas = sigmas[:,:,j]
-        beta_median = np.median(betas, axis=1)
-        lower = np.percentile(betas, 15.9, axis=1)
-        upper = np.percentile(betas, 84.1, axis=1)
-
-        ax1.plot(rvals, beta_median, '-', label=labels[j])
-        ax1.fill_between(rvals, lower, upper, alpha = 0.4)
-
-    # plot satellites on graph
-    MC_dwarfs = np.load('data/sampling/fritzplusMCs.npy')
-    dists = np.median(MC_dwarfs[:,6,:], axis=1)
-    for dist in dists:
-        # ax0.axvline(dist, ls='--', lw=0.5, dashes=(10, 10))
-        # ax1.axvline(dist, ls='--', lw=0.5, dashes=(10, 10))
-        ax0.axvline(dist, lw=0.5, ymin=0, ymax=0.1)
-        ax1.axvline(dist, lw=0.5, ymin=0.9, ymax=1)
-
-    ax1.set_xlabel(r'$r$ [kpc]')
-    ax1.set_ylabel(r'$\sigma$ [km s$^{-1}$]')
-    ax1.legend(loc=(0.75,0.5))
-    ax1.set_xscale('log')
-    ax1.set_yticks([0, 100, 200, 300])
-    ax1.set_xlim(rvals[0], rvals[-1])
-    plt.savefig(pltpth+'variable_complex.pdf', bbox_inches='tight')
     plt.close()
