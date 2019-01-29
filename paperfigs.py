@@ -114,7 +114,7 @@ if remake[1]:
 
     nfw = NFWProfile()
     nfw_Vcirc = nfw.circular_velocity(profile[:,0]*10**-3, 10**12, conc=10)
-    plt.plot(profile[:,0], nfw_Vcirc, 'k--', \
+    plt.plot(profile[:,0], nfw_Vcirc, 'k--',\
                 label=r'NFW(10$^{12}$ M$_\odot$, c=10)')
 
     plt.xlabel(r'$r$ [kpc]')
@@ -206,7 +206,7 @@ if remake[2]:
 ### Fig 4: Corner plot for uniform model
 # # ## ### ##### ######## ############# #####################
 if remake[3]:
-    print("Uniform model corner plot")
+    print("Corner plot uniform model")
     fig = plt.figure(figsize=[smallwidth, smallwidth*0.75])
     samples = np.load(u.SIM_DIR+'beta/mcmc/data/uniform_simple.npy')
     labels = [r"$v_\phi$", r"$\sigma_r$", r"$\sigma_\theta = \sigma_\phi$"]
@@ -257,10 +257,10 @@ if remake[5]:
     fig = plt.figure(figsize=[smallwidth, smallwidth])
     rvals = np.arange(15,265,5)
     samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+sample+'.npy')
-    sigmas = [u.sigma(r, samples[:,1:3], samples[:,3:5], samples[:,5:]) \
+    sigmas = [u.sigma(r, samples[:,1:3], samples[:,3:5], samples[:,5:])\
                 for r in rvals]
     sigmas = np.array(sigmas)
-    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,1]**2)/(2*sigmas[i,:,0]**2) \
+    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,1]**2)/(2*sigmas[i,:,0]**2)\
                 for i in range(len(rvals))]
     betas = np.array(betas)
     beta_median = np.median(betas, axis=1)
@@ -324,17 +324,17 @@ if remake[6]:
     # only need to calculate sats curves once
     file = u.SIM_DIR+'beta/mcmc/data/variable_simple.npy'
     samples = np.load(file)
-    sigmas = [u.sigma(r, samples[:,1:3], samples[:,3:5], samples[:,5:]) \
+    sigmas = [u.sigma(r, samples[:,1:3], samples[:,3:5], samples[:,5:])\
                 for r in rvals]
     sigmas = np.array(sigmas)
-    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,1]**2)/(2*sigmas[i,:,0]**2) \
+    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,1]**2)/(2*sigmas[i,:,0]**2)\
                 for i in range(len(rvals))]
     betas = np.array(betas)
     beta_median_sats = np.median(betas, axis=1)
     lower_sats = np.percentile(betas, 15.9, axis=1)
     upper_sats = np.percentile(betas, 84.1, axis=1)
 
-    fig, ax = plt.subplots(len(rows), len(cols), sharex='col', sharey='row', \
+    fig, ax = plt.subplots(len(rows), len(cols), sharex='col', sharey='row',\
                             figsize=(12,10))
     plt.subplots_adjust(wspace=0.1, hspace=0.13, right=0.87)
     text_dict = {'ha': 'center', 'va': 'center', 'fontsize': 20}
@@ -354,8 +354,8 @@ if remake[6]:
 
             l = 'MW results' if (i==0 and j==1) else None
             cax.plot(rvals, beta_median_sats, 'k--', zorder=100, lw=2, label=l)
-            cax.fill_between(rvals, lower_sats, upper_sats, \
-                                alpha=0.2, zorder=100, color='k')
+            cax.fill_between(rvals, lower_sats, upper_sats,alpha=0.2,\
+                                zorder=100, color='k')
 
             # plot curves for each simulation selection
             simnames = ['AP-01 (a)', 'AP-01 (b)', 'AP-04 (a)', 'AP-04 (b)',
@@ -375,10 +375,10 @@ if remake[6]:
                     samples = np.load(file)
                 except:
                     continue
-                sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9], \
+                sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9],\
                             samples[:,9:12]) for r in rvals]
                 sigmas = np.array(sigmas)
-                betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/ \
+                betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/\
                             (2*sigmas[i,:,0]**2) for i in range(len(rvals))]
                 betas = np.array(betas)
                 beta_median = np.median(betas, axis=1)
@@ -410,17 +410,17 @@ if remake[7]:
     # only need to calculate sats curves once
     file = u.SIM_DIR+'beta/mcmc/data/variable_simple.npy'
     samples = np.load(file)
-    sigmas = [u.sigma(r, samples[:,1:3], samples[:,3:5], samples[:,5:]) \
+    sigmas = [u.sigma(r, samples[:,1:3], samples[:,3:5], samples[:,5:])\
                 for r in rvals]
     sigmas = np.array(sigmas)
-    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,1]**2)/(2*sigmas[i,:,0]**2) \
+    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,1]**2)/(2*sigmas[i,:,0]**2)\
                 for i in range(len(rvals))]
     betas = np.array(betas)
     beta_median_sats = np.median(betas, axis=1)
     lower_sats = np.percentile(betas, 15.9, axis=1)
     upper_sats = np.percentile(betas, 84.1, axis=1)
 
-    fig, ax = plt.subplots(len(rows), len(cols), sharex='col', sharey='row', \
+    fig, ax = plt.subplots(len(rows), len(cols), sharex='col', sharey='row',\
                             figsize=(12,10))
     plt.subplots_adjust(wspace=0.1, hspace=0.13, right=0.87)
     text_dict = {'ha': 'center', 'va': 'center', 'fontsize': 20}
@@ -440,7 +440,7 @@ if remake[7]:
 
             l = 'MW results' if (i==0 and j==1) else None
             cax.plot(rvals, beta_median_sats, 'k--', zorder=100, lw=2, label=l)
-            cax.fill_between(rvals, lower_sats, upper_sats, \
+            cax.fill_between(rvals, lower_sats, upper_sats,\
                                 alpha=0.2, zorder=100, color='k')
 
             # plot curves for each simulation selection
@@ -454,10 +454,10 @@ if remake[7]:
                 if col == 'DMO' and row == 'Mstar':
                     continue
                 samples = np.load(file)
-                sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9], \
+                sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9],\
                             samples[:,9:12]) for r in rvals]
                 sigmas = np.array(sigmas)
-                betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/ \
+                betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,2]**2)/\
                             (2*sigmas[i,:,0]**2) for i in range(len(rvals))]
                 betas = np.array(betas)
                 beta_median = np.median(betas, axis=1)
@@ -476,7 +476,7 @@ if remake[7]:
 ### Fig 9: Different tracer comparison
 # # ## ### ##### ######## ############# #####################
 if remake[8]:
-    print("Different tracers")
+    print("Different tracer comparison")
     fig = plt.figure(figsize=[smallwidth, smallwidth*0.75])
     ms = 4
     capsize = 2
@@ -485,10 +485,10 @@ if remake[8]:
     sample = 'variable_simple'
     rvals = np.arange(15,265,5)
     samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+sample+'.npy')
-    sigmas = [u.sigma(r, samples[:,1:3], samples[:,3:5], samples[:,5:]) \
+    sigmas = [u.sigma(r, samples[:,1:3], samples[:,3:5], samples[:,5:])\
                 for r in rvals]
     sigmas = np.array(sigmas)
-    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,1]**2)/(2*sigmas[i,:,0]**2) \
+    betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,1]**2)/(2*sigmas[i,:,0]**2)\
                 for i in range(len(rvals))]
     betas = np.array(betas)
     beta_median = np.median(betas, axis=1)
@@ -500,14 +500,14 @@ if remake[8]:
 
     # Sohn et al. 2018 (HST GCs)
     rval = 10**((np.log10(39.5) + np.log10(10.6))/2)
-    plt.errorbar([rval], [.609], yerr=np.array([[0.229], [0.13]]), \
-                    xerr=np.array([[rval-10.6], [39.5-rval]]), c='dimgrey', fmt='^',\
+    plt.errorbar([rval], [.609], yerr=np.array([[0.229], [0.13]]), fmt='^',\
+                    xerr=np.array([[rval-10.6], [39.5-rval]]), c='dimgrey',\
                     ms=ms, label='Sohn+18', capsize=capsize, zorder=100);
 
     # Watkins et al. 2018 (Gaia CGs)
     rval = 10**((np.log10(21.1) + np.log10(2.0))/2)
-    plt.errorbar([rval], [.48], yerr=np.array([[0.2], [0.15]]), \
-                    xerr=np.array([[rval-2.0], [21.1-rval]]), c='dimgrey', fmt='s',\
+    plt.errorbar([rval], [.48], yerr=np.array([[0.2], [0.15]]), fmt='s',\
+                    xerr=np.array([[rval-2.0], [21.1-rval]]), c='dimgrey',\
                     ms=ms, label='Watkins+18', capsize=capsize, zorder=100)
 
     # load GC data from Vasiliev
