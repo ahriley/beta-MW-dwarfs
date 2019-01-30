@@ -36,9 +36,9 @@ smallwidth = 242.26653 * pt_to_in
 largewidth = 513.11743 * pt_to_in
 
 nfigs = 9
-# remake = [True for i in range(nfigs)]
-remake = [False for i in range(nfigs)]
-remake[7] = True
+remake = [True for i in range(nfigs)]
+# remake = [False for i in range(nfigs)]
+# remake[7] = True
 
 # # ## ### ##### ######## ############# #####################
 ### Fig 1: Tangential velocity excess
@@ -308,9 +308,15 @@ if remake[5]:
     plt.close()
 
 # # ## ### ##### ######## ############# #####################
-### Fig 7: Beta(r) for APOSTLE
+### Fig 7: Variable results using other samples
 # # ## ### ##### ######## ############# #####################
 if remake[6]:
+    print("Variable results for other samples")
+
+# # ## ### ##### ######## ############# #####################
+### Fig 8: Beta(r) for APOSTLE
+# # ## ### ##### ######## ############# #####################
+if remake[7]:
     print("APOSTLE results")
     cols = ['DMO', 'apostle']
     colnames = ['DMO', 'APOSTLE']
@@ -394,9 +400,9 @@ if remake[6]:
     plt.close()
 
 # # ## ### ##### ######## ############# #####################
-### Fig 8: Beta(r) for Auriga
+### Fig 9: Beta(r) for Auriga
 # # ## ### ##### ######## ############# #####################
-if remake[7]:
+if remake[8]:
     print("Auriga results")
     cols = ['DMO', 'auriga']
     colnames = ['DMO', 'Auriga']
@@ -473,9 +479,9 @@ if remake[7]:
     plt.close()
 
 # # ## ### ##### ######## ############# #####################
-### Fig 9: Different tracer comparison
+### Fig 10: Different tracer comparison
 # # ## ### ##### ######## ############# #####################
-if remake[8]:
+if remake[9]:
     print("Different tracer comparison")
     fig = plt.figure(figsize=[smallwidth, smallwidth*0.75])
     ms = 4
