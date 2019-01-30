@@ -11,7 +11,7 @@ import utils as u
 
 # load MC samples, names of satellites
 sample = 'fritzplusMCs'
-tag = 'variable_simple'
+tag = 'fritzplusMCs_ultrafaint'
 MC_dwarfs = np.load('data/sampling/'+sample+'.npy')
 with open('data/sampling/names_key.pkl', 'rb') as f:
     names = pickle.load(f)[sample]
@@ -39,8 +39,21 @@ ignoresats = ['Horologium I', 'Carina II', 'Carina III', 'Hydrus I']
 # ignoresats = ['LMC', 'SMC']
 # ignoresats = ['Horologium I', 'Carina II', 'Carina III', 'Hydrus I', 'LMC',
 #                 'SMC']
+# ignoresats = ['Sagittarius I']
 ignore = [names.index(sat) for sat in ignoresats]
 MC_dwarfs = np.delete(MC_dwarfs, ignore, axis=0)
+# """
+
+"""
+# cut based on brightness
+absmag = []
+with open('data/dwarf_props.yaml', 'r') as f:
+    dwarfs = yaml.load(f)
+    for name in names:
+        absmag.append(dwarfs[name]['abs_mag'])
+absmag = np.array(absmag)
+inc = absmag < -7.7         # < means brighter, > means fainter
+MC_dwarfs = MC_dwarfs[inc]
 # """
 
 # data and covariances for each satellite
@@ -58,7 +71,7 @@ ndim = len(p0[0])
 # Set up and run MCMC
 # sampler = emcee.EnsembleSampler(nwalkers, ndim, l.lnprob, args=(vels,vel_covs))
 sampler = emcee.EnsembleSampler(nwalkers, ndim, l.lnprob, args=(vels,vel_covs,dists))
-pos, prob, state = sampler.run_mcmc(p0, 500)
+pos, prob, state = sampler.run_mcmc(p0, 1000)
 
 # Look by eye at the burn-in
 stepnum = np.arange(0,500,1)+1
@@ -83,11 +96,11 @@ samples = sampler.chain[:, burnin:, :].reshape((-1, ndim))
 #                       show_titles=True, title_kwargs={"fontsize": 12})
 
 fig = corner.corner(samples, labels=[r"$v_r$", r"$v_\theta$", r"$v_\phi$",
-                        r"$\sigma_{0,r}$", r"$\sigma_{0,\theta} = \sigma_{0,\phi}$",
-                        r"$r_{0,r}$", r"$r_{0,\theta} = r_{0,\phi}$",
-                        r"$\alpha_r$", r"$\alpha_\theta = \alpha_\phi$"],
-                      quantiles=[0.16, 0.5, 0.84],
-                      show_titles=True, title_kwargs={"fontsize": 12})
+                    r"$\sigma_{0,r}$", r"$\sigma_{0,\theta} = \sigma_{0,\phi}$",
+                    r"$r_{0,r}$", r"$r_{0,\theta} = r_{0,\phi}$",
+                    r"$\alpha_r$", r"$\alpha_\theta = \alpha_\phi$"],
+                    quantiles=[0.16, 0.5, 0.84],
+                    show_titles=True, title_kwargs={"fontsize": 12})
 
 fig.savefig('figures/cornerplots/'+tag+'.png', bbox_inches='tight')
 np.save(u.SIM_DIR+'beta/mcmc/data/'+tag, samples)
