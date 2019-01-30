@@ -38,7 +38,7 @@ largewidth = 513.11743 * pt_to_in
 nfigs = 10
 # remake = [True for i in range(nfigs)]
 remake = [False for i in range(nfigs)]
-remake[6] = True
+remake[2] = True
 
 # # ## ### ##### ######## ############# #####################
 ### Fig 1: Tangential velocity excess
@@ -143,45 +143,56 @@ if remake[2]:
 
     # APOSTLE subhalos
     simlist = ['V1_HR_fix', 'V4_HR_fix', 'V6_HR_fix', 'S4_HR_fix', 'S5_HR_fix']
-    baryons, corrected = [], []
+    baryons, matchdist, matchnum = [], [], []
     for sim in simlist:
         halos, subs_c = u.load_apostle(sim=sim, processed=True)
         subs_c = subs_c[subs_c.Vmax > 5]
 
         # treat each APOSTLE halo separately
         for ID in halos.index:
-            subs = subs_c[subs_c.hostID == ID]
-            bary_cdf = np.cumsum(np.histogram(subs.r,bins=bins)[0])/len(subs.r)
+            subs_all = subs_c[subs_c.hostID == ID]
+            bary_cdf = np.cumsum(np.histogram(subs_all.r,bins=bins)[0])\
+                            /len(subs_all)
             baryons.append(bary_cdf)
-            subs = u.match_rdist(subs, 'fritzplusMCs', rtol=10)
+            subs = u.match_rdist(subs_all, 'fritzplusMCs', rtol=10)
             corr_cdf = np.cumsum(np.histogram(subs.r,bins=bins)[0])/len(subs.r)
-            corrected.append(corr_cdf)
+            matchdist.append(corr_cdf)
+            subs = u.match_rnum(subs_all, 'fritzplusMCs')
+            corr_cdf = np.cumsum(np.histogram(subs.r,bins=bins)[0])/len(subs.r)
+            matchnum.append(corr_cdf)
 
     # Auriga subhalos
     sims = ['halo_6', 'halo_16', 'halo_21', 'halo_23', 'halo_24', 'halo_27']
-    baryons_a, corrected_a = [], []
+    baryons_a = []
     for sim in sims:
-        subs = u.load_auriga(sim, processed=True)
-        subs = subs[subs.Vmax > 5]
-        bary_cdf = np.cumsum(np.histogram(subs.r, bins=bins)[0])/len(subs.r)
+        subs_all = u.load_auriga(sim, processed=True)
+        subs_all = subs_all[subs_all.Vmax > 5]
+        bary_cdf = np.cumsum(np.histogram(subs_all.r,bins=bins)[0])\
+                        /len(subs_all)
         baryons_a.append(bary_cdf)
         subs = u.match_rdist(subs, 'fritzplusMCs', rtol=10)
         corr_cdf = np.cumsum(np.histogram(subs.r, bins=bins)[0])/len(subs.r)
-        corrected.append(corr_cdf)
+        matchdist.append(corr_cdf)
+        subs = u.match_rnum(subs_all, 'fritzplusMCs')
+        corr_cdf = np.cumsum(np.histogram(subs.r,bins=bins)[0])/len(subs.r)
+        matchnum.append(corr_cdf)
 
-    baryons = np.array(baryons); corrected = np.array(corrected)
-    baryons_a = np.array(baryons_a); corrected_a = np.array(corrected_a)
+    baryons = np.array(baryons); baryons_a = np.array(baryons_a)
+    matchdist = np.array(matchdist); matchnum = np.array(matchnum)
 
     baryon_median = np.percentile(baryons, 50, axis=0)
     baryon_upper = np.percentile(baryons, 100, axis=0)
     baryon_lower = np.percentile(baryons, 0, axis=0)
-    corrected_median = np.percentile(corrected, 50, axis=0)
-    corrected_upper = np.percentile(corrected, 100, axis=0)
-    corrected_lower = np.percentile(corrected, 0, axis=0)
-
     baryon_median_a = np.percentile(baryons_a, 50, axis=0)
     baryon_upper_a = np.percentile(baryons_a, 100, axis=0)
     baryon_lower_a = np.percentile(baryons_a, 0, axis=0)
+
+    matchdist_median = np.percentile(matchdist, 50, axis=0)
+    matchdist_upper = np.percentile(matchdist, 100, axis=0)
+    matchdist_lower = np.percentile(matchdist, 0, axis=0)
+    matchnum_median = np.percentile(matchnum, 50, axis=0)
+    matchnum_upper = np.percentile(matchnum, 100, axis=0)
+    matchnum_lower = np.percentile(matchnum, 0, axis=0)
 
     plt.plot(rvals, MW_dist, color='k', label='Milky Way', zorder=100)
     plt.plot(rvals, baryon_median, label=r'APOSTLE', color='C0')
@@ -189,8 +200,12 @@ if remake[2]:
     plt.plot(rvals, baryon_median_a, label=r'Auriga', color='C1')
     plt.fill_between(rvals, baryon_lower_a, baryon_upper_a, color='C1',\
                         alpha=0.5)
-    plt.plot(rvals, corrected_median, color='magenta', label='Corrected')
-    plt.fill_between(rvals, corrected_lower, corrected_upper, color='violet',\
+    plt.plot(rvals, matchdist_median, color='magenta', label='Radial dist.')
+    plt.fill_between(rvals, matchdist_lower, matchdist_upper, color='violet',\
+                        alpha=0.5)
+    plt.plot(rvals, matchnum_median, color='C2',
+                        label=r'Radial dist. and $N_{sats}$')
+    plt.fill_between(rvals, matchnum_lower, matchnum_upper, color='C2',\
                         alpha=0.5)
     plt.xlabel(r'$r$ [kpc]')
     plt.ylabel(r'$f(<r)$')
@@ -198,7 +213,7 @@ if remake[2]:
     plt.ylim(10**-4, 1)
     plt.xscale('log')
     plt.yscale('log')
-    plt.legend(loc='lower right');
+    plt.legend(loc='lower right', fontsize=6);
     plt.savefig(pltpth+'radial_dist.pdf', bbox_inches='tight')
     plt.close()
 
