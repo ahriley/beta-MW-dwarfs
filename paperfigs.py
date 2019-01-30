@@ -315,8 +315,9 @@ if remake[6]:
     samples = ['gold_simple', 'fritz_gold_simple', 'fritzplusMCs_noSag',
                 'fritzplusMCs_noLMCsats', 'fritzplusMCs_classical',
                 'fritzplusMCs_ultrafaint']
-    labels = ['Gold', 'Gold satellites, F18 PMs', 'No Sagittarius',
-                'No LMC satellites', 'Classical', 'Ultrafaint']
+    labels = ['Gold sample', 'Gold satellites, F18 PMs', 'No Sagittarius I',
+                'No LMC satellites', r'Classical ($>10^5$ L$_\odot$)',
+                r'Ultra-faint ($<10^5$ L$_\odot$)']
 
     fig = plt.figure(figsize=[smallwidth, 0.75*smallwidth])
     for sample, label in zip(samples, labels):
