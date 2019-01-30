@@ -35,10 +35,10 @@ pt_to_in = 0.01384
 smallwidth = 242.26653 * pt_to_in
 largewidth = 513.11743 * pt_to_in
 
-nfigs = 9
-remake = [True for i in range(nfigs)]
-# remake = [False for i in range(nfigs)]
-# remake[7] = True
+nfigs = 10
+# remake = [True for i in range(nfigs)]
+remake = [False for i in range(nfigs)]
+remake[6] = True
 
 # # ## ### ##### ######## ############# #####################
 ### Fig 1: Tangential velocity excess
@@ -312,6 +312,37 @@ if remake[5]:
 # # ## ### ##### ######## ############# #####################
 if remake[6]:
     print("Variable results for other samples")
+    samples = ['gold_simple', 'fritz_gold_simple', 'fritzplusMCs_noSag',
+                'fritzplusMCs_noLMCsats', 'fritzplusMCs_classical',
+                'fritzplusMCs_ultrafaint']
+    labels = ['Gold', 'Gold satellites, F18 PMs', 'No Sagittarius',
+                'No LMC satellites', 'Classical', 'Ultrafaint']
+
+    fig = plt.figure(figsize=[smallwidth, 0.75*smallwidth])
+    for sample, label in zip(samples, labels):
+        rvals = np.arange(15,265,5)
+        samples = np.load(u.SIM_DIR+'beta/mcmc/data/'+sample+'.npy')
+        sigmas = [u.sigma(r, samples[:,1:3], samples[:,3:5], samples[:,5:])\
+                    for r in rvals]
+        sigmas = np.array(sigmas)
+        betas = [1-(sigmas[i,:,1]**2 + sigmas[i,:,1]**2)/(2*sigmas[i,:,0]**2)\
+                    for i in range(len(rvals))]
+        betas = np.array(betas)
+        beta_median = np.median(betas, axis=1)
+        lower = np.percentile(betas, 15.9, axis=1)
+        upper = np.percentile(betas, 84.1, axis=1)
+
+        plt.plot(rvals, beta_median, '-', label=label)
+        plt.fill_between(rvals, lower, upper, alpha=0.2)
+    plt.legend(loc='lower right')
+    plt.axhline(y=0, ls='--', c='k')
+    plt.xlim(rvals[0], rvals[-1])
+    plt.ylim(top=1)
+    plt.ylabel(r'$\beta$')
+    plt.xlabel(r'$r$ [kpc]')
+    plt.xscale('log')
+    plt.savefig(pltpth+'variable_othersamples.pdf', bbox_inches='tight')
+    plt.close()
 
 # # ## ### ##### ######## ############# #####################
 ### Fig 8: Beta(r) for APOSTLE
