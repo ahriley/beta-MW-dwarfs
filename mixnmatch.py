@@ -2,6 +2,9 @@ import numpy as np
 import yaml
 import pickle
 
+scaled_errors = True
+tag = '_scalederrs' if scaled_errors else ''
+
 studies = ['helmi', 'pace', 'massari', 'kallivayalil', 'simon']
 names = []
 study_from = []
@@ -13,7 +16,7 @@ for study in studies:
     with open(dwarf_file, 'r') as f:
         dwarfs = yaml.load(f)
     study_names = list(dwarfs.keys())
-    MC_dwarfs = np.load('data/sampling/'+study+'_galacto.npy')
+    MC_dwarfs = np.load('data/sampling/'+study+tag+'_galacto.npy')
 
     # if satellite hasn't been added, add to study
     for name in study_names:
@@ -31,7 +34,7 @@ fritz_file = 'data/fritz.yaml'
 with open(fritz_file, 'r') as f:
     fritz = yaml.load(f)
 fritz = list(fritz.keys())
-MC_dwarfs = np.load('data/sampling/fritz_galacto.npy')
+MC_dwarfs = np.load('data/sampling/fritz'+tag+'_galacto.npy')
 MC_set_fritz = []
 fritz_gold_names = []
 for name in names:
@@ -48,16 +51,16 @@ MC_fritzplusMCs = np.concatenate((MC_dwarfs, np.array(magclouds)))
 assert MC_set_fritz.shape == MC_set.shape
 
 # save all the data
-np.save('data/sampling/fritzplusMCs', MC_fritzplusMCs)
-np.save('data/sampling/gold', MC_set)
-np.save('data/sampling/fritz_gold', MC_set_fritz)
+np.save('data/sampling/fritzplusMCs'+tag, MC_fritzplusMCs)
+np.save('data/sampling/gold'+tag, MC_set)
+np.save('data/sampling/fritz_gold'+tag, MC_set_fritz)
 
 # map study to the order of the names
-samples = ['fritzplusMCs', 'gold', 'fritz_gold']
+samples = ['fritzplusMCs'+tag, 'gold'+tag, 'fritz_gold'+tag]
 fritz.extend(['LMC', 'SMC'])
 fritz_gold_names.extend(['LMC', 'SMC'])
 map = dict(zip(samples, (fritz, names, fritz_gold_names)))
-with open('data/sampling/names_key.pkl', 'wb') as f:
+with open('data/sampling/names_key'+tag+'.pkl', 'wb') as f:
     pickle.dump(map, f, protocol=pickle.HIGHEST_PROTOCOL)
 
 # """

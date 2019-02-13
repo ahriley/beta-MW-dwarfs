@@ -12,6 +12,8 @@ from astropy.coordinates.representation import CartesianDifferential as CD
 
 n = 2000
 plot = True
+scale_errors = True
+errscale = 4.5
 
 dwarf_file = 'data/dwarf_props.yaml'
 with open(dwarf_file, 'r') as f:
@@ -19,9 +21,10 @@ with open(dwarf_file, 'r') as f:
 
 studies = ['helmi', 'simon', 'fritz', 'kallivayalil', 'massari', 'pace']
 for study in studies:
-    print(study)
+    savename = study+'_scalederrs' if scale_errors else study
+    print(study, savename)
     if plot:
-        pltpth = 'figures/sampling/'+study
+        pltpth = 'figures/sampling/'+savename
         kwargs = {'parents': True, 'exist_ok': True}
         pathlib.Path(pltpth+'/heliocentric').mkdir(**kwargs)
         pathlib.Path(pltpth+'/galactocentric').mkdir(**kwargs)
@@ -48,12 +51,20 @@ for study in studies:
         d_c = dwarfs_c[name]
         pos = np.zeros((n,6))
 
+        # scale proper motion errors if desired
+        scale = errscale if scale_errors else 1
+        mu_alpha_err = d['mu_alpha_error']/scale
+        mu_delta_err = d['mu_delta_error']/scale
+
+        # construct means and covariances for proper motion sampling
         means = np.array([d['mu_alpha'], d['mu_delta']])
-        cov = [[d['mu_alpha_error']**2,d['correlation_mu_mu']*\
-                    d['mu_alpha_error']*d['mu_delta_error']],
-                [d['correlation_mu_mu']*d['mu_alpha_error']*\
-                    d['mu_delta_error'], d['mu_delta_error']**2]]
+        cov = [[mu_alpha_err**2,d['correlation_mu_mu']*\
+                    mu_alpha_err*mu_delta_err],
+                [d['correlation_mu_mu']*mu_alpha_err*\
+                    mu_delta_err, mu_delta_err**2]]
         cov = np.array(cov)
+
+        # perform sampling, store in pos
         pos[:,0:2] = np.random.multivariate_normal(mean=means, cov=cov, size=n)
         pos[:,2] = np.random.normal(d_c['vel_los'],d_c['vel_los_error'],n)
         pos[:,3] = np.random.normal(d_c['distance'],d_c['distance_error'],n)
@@ -119,7 +130,7 @@ for study in studies:
     assert sphcoords.shape == (len(names), 13, n)
 
     # ORDER: mu_alpha, mu_delta, vel_los, dist
-    np.save('data/sampling/'+study+'_helio', positions[:,:4])
+    np.save('data/sampling/'+savename+'_helio', positions[:,:4])
 
     # ORDER: x y z vx vy vz r theta phi v_r v_theta v_phi v_t
-    np.save('data/sampling/'+study+'_galacto', sphcoords)
+    np.save('data/sampling/'+savename+'_galacto', sphcoords)
