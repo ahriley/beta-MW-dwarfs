@@ -11,9 +11,14 @@ import utils as u
 
 # load MC samples, names of satellites
 sample = 'fritzplusMCs'
-tag = 'fritzplusMCs_ultrafaint'
+tag = 'fritzplusMCs'
+scaled_errors = True
+
+scaletag = '_scalederrs' if scaled_errors else ''
+sample += scaletag
+tag += scaletag
 MC_dwarfs = np.load('data/sampling/'+sample+'.npy')
-with open('data/sampling/names_key.pkl', 'rb') as f:
+with open('data/sampling/names_key'+scaletag+'.pkl', 'rb') as f:
     names = pickle.load(f)[sample]
 assert MC_dwarfs.shape[0] == len(names)
 
