@@ -38,7 +38,7 @@ largewidth = 513.11743 * pt_to_in
 nfigs = 10
 # remake = [True for i in range(nfigs)]
 remake = [False for i in range(nfigs)]
-remake[2] = True
+remake[9] = True
 
 # # ## ### ##### ######## ############# #####################
 ### Fig 1: Tangential velocity excess
@@ -592,10 +592,10 @@ if remake[9]:
     plt.plot(gcs.r, beta_mid, c='0.7', label='Vasiliev18')
     plt.fill_between(gcs.r, beta_low, beta_high, alpha=0.2, color='0.5')
 
-    # Cunningham et al. (in prep) -- HALO7D
-    rvals = [15, 23, 39]
+    # Cunningham et al. (2018) -- HALO7D
+    rvals = [19, 23, 29]
     betavals = [0.54, 0.64, 0.70]
-    errs = [0.15, 0.15, 0.15]
+    errs = [0.11, 0.08, 0.08]
     plt.errorbar(rvals, betavals, yerr=errs, fmt='o', ms=ms, capsize=capsize,\
                     c='k', label='Cunningham+18');
 
