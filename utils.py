@@ -77,7 +77,12 @@ def load_auriga(sim, processed=False):
 def load_apostle(sim, processed=False):
     filename = APOSTLE_DIR+sim+'_subs.pkl'
     subs = pd.read_pickle(filename).drop_duplicates()
+    preprocessed = ['V6_HR_DMO', 'S5_HR_DMO']
     if processed:
+        if sim in preprocessed:
+            subs = compute_spherical_hostcentric(df=subs)
+            halos = pd.DataFrame(data={'null': [0,1]})
+            return halos, subs
         subs.sort_values('M_dm', ascending=False, inplace=True)
         haloIDs = list(subs.index.values[0:2])
         subs, halos = subs.drop(haloIDs), subs.loc[haloIDs]

@@ -423,10 +423,13 @@ if remake[7]:
                 root = sim.replace('fix', 'DMO') if col=='DMO' else sim
                 root = 'V1_HR_DMO_5534' if root=='V1_HR_DMO_5282' else root
                 root = 'V4_HR_DMO_8555' if root=='V4_HR_DMO_12081' else root
+                root = 'S5_HR_DMO_1' if root=='S5_HR_DMO_4114' else root
                 file = u.SIM_DIR+'beta/mcmc/'+col+'/'+root+'_'+row+'.npy'
                 try:
                     samples = np.load(file)
                 except:
+                    if not ((row == 'Mstar') and ('DMO' in root)):
+                        print("Couldn't find "+root+'_'+row)
                     continue
                 sigmas = [u.sigma(r, samples[:,3:6], samples[:,6:9],\
                             samples[:,9:12]) for r in rvals]
@@ -589,7 +592,7 @@ if remake[9]:
     beta_mid = np.percentile(betas, 50, axis=1)
     beta_low = np.percentile(betas, 16, axis=1)
     beta_high = np.percentile(betas, 84, axis=1)
-    plt.plot(gcs.r, beta_mid, c='0.7', label='Vasiliev18')
+    plt.plot(gcs.r, beta_mid, c='0.7', label='Vasiliev19')
     plt.fill_between(gcs.r, beta_low, beta_high, alpha=0.2, color='0.5')
 
     # Cunningham et al. (2018) -- HALO7D

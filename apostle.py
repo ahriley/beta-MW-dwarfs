@@ -5,8 +5,8 @@ import likelihood.variablesigma as l
 from os.path import isfile
 
 simlist = ['V1_HR_fix', 'V4_HR_fix', 'V6_HR_fix', 'S4_HR_fix', 'S5_HR_fix',
-            'V1_HR_DMO', 'V4_HR_DMO']
-label = 'Mstar'
+            'V1_HR_DMO', 'V4_HR_DMO', 'V6_HR_DMO', 'S5_HR_DMO']
+label = 'Vmax'
 
 for sim in simlist:
     if label == 'Mstar' and 'DMO' in sim:
@@ -15,9 +15,9 @@ for sim in simlist:
 
     # if data aren't available, continue
     try:
-        # subs_c = subs_c[subs_c.Vmax > 5]
+        subs_c = subs_c[subs_c.Vmax > 5]
         # subs_c = subs_c[subs_c.Vpeak > 18]
-        subs_c = subs_c[subs_c.Mstar > 0]
+        # subs_c = subs_c[subs_c.Mstar > 0]
     except AttributeError:
         print(sim+" doesn't have the property")
         continue
