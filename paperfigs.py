@@ -551,7 +551,7 @@ if remake[9]:
     lower = np.percentile(betas, 15.9, axis=1)
     upper = np.percentile(betas, 84.1, axis=1)
 
-    plt.plot(rvals, beta_median, '-', c='C0', label='This work')
+    plt.plot(rvals, beta_median, '-', c='C0', label='Riley+19')
     plt.fill_between(rvals, lower, upper, alpha=0.2, color='C0')
 
     # Sohn et al. 2018 (HST GCs)
@@ -560,11 +560,11 @@ if remake[9]:
                     xerr=np.array([[rval-10.6], [39.5-rval]]), c='dimgrey',\
                     ms=ms, label='Sohn+18', capsize=capsize, zorder=100);
 
-    # Watkins et al. 2018 (Gaia CGs)
+    # Watkins et al. 2019 (Gaia CGs)
     rval = 10**((np.log10(21.1) + np.log10(2.0))/2)
     plt.errorbar([rval], [.48], yerr=np.array([[0.2], [0.15]]), fmt='s',\
                     xerr=np.array([[rval-2.0], [21.1-rval]]), c='dimgrey',\
-                    ms=ms, label='Watkins+18', capsize=capsize, zorder=100)
+                    ms=ms, label='Watkins+19', capsize=capsize, zorder=100)
 
     # load GC data from Vasiliev
     gc_file = u.SIM_DIR+'beta/othertracers/fig7.txt'
