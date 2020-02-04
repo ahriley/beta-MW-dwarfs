@@ -5,4 +5,4 @@ This code accompanies the paper "The velocity anisotropy of the Milky Way satell
 Please e-mail Alex Riley ([alexriley@tamu.edu](mailto:alexriley@tamu.edu)) with any questions or comments.
 
 ### Tables
-To get machine-readable versions of the catalog used here (Tables A1 and A2 in the paper), see the `table/` folder
+To get machine-readable versions of the catalog used here (Tables A1 and A2 in the paper), see the `tables/` folder
